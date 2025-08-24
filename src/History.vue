@@ -1,8 +1,7 @@
 <template>
-  <Layout>
+    <Layout />
     <DailyList />
     <ExportButton class="mt-4" />
-  </Layout>
 </template>
 
 <script setup>

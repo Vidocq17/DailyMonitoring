@@ -1,10 +1,10 @@
 <template>
-  <Layout>
-    <DailyForm />
-  </Layout>
+  <div id="app">
+    <Header />
+    <router-view />
+  </div>
 </template>
 
 <script setup>
-import Layout from '@/components/Layout.vue'
-import DailyForm from '@/components/DailyForm.vue'
+import Header from './components/Header.vue'
 </script>
