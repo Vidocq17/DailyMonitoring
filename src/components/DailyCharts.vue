@@ -10,7 +10,16 @@ ChartJS.register(Title, Tooltip, Legend, LineElement, CategoryScale, LinearScale
 const store = useDailyStore()
 const chartsData = ref([]) // tableau contenant toutes les données de chaque chart
 
-// Config des max pour chaque valeur
+const minValues = {
+  poids: 85,
+  kcal: 1000,
+  glucides: 100,
+  proteines: 80,
+  lipides: 40,
+  eau: 1,
+  pas: 0
+}
+
 const maxValues = {
   poids: 95,
   kcal: 3000,
@@ -58,7 +67,7 @@ onMounted(async () => {
         },
         scales: {
           y: {
-            suggestedMin: 0,
+            suggestedMin: minValues[cfg.key] || 0,
             suggestedMax: maxValues[cfg.key]
           }
         }
@@ -69,10 +78,10 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="bg-white shadow p-6 rounded-xl space-y-6">
-    <h2 class="text-xl font-bold mb-4">Évolution quotidienne</h2>
-    <div class="flex flex-wrap gap-6">
-      <div v-for="chart in chartsData" :key="chart.key" class="mb-6" style="max-width: 500px;">
+  <div style="background-color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); border-radius: 1rem;">
+    <h2 style="font: bold; margin-bottom: 1rem; font-size: x-large;">Évolution quotidienne</h2>
+    <div style="display: flex; flex-wrap: wrap; gap: 1.5rem;">
+      <div v-for="chart in chartsData" :key="chart.key">
         <Line :data="chart.data" :options="chart.options" />
       </div>
     </div>
