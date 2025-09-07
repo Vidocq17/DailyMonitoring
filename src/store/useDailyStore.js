@@ -4,35 +4,49 @@ import { supabase } from '../../supabaseClient'
 export const useDailyStore = defineStore('daily', {
   state: () => ({
     entries: [],
-    loading: false,
   }),
   actions: {
-    async fetchDaily(month = null) {
-      this.loading = true
-      let query = supabase
-        .from('daily_monitoring')
-        .select('*')
-        .order('date_du_jour', { ascending: true })
-      if (month) {
-        query = query.gte('date_du_jour', `${month}-01`).lte('date_du_jour', `${month}-31`)
+    // filtrer par date décroissante
+    async fetchDaily() {
+      const { data, error } = await supabase.from('daily_monitoring').select('*')
+      if (!error) {
+        this.entries = data.sort((a, b) => new Date(b.date_du_jour) - new Date(a.date_du_jour))
       }
-      const { data, error } = await query
-      if (!error) this.entries = data
-      this.loading = false
     },
-    async addDaily(entry) {
-      const { data, error } = await supabase.from('daily_monitoring').insert(entry).select() // important pour récupérer la ligne insérée
+
+    async addDaily(newEntry) {
+      const { data, error } = await supabase.from('daily_monitoring').insert(newEntry).select()
+
+      if (!error && data) {
+        this.entries.push(data[0])
+      }
+    },
+
+    async updateDaily(id, updatedEntry) {
+      // <= C’est cette méthode !
+      const { data, error } = await supabase
+        .from('daily_monitoring')
+        .update(updatedEntry)
+        .eq('id', id)
+        .select()
 
       if (error) {
-        console.error('Erreur insert :', error)
+        console.error('Erreur update :', error)
         return
       }
 
-      if (data && Array.isArray(data)) {
-        this.entries.push(...data)
-      } else {
-        console.warn('Aucune donnée retournée par Supabase')
+      if (data && data.length > 0) {
+        const index = this.entries.findIndex((e) => e.id === id)
+        if (index !== -1) {
+          this.entries.splice(index, 1, data[0]) // met à jour localement
+        }
       }
+    },
+
+    getLastWeight() {
+      if (this.entries.length === 0) return null
+      const sortedEntries = [...this.entries].sort((a, b) => new Date(b.date) - new Date(a.date))
+      return sortedEntries[0].weight || null
     },
   },
 })

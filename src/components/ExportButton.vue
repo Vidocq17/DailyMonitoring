@@ -17,7 +17,25 @@ const exportCSV = () => {
 </script>
 
 <template>
-  <button @click="exportCSV" class="bg-green-600 text-white px-4 py-2 rounded-lg">
-    Export CSV
-  </button>
+  <button @click="exportCSV">Export CSV</button>
 </template>
+
+<style scoped>
+button {
+  background: linear-gradient(to right, #3b82f6, #2563eb);
+  color: white;
+  padding: 0.7rem 1.2rem;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  margin-top: 1rem;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: background 0.3s;
+  width: 30%;
+}
+
+button:hover {
+  background: linear-gradient(to right, #2563eb, #1e40af);
+}
+</style>
