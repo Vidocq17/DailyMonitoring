@@ -1,16 +1,32 @@
+<script setup>
+import Logo from '@/img/logo.png'
+</script>
+
 <template>
-  <nav>
-    <router-link style="margin-left: 10px" to="/add">Ajouter</router-link>
-    <router-link style="margin-left: 10px" to="/stats">Stats</router-link>
-    <router-link style="margin-left: 10px" to="/history">Historique</router-link>
-  </nav>
+  <header>
+    <router-link to="/">
+      <img :src="Logo" alt="Logo" style="width: 50px; height: 50px" />
+    </router-link>
+    <nav>
+      <router-link to="/add">Ajouter</router-link>
+      <router-link to="/stats">Stats</router-link>
+      <router-link to="/history">Historique</router-link>
+    </nav>
+  </header>
 </template>
 
 <style>
+header {
+  background: #f8fafc;
+  padding: 5px;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 nav {
   background: #f8fafc;
-  padding: 12px 16px;
-  border-bottom: 1px solid #e5e7eb;
+  padding: 5px;
   display: flex;
   justify-content: space-around;
 }
@@ -27,8 +43,13 @@ nav a:hover {
 }
 
 @media (max-width: 600px) {
-  nav a {
-    margin-bottom: 8px;
+  header {
+    justify-content: space-around;
+  }
+  nav {
+    width: 100%;
+    justify-content: space-around;
+    margin-top: 10px;
   }
 }
 </style>
