@@ -171,15 +171,13 @@ onMounted(async () => {
   <div class="charts-container">
     <div class="charts-title">
       <h2>Progression des exercices</h2>
-      <select id="groupSelect" v-model="selectedGroup">
-        <option value="PUSH">PUSH</option>
-        <option value="PULL">PULL</option>
-        <option value="LEGS">LEGS</option>
-      </select>
+      <button @click="selectedGroup = 'PUSH'">PUSH</button>
+      <button @click="selectedGroup = 'PULL'">PULL</button>
+      <button @click="selectedGroup = 'LEGS'">LEGS</button>
     </div>
 
     <div class="charts-grid">
-      <div v-for="chart in filteredCharts" :key="chart.key" class="chart-wrapper">
+      <div v-for="chart in filteredCharts" :key="chart.key" class="chart-card">
         <Line :data="chart.data" :options="chart.options" />
       </div>
     </div>
@@ -215,8 +213,14 @@ select {
   gap: 2rem;
 }
 
-.chart-wrapper {
-  height: 400px;
+.chart-card {
+  background: #fafafa;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .charts-title {
@@ -224,5 +228,17 @@ select {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
+}
+
+button {
+  background: linear-gradient(to right, #3b82f6, #2563eb);
+  color: white;
+  padding: 1rem;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 0.5rem;
+  font-weight: bold;
+  transition: background 0.3s;
 }
 </style>

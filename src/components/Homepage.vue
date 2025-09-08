@@ -10,8 +10,6 @@
     <router-link to="/add" class="btn">Ajouter</router-link>
     <router-link to="/stats" class="btn">Graphiques</router-link>
     <router-link to="/history" class="btn">Historique</router-link>
-    <router-link to="/sport" class="btn">Sport</router-link>
-    <router-link to="/workout-stats" class="btn">Stats d'entraînement</router-link>
   </div>
 </template>
 

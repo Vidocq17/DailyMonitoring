@@ -9,7 +9,7 @@ import Logo from '@/img/logo.png'
     </router-link>
     <nav>
       <router-link to="/add">Ajouter</router-link>
-      <router-link to="/stats">Stats</router-link>
+      <router-link to="/stats">Graphiques</router-link>
       <router-link to="/history">Historique</router-link>
     </nav>
   </header>
