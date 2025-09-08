@@ -1,11 +1,8 @@
 <template>
   <nav>
-    <router-link style="margin-left: 10px" to="/">Accueil</router-link>
     <router-link style="margin-left: 10px" to="/add">Ajouter</router-link>
     <router-link style="margin-left: 10px" to="/stats">Stats</router-link>
     <router-link style="margin-left: 10px" to="/history">Historique</router-link>
-    <router-link style="margin-left: 10px" to="/sport">Sport</router-link>
-    <router-link style="margin-left: 10px" to="/workout-stats">Stats d'entraînement</router-link>
   </nav>
 </template>
 
@@ -14,6 +11,8 @@ nav {
   background: #f8fafc;
   padding: 12px 16px;
   border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-around;
 }
 
 nav a {
@@ -28,11 +27,6 @@ nav a:hover {
 }
 
 @media (max-width: 600px) {
-  nav {
-    display: flex;
-    flex-wrap: wrap;
-  }
-
   nav a {
     margin-bottom: 8px;
   }

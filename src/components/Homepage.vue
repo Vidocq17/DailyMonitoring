@@ -2,7 +2,16 @@
   <div class="home">
     <h1>Bienvenue sur Daily Monitoring</h1>
     <p>Objectif : 85 kilos !</p>
+    <p style="font-weight: 900">Poids actuel : 89 kilos !</p>
+    <p style="font-weight: 900">PLUS QUE 4 !</p>
     <p v-if="lastWeight">Poids actuel : {{ lastWeight }} kg</p>
+  </div>
+  <div class="home-buttons">
+    <router-link to="/add" class="btn">Ajouter</router-link>
+    <router-link to="/stats" class="btn">Graphiques</router-link>
+    <router-link to="/history" class="btn">Historique</router-link>
+    <router-link to="/sport" class="btn">Sport</router-link>
+    <router-link to="/workout-stats" class="btn">Stats d'entraînement</router-link>
   </div>
 </template>
 
@@ -31,9 +40,29 @@ const lastWeight = computed(() => store.getLastWeight())
   margin-bottom: 1rem;
 }
 
-.home p {
-  margin-bottom: 2rem;
-  color: #555;
+.home-buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  width: 50%;
+  margin: 0 auto;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.8rem 1.5rem;
+  background-color: #4a90e2;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: background-color 0.3s;
+  font-size: 1rem;
+}
+
+.btn:hover {
+  background-color: #357ab8;
 }
 
 /* Responsive */
