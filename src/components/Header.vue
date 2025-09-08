@@ -26,4 +26,15 @@ nav a {
 nav a:hover {
   background: #e0e7ff;
 }
+
+@media (max-width: 600px) {
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  nav a {
+    margin-bottom: 8px;
+  }
+}
 </style>

@@ -16,10 +16,18 @@ export const useWorkoutStore = defineStore('workout', {
         .sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
     },
     async addWeight(exerciseKey, weight) {
-      const { data } = await supabase
-        .from('workout_weights')
-        .insert([{ exercise_name: exerciseKey, weight }])
-      if (data) this.entries.push(...data)
+      const { data, error } = await supabase.from('workout_weights').insert([
+        {
+          exercise_name: exerciseKey,
+          weight: Number(weight),
+        },
+      ])
+
+      if (error) {
+        console.error('Erreur addWeight:', error)
+      } else {
+        this.entries.push(...data)
+      }
     },
   },
 })

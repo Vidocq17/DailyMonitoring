@@ -112,14 +112,7 @@ watch(
         </div>
 
         <div class="data">
-          <label
-            style="
-              flex-direction: row;
-              align-items: center;
-              gap: 0.6rem;
-              margin: auto 105px auto auto;
-            "
-          >
+          <label class="boolean-label">
             <input type="checkbox" v-model="form.sport" />
             Sport fait ?
           </label>
@@ -138,14 +131,7 @@ watch(
         </div>
 
         <div class="data">
-          <label
-            style="
-              flex-direction: row;
-              align-items: center;
-              gap: 0.6rem;
-              margin: auto 105px auto auto;
-            "
-          >
+          <label class="boolean-label">
             <input type="checkbox" v-model="form.cardio" />
             Cardio fait ?
           </label>
@@ -189,7 +175,6 @@ watch(
 }
 
 h2 {
-  color: #2563eb;
   font-weight: bold;
   margin-bottom: 1rem;
   text-align: center;
@@ -210,6 +195,13 @@ h2 {
 .daily-form-data {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+}
+
+.boolean-label {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.6rem;
+  margin: auto 105px auto auto;
 }
 
 .data {
@@ -276,5 +268,23 @@ label {
   max-width: 200px;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+@media (max-width: 600px) {
+  .daily-form-data {
+    grid-template-columns: repeat(1, 1fr);
+    gap: 0.2rem;
+  }
+  label {
+    display: flex;
+    align-items: center;
+    margin: auto;
+  }
+  .boolean-label {
+    margin: auto;
+  }
+  button {
+    width: 50% !important;
+  }
 }
 </style>

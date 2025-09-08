@@ -9,7 +9,6 @@ const form = ref({
   weight: '',
 })
 
-// Exemple d'exercices Push / Pull / Legs
 const exercises = [
   'Développé couché barre',
   'Développé incliné haltères',
@@ -32,13 +31,37 @@ const exercises = [
   'Mollets',
 ]
 
+const labelToKey = [
+  { label: 'Développé couché barre', key: 'developpe_couche_barre' },
+  { label: 'Développé incliné haltères', key: 'developpe_incline_halteres' },
+  { label: 'Développé militaire barre', key: 'developpe_militaire_barre' },
+  { label: 'Chest press machine', key: 'chest_press_machine' },
+  { label: 'Dips assistés', key: 'dips_assistes' },
+  { label: 'Extensions triceps poulie', key: 'extensions_triceps_poulie' },
+  { label: 'Élévations latérales haltères', key: 'elevations_laterales_halteres' },
+  { label: 'Tractions assistées', key: 'tractions_assistees' },
+  { label: 'Rowing barre', key: 'rowing_barre' },
+  { label: 'Tirage vertical', key: 'tirage_vertical_poulie' },
+  { label: 'Soulevé de terre', key: 'souleve_de_terre' },
+  { label: 'Curl barre EZ', key: 'curl_barre' },
+  { label: 'Curl haltères supination', key: 'curl_halteres' },
+  { label: 'Squat barre guidée', key: 'squat_barre' },
+  { label: 'Presse à cuisses', key: 'presse_a_cuisses' },
+  { label: 'Fentes marchées haltères', key: 'fentes_halteres' },
+  { label: 'Hip Thrust', key: 'hip_thrust' },
+  { label: 'Leg curl', key: 'leg_curl' },
+  { label: 'Mollets', key: 'mollets' },
+]
+
 const saveWeight = async () => {
   if (!form.value.exercise_name || !form.value.weight) {
     alert('Remplis tous les champs !')
     return
   }
-  await store.addWeight({ ...form.value })
-  form.value.weight = ''
+  await store.addWeight(
+    labelToKey.find((item) => item.label === form.value.exercise_name)?.key,
+    parseFloat(form.value.weight),
+  )
   alert('Poids enregistré ✅')
 }
 
@@ -98,7 +121,6 @@ onMounted(() => {
 
 h2,
 h3 {
-  color: #333;
   margin-bottom: 1rem;
 }
 

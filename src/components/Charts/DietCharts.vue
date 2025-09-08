@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, ref } from 'vue'
-import { useDailyStore } from '../store/useDailyStore'
+import { useDailyStore } from '../../store/useDailyStore'
 import {
   Chart as ChartJS,
   Title,
@@ -31,11 +31,11 @@ const minValues = {
 
 const maxValues = {
   poids: 92,
-  kcal: 2500,
+  kcal: 2600,
   glucides: 300,
   proteines: 200,
   lipides: 100,
-  eau: 4,
+  eau: 5,
   pas: 30000,
 }
 
@@ -116,9 +116,7 @@ onMounted(async () => {
 h2 {
   text-align: center;
   font-weight: bold;
-  font-size: 1.8rem;
   margin-bottom: 2rem;
-  color: #333;
 }
 
 .charts-grid {

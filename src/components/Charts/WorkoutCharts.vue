@@ -1,6 +1,6 @@
 <script setup>
-import { onMounted, ref } from 'vue'
-import { useWorkoutStore } from '../store/useWorkoutStore'
+import { onMounted, ref, computed } from 'vue'
+import { useWorkoutStore } from '@/store/useWorkoutStore'
 import {
   Chart as ChartJS,
   Title,
@@ -17,6 +17,33 @@ ChartJS.register(Title, Tooltip, Legend, LineElement, CategoryScale, LinearScale
 
 const store = useWorkoutStore()
 const chartsData = ref([])
+const selectedGroup = ref('PUSH')
+
+const groups = {
+  PUSH: [
+    'developpe_couche_barre',
+    'developpe_incline_halteres',
+    'developpe_militaire_barre',
+    'chest_press_machine',
+    'dips_assistes',
+    'elevations_laterales_halteres',
+  ],
+  PULL: [
+    'tractions_assistees',
+    'rowing_barre',
+    'tirage_vertical_poulie',
+    'curl_barre',
+    'curl_halteres',
+  ],
+  LEGS: [
+    'squat_barre',
+    'souleve_de_terre',
+    'presse_a_cuisses',
+    'fentes_halteres',
+    'leg_curl',
+    'mollets',
+  ],
+}
 
 const exercises = [
   { key: 'developpe_couche_barre', label: 'Développé couché barre', color: 'rgb(255, 99, 132)' },
@@ -97,20 +124,24 @@ const maxValues = {
   mollets: 80,
 }
 
+const filteredCharts = computed(() =>
+  chartsData.value.filter((chart) => groups[selectedGroup.value].includes(chart.key)),
+)
+
 onMounted(async () => {
   await store.fetchWeights()
 
   chartsData.value = exercises.map((ex) => {
-    // Ici on filtre avec ex.key, qui correspond à exercise_name dans Supabase
     const dataEntries = store.getExerciseWeights(ex.key)
 
     return {
       key: ex.key,
+      label: ex.label,
       data: {
         labels: dataEntries.map((e) => new Date(e.created_at).toLocaleDateString()),
         datasets: [
           {
-            label: ex.label, // label lisible pour la chart
+            label: ex.label,
             data: dataEntries.map((e) => e.weight),
             borderColor: ex.color,
             backgroundColor: ex.color.replace('rgb', 'rgba').replace(')', ', 0.2)'),
@@ -122,16 +153,13 @@ onMounted(async () => {
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        plugins: { legend: { display: true } },
         scales: {
           y: {
             min: minValues[ex.key] || 0,
             max: maxValues[ex.key] || 100,
             ticks: { stepSize: 10 },
           },
-        },
-        plugins: {
-          legend: { display: true, position: 'top' },
-          title: { display: false },
         },
       },
     }
@@ -141,9 +169,17 @@ onMounted(async () => {
 
 <template>
   <div class="charts-container">
-    <h2>Progression des exercices</h2>
+    <div class="charts-title">
+      <h2>Progression des exercices</h2>
+      <select id="groupSelect" v-model="selectedGroup">
+        <option value="PUSH">PUSH</option>
+        <option value="PULL">PULL</option>
+        <option value="LEGS">LEGS</option>
+      </select>
+    </div>
+
     <div class="charts-grid">
-      <div v-for="chart in chartsData" :key="chart.key" class="chart-wrapper">
+      <div v-for="chart in filteredCharts" :key="chart.key" class="chart-wrapper">
         <Line :data="chart.data" :options="chart.options" />
       </div>
     </div>
@@ -160,10 +196,17 @@ onMounted(async () => {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-.charts-container h2 {
+h2 {
   text-align: center;
-  margin-bottom: 2rem;
-  color: #333;
+  margin-bottom: 1rem;
+}
+
+select {
+  margin: 1rem auto;
+  display: block;
+  padding: 0.5rem;
+  border-radius: 8px;
+  border: 1px solid #aaa;
 }
 
 .charts-grid {
@@ -174,5 +217,12 @@ onMounted(async () => {
 
 .chart-wrapper {
   height: 400px;
+}
+
+.charts-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
 }
 </style>

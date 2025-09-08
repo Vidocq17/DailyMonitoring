@@ -23,7 +23,6 @@ export const useDailyStore = defineStore('daily', {
     },
 
     async updateDaily(id, updatedEntry) {
-      // <= C’est cette méthode !
       const { data, error } = await supabase
         .from('daily_monitoring')
         .update(updatedEntry)

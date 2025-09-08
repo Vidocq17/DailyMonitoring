@@ -28,13 +28,10 @@ const lastWeight = computed(() => store.getLastWeight())
 }
 
 .home h1 {
-  font-size: 2rem;
   margin-bottom: 1rem;
-  color: #333;
 }
 
 .home p {
-  font-size: 1.2rem;
   margin-bottom: 2rem;
   color: #555;
 }

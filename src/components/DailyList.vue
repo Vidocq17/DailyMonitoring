@@ -58,7 +58,7 @@ const saveEdit = async () => {
           <tr v-for="entry in store.entries" :key="entry.id">
             <td>
               <input v-if="editingId === entry.id" v-model="editedEntry.date_du_jour" type="date" />
-              <span v-else>{{ entry.date_du_jour }}</span>
+              <span v-else>{{ new Date(entry.date_du_jour).toLocaleDateString() }}</span>
             </td>
             <td>
               <input v-if="editingId === entry.id" v-model="editedEntry.kcal" type="number" />
@@ -152,20 +152,18 @@ const saveEdit = async () => {
 }
 
 .daily-title {
-  font-size: 1.6rem;
   font-weight: bold;
-  color: #2563eb;
   margin-bottom: 20px;
 }
 
 .table-wrapper {
-  overflow-x: auto; /* scroll horizontal sur mobile */
+  overflow-x: auto;
 }
 
 .daily-table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 800px; /* pour forcer le scroll sur mobile */
+  min-width: 800px;
 }
 
 .daily-table th {

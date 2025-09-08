@@ -1,10 +1,10 @@
 <template>
   <Layout>
-    <DailyCharts />
+    <DietCharts />
   </Layout>
 </template>
 
 <script setup>
 import Layout from '@/components/Layout.vue'
-import DailyCharts from '@/components/DailyCharts.vue'
+import DietCharts from '@/components/Charts/DietCharts.vue'
 </script>
