@@ -185,60 +185,15 @@ onMounted(async () => {
 </template>
 
 <style scoped>
-.charts-container {
-  max-width: 1200px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background-color: #fff;
-  border-radius: 1rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-}
+@media (max-width: 600px) {
+  .charts-title {
+    flex-direction: column;
+    align-items: center;
+  }
 
-h2 {
-  text-align: center;
-  margin-bottom: 1rem;
-}
-
-select {
-  margin: 1rem auto;
-  display: block;
-  padding: 0.5rem;
-  border-radius: 8px;
-  border: 1px solid #aaa;
-}
-
-.charts-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 2rem;
-}
-
-.chart-card {
-  background: #fafafa;
-  border-radius: 0.75rem;
-  padding: 1rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.charts-title {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-
-button {
-  background: linear-gradient(to right, #3b82f6, #2563eb);
-  color: white;
-  padding: 1rem;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  font-size: 0.5rem;
-  font-weight: bold;
-  transition: background 0.3s;
+  .charts-title button {
+    width: 100%;
+    margin: 5px 0;
+  }
 }
 </style>

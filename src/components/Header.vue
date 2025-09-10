@@ -1,5 +1,5 @@
 <script setup>
-import Logo from '@/img/logo.png'
+import Logo from '@/assets/img/logo.png'
 </script>
 
 <template>
@@ -15,33 +15,7 @@ import Logo from '@/img/logo.png'
   </header>
 </template>
 
-<style>
-header {
-  background: #f8fafc;
-  padding: 5px;
-  border-bottom: 1px solid #e5e7eb;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-nav {
-  background: #f8fafc;
-  padding: 5px;
-  display: flex;
-  justify-content: space-around;
-}
-
-nav a {
-  color: #2563eb;
-  text-decoration: none;
-  padding: 8px 12px;
-  border-radius: 4px;
-}
-
-nav a:hover {
-  background: #e0e7ff;
-}
-
+<style scoped>
 @media (max-width: 600px) {
   header {
     justify-content: space-around;

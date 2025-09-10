@@ -10,25 +10,25 @@ const form = ref({
 })
 
 const exercises = [
-  'Développé couché barre',
-  'Développé incliné haltères',
-  'Développé militaire barre',
-  'Chest press machine',
-  'Dips assistés',
-  'Extensions triceps poulie',
-  'Élévations latérales haltères',
-  'Tractions assistées',
-  'Rowing barre',
-  'Tirage vertical',
-  'Soulevé de terre',
-  'Curl barre EZ',
-  'Curl haltères supination',
-  'Squat barre guidée',
-  'Presse à cuisses',
-  'Fentes marchées haltères',
-  'Hip Thrust',
-  'Leg curl',
-  'Mollets',
+  'Développé couché barre - PUSH',
+  'Développé incliné haltères - PUSH',
+  'Développé militaire barre - PUSH',
+  'Chest press machine - PUSH',
+  'Dips assistés - PUSH',
+  'Extensions triceps poulie - PUSH',
+  'Élévations latérales haltères - PUSH',
+  'Tractions assistées - PULL',
+  'Rowing barre - PULL',
+  'Tirage vertical - PULL',
+  'Soulevé de terre - PULL',
+  'Curl barre EZ - PULL',
+  'Curl haltères supination - PULL',
+  'Squat barre guidée - LEGS',
+  'Presse à cuisses - LEGS',
+  'Fentes marchées haltères - LEGS',
+  'Hip Thrust - LEGS',
+  'Leg curl - LEGS',
+  'Mollets - LEGS',
 ]
 
 const labelToKey = [
@@ -71,10 +71,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="container">
+  <div class="sport-container">
     <h2>Enregistrer vos poids</h2>
 
-    <div class="form">
+    <form>
       <label>
         Exercice
         <select v-model="form.exercise_name">
@@ -89,7 +89,7 @@ onMounted(() => {
       </label>
 
       <button @click="saveWeight">Enregistrer</button>
-    </div>
+    </form>
 
     <h3>Historique des poids</h3>
     <table>
@@ -112,77 +112,8 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
-
-h2,
-h3 {
-  margin-bottom: 1rem;
-}
-
-.form {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-bottom: 2rem;
-}
-
-.form label {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.4rem;
-}
-
-input,
-select {
-  padding: 0.5rem;
-  border-radius: 8px;
-  border: 1px solid #aaa;
-  width: 200px;
-}
-
-button {
-  background: linear-gradient(to right, #3b82f6, #2563eb);
-  color: white;
-  padding: 0.7rem 1.2rem;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  margin-top: 1rem;
-  font-size: 1rem;
-  font-weight: bold;
-  transition: background 0.3s;
-}
-
-button:hover {
-  background-color: #357ab8;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 1rem;
-}
-
-th,
-td {
-  border: 1px solid #ddd;
-  padding: 0.6rem;
-  text-align: center;
-}
-
-th {
-  background-color: #f3f3f3;
-}
-
 @media (max-width: 600px) {
-  .form {
+  form {
     flex-direction: column;
     align-items: center;
   }
@@ -190,6 +121,10 @@ th {
   input,
   select {
     width: 100%;
+  }
+  .sport-container {
+    max-width: 100vw;
+    padding: 1rem;
   }
 }
 </style>
