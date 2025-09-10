@@ -84,7 +84,7 @@ const exercises = [
 
 const minValues = {
   developpe_couche_barre: 15,
-  developpe_incline_halteres: 10,
+  developpe_incline_halteres: 5,
   developpe_militaire_barre: 10,
   chest_press_machine: 10,
   dips_assistes: 0,
@@ -98,9 +98,9 @@ const minValues = {
   squat_barre: 40,
   souleve_de_terre: 40,
   presse_a_cuisses: 60,
-  fentes_halteres: 10,
-  leg_curl: 20,
-  mollets: 20,
+  fentes_halteres: 0,
+  leg_curl: 10,
+  mollets: 0,
 }
 
 const maxValues = {

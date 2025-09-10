@@ -1,10 +1,9 @@
 <template>
   <div class="home">
     <h1>Bienvenue sur Daily Monitoring</h1>
-    <p>Objectif : 85 kilos !</p>
-    <p style="font-weight: 900">Poids actuel : 89 kilos !</p>
-    <p style="font-weight: 900">PLUS QUE 4 !</p>
-    <p v-if="lastWeight">Poids actuel : {{ lastWeight }} kg</p>
+    <p>Objectif : {{ objectif }} kilos !</p>
+    <p style="font-weight: 900">Poids actuel : {{ lastWeight }} kilos !</p>
+    <p style="font-weight: 900">PLUS QUE {{ reste }} 💪🏻💪🏻 !</p>
   </div>
   <div class="home-buttons">
     <router-link to="/add" class="btn">Ajouter</router-link>
@@ -14,16 +13,31 @@
 </template>
 
 <script setup>
-import { onMounted, computed } from 'vue'
+import { onMounted, computed, ref } from 'vue'
 import { useDailyStore } from '../store/useDailyStore'
 
+const objectif = ref(85)
 const store = useDailyStore()
+
+const lastWeight = ref(null)
 
 onMounted(async () => {
   await store.fetchDaily()
+  const weight = await store.getLastWeight()
+
+  console.log('weight récupéré:', weight)
+
+  if (weight) {
+    lastWeight.value = weight
+  }
 })
 
-const lastWeight = computed(() => store.getLastWeight())
+const reste = computed(() => {
+  if (lastWeight.value !== null) {
+    return lastWeight.value - objectif.value
+  }
+  return '...'
+})
 </script>
 
 <style scoped>

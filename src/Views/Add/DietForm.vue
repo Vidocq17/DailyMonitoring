@@ -2,10 +2,9 @@
 import { ref, watch } from 'vue'
 import { useDailyStore } from '@/store/useDailyStore'
 
-import bigLooser from '@/img/big_looser.PNG'
-import leanWinner from '@/img/lean_winner.JPG'
-
 const store = useDailyStore()
+const sportOptions = ['Push', 'Pull', 'Legs', 'Full Body', 'Cardio']
+const cardioOptions = ['Course', 'Marche inclinée', 'Marche']
 
 const form = ref({
   date_du_jour: new Date().toISOString().split('T')[0],
@@ -23,30 +22,10 @@ const form = ref({
   typeof_cardio: '',
 })
 
-const sportOptions = ['Push', 'Pull', 'Legs', 'Full Body', 'Cardio']
-const cardioOptions = ['Course', 'Marche inclinée', 'Marche']
-
-// Image affichée après comparaison
-const weightImage = ref(null)
-
 const saveEntry = async () => {
   await store.addDaily({ ...form.value })
   compareWithLastWeight()
   alert('Entrée enregistrée ✅')
-}
-
-const compareWithLastWeight = () => {
-  const lastWeight = store.getLastWeight()
-  if (lastWeight !== null && form.value.poids) {
-    const diff = form.value.poids - lastWeight
-    if (diff > 0) {
-      weightImage.value = bigLooser
-    } else if (diff < 0) {
-      weightImage.value = leanWinner
-    } else {
-      weightImage.value = null
-    }
-  }
 }
 
 watch(
@@ -65,55 +44,55 @@ watch(
         <div class="data">
           <label>
             Kcal
-            <input type="number" v-model="form.kcal" class="input" />
+            <input type="number" v-model="form.kcal" class="input" required />
           </label>
         </div>
 
         <div class="data">
           <label>
             Poids (kg)
-            <input type="number" step="0.01" v-model="form.poids" class="input" />
+            <input type="number" step="0.01" v-model="form.poids" class="input" required />
           </label>
         </div>
 
         <div class="data">
           <label>
             Pas
-            <input type="number" v-model="form.pas" class="input" />
+            <input type="number" v-model="form.pas" class="input" required />
           </label>
         </div>
 
         <div class="data">
           <label>
             Glucides (g)
-            <input type="number" v-model="form.glucides" class="input" />
+            <input type="number" v-model="form.glucides" class="input" required />
           </label>
         </div>
 
         <div class="data">
           <label>
             Protéines (g)
-            <input type="number" v-model="form.proteines" class="input" />
+            <input type="number" v-model="form.proteines" class="input" required />
           </label>
         </div>
 
         <div class="data">
           <label>
             Lipides (g)
-            <input type="number" v-model="form.lipides" class="input" />
+            <input type="number" v-model="form.lipides" class="input" required />
           </label>
         </div>
 
         <div class="data">
           <label>
             Eau (L)
-            <input type="number" step="0.1" v-model="form.eau" class="input" />
+            <input type="number" step="0.1" v-model="form.eau" class="input" required />
           </label>
         </div>
 
         <div class="data">
           <label class="boolean-label">
-            <input type="checkbox" v-model="form.sport" />
+            <input type="checkbox" v-model="form.sport" required />
             Sport fait ?
           </label>
         </div>
@@ -121,7 +100,7 @@ watch(
         <div class="data">
           <label>
             Séance (optionnel)
-            <select v-model="form.seance" class="input" :disabled="!form.sport">
+            <select v-model="form.seance" class="input" :disabled="!form.sport" required>
               <option value="" disabled>Sélectionner une séance</option>
               <option v-for="option in sportOptions" :key="option" :value="option">
                 {{ option }}
@@ -132,7 +111,7 @@ watch(
 
         <div class="data">
           <label class="boolean-label">
-            <input type="checkbox" v-model="form.cardio" />
+            <input type="checkbox" v-model="form.cardio" required />
             Cardio fait ?
           </label>
         </div>
@@ -140,14 +119,14 @@ watch(
         <div class="data">
           <label>
             Km
-            <input type="number" step="0.01" v-model="form.km" class="input" />
+            <input type="number" step="0.01" v-model="form.km" class="input" required />
           </label>
         </div>
 
         <div class="data">
           <label>
             Type de cardio
-            <select v-model="form.typeof_cardio" class="input" :disabled="!form.cardio">
+            <select v-model="form.typeof_cardio" class="input" :disabled="!form.cardio" required>
               <option value="" disabled>Sélectionner un type de cardio</option>
               <option v-for="option in cardioOptions" :key="option" :value="option">
                 {{ option }}
@@ -158,11 +137,6 @@ watch(
       </div>
 
       <button @click="saveEntry">Enregistrer</button>
-
-      <!-- 🔹 Image affichée selon comparaison -->
-      <div v-if="weightImage" class="result-img">
-        <img :src="weightImage" alt="Résultat comparaison poids" />
-      </div>
     </div>
   </div>
 </template>

@@ -41,11 +41,21 @@ export const useDailyStore = defineStore('daily', {
         }
       }
     },
-
     getLastWeight() {
       if (this.entries.length === 0) return null
-      const sortedEntries = [...this.entries].sort((a, b) => new Date(b.date) - new Date(a.date))
-      return sortedEntries[0].weight || null
+      const sortedEntries = [...this.entries].sort(
+        (a, b) => new Date(b.date_du_jour) - new Date(a.date_du_jour),
+      )
+      return sortedEntries[0].poids || null // ⚡ utilise bien le nom de la colonne
+    },
+
+    // avoir la dernière entrée
+    getLastEntry() {
+      if (this.entries.length === 0) return null
+      const sortedEntries = [...this.entries].sort(
+        (a, b) => new Date(b.date_du_jour) - new Date(a.date_du_jour),
+      )
+      return sortedEntries[0] || null
     },
   },
 })

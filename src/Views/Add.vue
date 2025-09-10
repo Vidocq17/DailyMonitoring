@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import DailyForm from './Add/DailyForm.vue'
+import DailyForm from './Add/DietForm.vue'
 import SportForm from './Add/SportForm.vue'
 
 const selectedTab = ref('daily')
