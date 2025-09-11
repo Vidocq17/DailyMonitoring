@@ -1,7 +1,17 @@
 <template>
   <div id="app">
     <Header v-if="$route.name !== 'Home'" />
-    <router-view />
+    <RouterView v-slot="{ Component }">
+      <div
+        v-motion
+        :initial="{ opacity: 0, x: 50 }"
+        :enter="{ opacity: 1, x: 0 }"
+        :leave="{ opacity: 0, x: -50 }"
+        transition="{ duration: 0.4 }"
+      >
+        <component :is="Component" />
+      </div>
+    </RouterView>
   </div>
 </template>
 
@@ -12,7 +22,7 @@ import Header from './components/Header.vue'
 // TODO : Darkode - FAIT
 // TODO : Notifications - FAIT
 // TODO : Passer en Typescript
-// TODO : Framer motion
+// TODO : Framer motion - FAIT
 // TODO : Filtres sur l'historique
 // TODO : Améliorer le design
 // TODO : Barre de progression vers l’objectif de poids => Knob primevue

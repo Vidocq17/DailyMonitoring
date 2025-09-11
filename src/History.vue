@@ -45,7 +45,10 @@ const formattedDate = date.toLocaleDateString('fr-FR', {
 </script>
 
 <template>
-  <div class="daily-container p-5 rounded-2xl" style="box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08)">
+  <div
+    class="bg-[var(--color-surface)] p-5 rounded-2xl"
+    style="box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08)"
+  >
     <div class="flex justify-between items-center mb-4 w-full">
       <h2 class="font-bold">Historique</h2>
       <p>Date actuelle : {{ formattedDate }}</p>

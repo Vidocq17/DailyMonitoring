@@ -1,9 +1,18 @@
 @import 'tailwindcss';
 @import './base.css';
 
+html {
+  transition:
+    background-color 0.8s ease,
+    color 0.8s ease;
+}
+
 body {
   background-color: var(--color-background);
   color: var(--color-text);
+  transition:
+    background-color 0.8s ease,
+    color 0.8s ease;
 }
 
 h1 {
@@ -157,28 +166,8 @@ form label {
 
 /*  CHARTS */
 
-.chart-card {
-  background: var(--color-secondary);
-}
-
-.chart-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
-}
-
 .charts-title button {
   width: 15%;
-}
-
-/*  FORM  */
-
-.daily-form {
-  background: var(--color-light);
-}
-
-/* HISTORY */
-.daily-container {
-  background: var(--color-surface);
 }
 
 /* Badges */

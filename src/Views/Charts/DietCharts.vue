@@ -102,7 +102,7 @@ onMounted(async () => {
       <div
         v-for="chart in chartsData"
         :key="chart.key"
-        class="chart-card rounded-2xl p-4"
+        class="bg-[var(--color-secondary)] rounded-2xl p-4"
         style="
           box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
           transition:

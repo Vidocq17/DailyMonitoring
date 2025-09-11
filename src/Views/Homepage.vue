@@ -5,23 +5,12 @@
     <p style="font-weight: 900">Poids actuel : {{ lastWeight }} kilos !</p>
     <p style="font-weight: 900">PLUS QUE {{ reste }} 💪🏻💪🏻 !</p>
   </div>
-
-  <div class="card flex justify-center">
-    <div class="w-full bg-gray h-6 rounded-full">
-      <div
-        class="h-6 rounded-full transition-all duration-500"
-        :style="{ width: progression + '%', backgroundColor: progressionColor }"
-      ></div>
-    </div>
-  </div>
-
   <HomepageHeader />
 </template>
 
 <script setup>
 import { ref } from 'vue'
 import { useWeightProgress } from './composables/useWeightProgress'
-import Knob from 'primevue/knob'
 import HomepageHeader from '@/components/HomepageHeader.vue'
 
 const objectif = ref(85)
