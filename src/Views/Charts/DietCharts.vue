@@ -39,7 +39,6 @@ const maxValues = {
   pas: 30000,
 }
 
-// Nom + couleur pour chaque dataset
 const chartConfig = [
   { key: 'poids', label: 'Poids (kg)', color: 'rgb(255, 99, 132)' },
   { key: 'kcal', label: 'Kcal', color: 'rgb(75, 192, 192)' },
@@ -53,7 +52,6 @@ const chartConfig = [
 onMounted(async () => {
   await store.fetchDaily()
 
-  // 🔹 Tri par défaut des entrées (du plus récent au plus ancien)
   const sortedEntries = [...store.entries].sort(
     (a, b) => new Date(a.date_du_jour) - new Date(b.date_du_jour),
   )

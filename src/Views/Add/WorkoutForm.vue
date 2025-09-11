@@ -1,8 +1,10 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useWorkoutStore } from '@/store/useWorkoutStore'
+import { useToast } from 'vue-toastification'
 
 const store = useWorkoutStore()
+const toast = useToast()
 
 const form = ref({
   exercise_name: '',
@@ -55,18 +57,22 @@ const labelToKey = [
 
 const saveWeight = async () => {
   if (!form.value.exercise_name || !form.value.weight) {
-    alert('Remplis tous les champs !')
+    toast.error('Veuillez sélectionner un exercice et entrer un poids')
     return
   }
   await store.addWeight(
     labelToKey.find((item) => item.label === form.value.exercise_name)?.key,
     parseFloat(form.value.weight),
   )
-  alert('Poids enregistré ✅')
+  toast.success('Entrée enregistrée ✅')
 }
 
 onMounted(() => {
   store.fetchWeights()
+})
+
+const isFormValid = computed(() => {
+  return form.value.exercise_name !== '' && form.value.weight !== ''
 })
 </script>
 
@@ -88,7 +94,7 @@ onMounted(() => {
         <input type="number" v-model="form.weight" step="0.5" />
       </label>
 
-      <button @click="saveWeight">Enregistrer</button>
+      <button @click="saveWeight" :disabled="!isFormValid">Enregistrer</button>
     </form>
 
     <h3>Historique des poids</h3>

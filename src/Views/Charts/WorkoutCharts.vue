@@ -78,8 +78,8 @@ const exercises = [
   { key: 'souleve_de_terre', label: 'Soulevé de terre', color: 'rgb(150, 50, 250)' },
   { key: 'presse_a_cuisses', label: 'Presse à cuisses', color: 'rgb(100, 250, 50)' },
   { key: 'fentes_halteres', label: 'Fentes haltères', color: 'rgb(250, 50, 100)' },
-  { key: 'leg_curl', label: 'Leg curl', color: 'rgb(250, 50, 100)' },
-  { key: 'mollets', label: 'Mollets', color: 'rgb(250, 50, 100)' },
+  { key: 'leg_curl', label: 'Leg curl', color: 'rgb(150, 250, 200)' },
+  { key: 'mollets', label: 'Mollets', color: 'rgb(20, 50, 150)' },
 ]
 
 const minValues = {

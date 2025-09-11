@@ -63,6 +63,11 @@ button:hover {
   background: linear-gradient(to right, var(--color-primary), var(--color-primary-hover));
 }
 
+button:disabled {
+  background: grey !important;
+  cursor: not-allowed;
+}
+
 label {
   display: flex;
   flex-direction: column;

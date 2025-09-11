@@ -1,10 +1,12 @@
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue'
 import { useDailyStore } from '@/store/useDailyStore'
+import { useToast } from 'vue-toastification'
 
 const store = useDailyStore()
 const sportOptions = ['Push', 'Pull', 'Legs', 'Full Body', 'Cardio']
 const cardioOptions = ['Course', 'Marche inclinée', 'Marche']
+const toast = useToast()
 
 const form = ref({
   date_du_jour: new Date().toISOString().split('T')[0],
@@ -25,7 +27,7 @@ const form = ref({
 const saveEntry = async () => {
   await store.addDaily({ ...form.value })
   compareWithLastWeight()
-  alert('Entrée enregistrée ✅')
+  toast.success('Entrée enregistrée ✅')
 }
 
 watch(
@@ -34,6 +36,23 @@ watch(
     compareWithLastWeight()
   },
 )
+
+const isFormValid = computed(() => {
+  const requiredFieldsFilled =
+    form.value.kcal !== '' &&
+    form.value.glucides !== '' &&
+    form.value.lipides !== '' &&
+    form.value.proteines !== '' &&
+    form.value.pas !== '' &&
+    form.value.eau !== '' &&
+    form.value.poids !== '' &&
+    form.value.km !== ''
+
+  const sportValid = !form.value.sport || (form.value.sport && form.value.seance !== '')
+  const cardioValid = !form.value.cardio || (form.value.cardio && form.value.typeof_cardio !== '')
+
+  return requiredFieldsFilled && sportValid && cardioValid
+})
 </script>
 
 <template>
@@ -95,7 +114,7 @@ watch(
 
         <div class="flex flex-col items-start my-3 mx-0">
           <label class="flex items-center gap-2.5 my-auto ml-[65px]">
-            <input type="checkbox" v-model="form.sport" required />
+            <input type="checkbox" v-model="form.sport" />
             Sport fait ?
           </label>
         </div>
@@ -103,7 +122,7 @@ watch(
         <div class="flex flex-col items-start my-3 mx-0">
           <label>
             Séance (optionnel)
-            <select v-model="form.seance" :disabled="!form.sport" required>
+            <select v-model="form.seance" :disabled="!form.sport">
               <option value="" disabled>Sélectionner une séance</option>
               <option v-for="option in sportOptions" :key="option" :value="option">
                 {{ option }}
@@ -114,7 +133,7 @@ watch(
 
         <div class="flex flex-col items-start my-3 mx-0">
           <label class="flex items-center gap-2.5 my-auto ml-[65px]">
-            <input type="checkbox" v-model="form.cardio" required />
+            <input type="checkbox" v-model="form.cardio" />
             Cardio fait ?
           </label>
         </div>
@@ -129,7 +148,7 @@ watch(
         <div class="flex flex-col items-start my-3 mx-0">
           <label>
             Type de cardio
-            <select v-model="form.typeof_cardio" :disabled="!form.cardio" required>
+            <select v-model="form.typeof_cardio" :disabled="!form.cardio">
               <option value="" disabled>Sélectionner un type de cardio</option>
               <option v-for="option in cardioOptions" :key="option" :value="option">
                 {{ option }}
@@ -139,7 +158,7 @@ watch(
         </div>
       </div>
 
-      <button @click="saveEntry">Enregistrer</button>
+      <button @click="saveEntry" :disabled="!isFormValid">Enregistrer</button>
     </div>
   </div>
 </template>

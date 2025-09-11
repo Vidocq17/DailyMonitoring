@@ -19,7 +19,11 @@ onMounted(() => {
 
 <template>
   <div>
-    <button type="button" @click="toggle" class="flex justify-center items-center gap-2 !w-full">
+    <button
+      type="button"
+      @click="toggle"
+      class="flex justify-center items-center gap-2 !m-0 !w-full"
+    >
       {{ isDark ? 'Clair' : 'Sombre' }}
     </button>
   </div>

@@ -1,11 +1,13 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useDailyStore } from './store/useDailyStore'
+import { useToast } from 'vue-toastification'
 import ExportButton from '@/components/ExportButton.vue'
 
 const store = useDailyStore()
 const editingId = ref(null)
 const editedEntry = ref({})
+const toast = useToast()
 
 onMounted(() => {
   store.fetchDaily()
@@ -24,11 +26,13 @@ const cancelEdit = () => {
 const saveEdit = async () => {
   await store.updateDaily(editingId.value, editedEntry.value)
   editingId.value = null
+  toast.success('Entrée mise à jour ✅')
 }
 
 const deleteDaily = async (id) => {
   if (confirm('Es-tu sûr de vouloir supprimer cette entrée ?')) {
     await store.deleteDaily(id)
+    toast.success('Entrée supprimée ✅')
   }
 }
 

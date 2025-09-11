@@ -10,7 +10,7 @@ import Header from './components/Header.vue'
 
 // TODO : REfacto tout le style en tailwindcss - FAIT
 // TODO : Darkode - FAIT
-// TODO : Notifications
+// TODO : Notifications - FAIT
 // TODO : Passer en Typescript
 // TODO : Framer motion
 // TODO : Filtres sur l'historique
