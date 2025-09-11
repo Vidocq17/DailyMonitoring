@@ -95,7 +95,7 @@ onMounted(async () => {
     class="my-6 mx-auto max-w-6xl p-8 rounded-2xl"
     style="box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08)"
   >
-    <div class="flex justify-between items-center mb-4">
+    <div class="flex justify-center items-center">
       <h2>Évolution quotidienne</h2>
     </div>
     <div class="charts-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

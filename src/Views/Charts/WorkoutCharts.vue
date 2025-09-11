@@ -172,7 +172,7 @@ onMounted(async () => {
     class="my-6 mx-auto max-w-6xl p-8 rounded-2xl"
     style="box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08)"
   >
-    <div class="flex justify-between items-center mb-4">
+    <div class="charts-title flex justify-between items-center mb-4">
       <h2>Progression des exercices</h2>
       <button @click="selectedGroup = 'PUSH'">PUSH</button>
       <button @click="selectedGroup = 'PULL'">PULL</button>

@@ -56,7 +56,7 @@ const isFormValid = computed(() => {
 </script>
 
 <template>
-  <div class="flex flex-col items-center">
+  <div class="flex flex-col items-center my-6">
     <h2>Nouvelle entrée</h2>
     <div
       class="bg-[var(--color-light)] p-8 rounded-2xl w-full max-w-10/12 flex flex-col items-center"

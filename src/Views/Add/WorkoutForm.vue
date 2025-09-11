@@ -77,7 +77,7 @@ const isFormValid = computed(() => {
 </script>
 
 <template>
-  <div class="sport-container w-10/12 mx-auto p-8 text-center">
+  <div class="sport-container w-10/12 mx-auto my-6 p-8 text-center overflow-x-auto">
     <h2>Enregistrer vos poids</h2>
 
     <form>

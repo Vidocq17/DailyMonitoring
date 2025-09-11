@@ -8,7 +8,7 @@ const selectedTab = ref('daily')
 
 <template>
   <div>
-    <div class="flex justify-center gap-4 mb-4">
+    <div class="flex justify-center gap-4 mb-4 overflow-x-auto">
       <button @click="selectedTab = 'daily'">Régime</button>
       <button @click="selectedTab = 'sport'">Sport</button>
     </div>
