@@ -26,6 +26,12 @@ const saveEdit = async () => {
   editingId.value = null
 }
 
+const deleteDaily = async (id) => {
+  if (confirm('Es-tu sûr de vouloir supprimer cette entrée ?')) {
+    await store.deleteDaily(id)
+  }
+}
+
 const date = new Date()
 const formattedDate = date.toLocaleDateString('fr-FR', {
   year: 'numeric',
@@ -35,15 +41,15 @@ const formattedDate = date.toLocaleDateString('fr-FR', {
 </script>
 
 <template>
-  <div class="daily-container">
-    <div class="title">
-      <h2 class="daily-title">Historique</h2>
+  <div class="daily-container p-5 rounded-2xl" style="box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08)">
+    <div class="flex justify-between items-center mb-4 w-full">
+      <h2 class="font-bold">Historique</h2>
       <p>Date actuelle : {{ formattedDate }}</p>
       <ExportButton style="margin-top: 0; width: 15%" />
     </div>
 
-    <div class="table-wrapper">
-      <table class="daily-table">
+    <div class="overflow-x-auto">
+      <table class="daily-table w-full border-collapse min-w-[800px]">
         <thead>
           <tr>
             <th>Date</th>
@@ -135,7 +141,10 @@ const formattedDate = date.toLocaleDateString('fr-FR', {
                 <button class="btn btn-save" @click="saveEdit">💾 Sauvegarder</button>
                 <button class="btn btn-cancel" @click="cancelEdit">❌ Annuler</button>
               </div>
-              <button v-else class="btn btn-edit" @click="startEdit(entry)">✏️ Modifier</button>
+              <div v-else>
+                <button class="btn btn-edit" @click="startEdit(entry)">✏️ Modifier</button>
+                <button class="btn btn-cancel" @click="deleteDaily(entry.id)">🗑️ Supprimer</button>
+              </div>
             </td>
           </tr>
         </tbody>

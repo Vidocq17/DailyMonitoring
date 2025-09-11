@@ -1,5 +1,6 @@
 <script setup>
 import Logo from '@/assets/img/logo.png'
+import DarkModeButton from './DarkModeButton.vue'
 </script>
 
 <template>
@@ -12,6 +13,7 @@ import Logo from '@/assets/img/logo.png'
       <router-link to="/stats">Graphiques</router-link>
       <router-link to="/history">Historique</router-link>
     </nav>
+    <DarkModeButton />
   </header>
 </template>
 

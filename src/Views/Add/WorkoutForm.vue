@@ -71,7 +71,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="sport-container">
+  <div class="sport-container w-10/12 mx-auto p-8 text-center">
     <h2>Enregistrer vos poids</h2>
 
     <form>

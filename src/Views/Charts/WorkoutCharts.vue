@@ -95,7 +95,7 @@ const minValues = {
   tirage_vertical_poulie: 20,
   curl_barre: 10,
   curl_halteres: 5,
-  squat_barre: 40,
+  squat_barre: 20,
   souleve_de_terre: 40,
   presse_a_cuisses: 60,
   fentes_halteres: 0,
@@ -168,16 +168,29 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="charts-container">
-    <div class="charts-title">
+  <div
+    class="my-6 mx-auto max-w-6xl p-8 rounded-2xl"
+    style="box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08)"
+  >
+    <div class="flex justify-between items-center mb-4">
       <h2>Progression des exercices</h2>
       <button @click="selectedGroup = 'PUSH'">PUSH</button>
       <button @click="selectedGroup = 'PULL'">PULL</button>
       <button @click="selectedGroup = 'LEGS'">LEGS</button>
     </div>
 
-    <div class="charts-grid">
-      <div v-for="chart in filteredCharts" :key="chart.key" class="chart-card">
+    <div class="charts-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div
+        v-for="chart in filteredCharts"
+        :key="chart.key"
+        class="chart-card rounded-2xl p-4"
+        style="
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+          transition:
+            transform 0.2s ease,
+            box-shadow 0.2s ease;
+        "
+      >
         <Line :data="chart.data" :options="chart.options" />
       </div>
     </div>

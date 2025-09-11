@@ -1,5 +1,5 @@
 <template>
-  <div class="homepage">
+  <div class="text-center p-8 max-w-[800px] mx-auto">
     <h1>Bienvenue sur Daily Monitoring</h1>
     <p>Objectif : {{ objectif }} kilos !</p>
     <p style="font-weight: 900">Poids actuel : {{ lastWeight }} kilos !</p>
