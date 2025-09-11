@@ -2,7 +2,6 @@
 import { ref, onMounted } from 'vue'
 import { useDailyStore } from './store/useDailyStore'
 import { useToast } from 'vue-toastification'
-import ExportButton from '@/components/ExportButton.vue'
 
 const store = useDailyStore()
 const editingId = ref(null)
@@ -49,10 +48,8 @@ const formattedDate = date.toLocaleDateString('fr-FR', {
     class="bg-[var(--color-surface)] p-5 rounded-2xl"
     style="box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08)"
   >
-    <div class="flex justify-between items-center mb-4 w-full">
-      <h2 class="font-bold">Historique</h2>
+    <div class="flex justify-center items-center mb-4 w-full">
       <p>Date actuelle : {{ formattedDate }}</p>
-      <ExportButton style="margin-top: 0; width: 15%" />
     </div>
 
     <div class="overflow-x-auto">
