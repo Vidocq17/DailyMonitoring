@@ -34,25 +34,25 @@ const exercises = [
 ]
 
 const labelToKey = [
-  { label: 'Développé couché barre', key: 'developpe_couche_barre' },
-  { label: 'Développé incliné haltères', key: 'developpe_incline_halteres' },
-  { label: 'Développé militaire barre', key: 'developpe_militaire_barre' },
-  { label: 'Chest press machine', key: 'chest_press_machine' },
-  { label: 'Dips assistés', key: 'dips_assistes' },
-  { label: 'Extensions triceps poulie', key: 'extensions_triceps_poulie' },
-  { label: 'Élévations latérales haltères', key: 'elevations_laterales_halteres' },
-  { label: 'Tractions assistées', key: 'tractions_assistees' },
-  { label: 'Rowing barre', key: 'rowing_barre' },
-  { label: 'Tirage vertical', key: 'tirage_vertical_poulie' },
-  { label: 'Soulevé de terre', key: 'souleve_de_terre' },
-  { label: 'Curl barre EZ', key: 'curl_barre' },
-  { label: 'Curl haltères supination', key: 'curl_halteres' },
-  { label: 'Squat barre guidée', key: 'squat_barre' },
-  { label: 'Presse à cuisses', key: 'presse_a_cuisses' },
-  { label: 'Fentes marchées haltères', key: 'fentes_halteres' },
-  { label: 'Hip Thrust', key: 'hip_thrust' },
-  { label: 'Leg curl', key: 'leg_curl' },
-  { label: 'Mollets', key: 'mollets' },
+  { label: 'Développé couché barre - PUSH', key: 'developpe_couche_barre' },
+  { label: 'Développé incliné haltères - PUSH', key: 'developpe_incline_halteres' },
+  { label: 'Développé militaire barre - PUSH', key: 'developpe_militaire_barre' },
+  { label: 'Chest press machine - PUSH', key: 'chest_press_machine' },
+  { label: 'Dips assistés - PUSH', key: 'dips_assistes' },
+  { label: 'Extensions triceps poulie - PUSH', key: 'extensions_triceps_poulie' },
+  { label: 'Élévations latérales haltères - PUSH', key: 'elevations_laterales_halteres' },
+  { label: 'Tractions assistées - PULL', key: 'tractions_assistees' },
+  { label: 'Rowing barre - PULL', key: 'rowing_barre' },
+  { label: 'Tirage vertical - PULL', key: 'tirage_vertical_poulie' },
+  { label: 'Soulevé de terre - PULL', key: 'souleve_de_terre' },
+  { label: 'Curl barre EZ - PULL', key: 'curl_barre' },
+  { label: 'Curl haltères supination - PULL', key: 'curl_halteres' },
+  { label: 'Squat barre guidée - LEGS', key: 'squat_barre' },
+  { label: 'Presse à cuisses - LEGS', key: 'presse_a_cuisses' },
+  { label: 'Fentes marchées haltères - LEGS', key: 'fentes_halteres' },
+  { label: 'Hip Thrust - LEGS', key: 'hip_thrust' },
+  { label: 'Leg curl - LEGS', key: 'leg_curl' },
+  { label: 'Mollets - LEGS', key: 'mollets' },
 ]
 
 const saveWeight = async () => {
@@ -80,7 +80,7 @@ const isFormValid = computed(() => {
   <div class="sport-container w-10/12 mx-auto my-6 p-8 text-center overflow-x-auto">
     <h2>Enregistrer vos poids</h2>
 
-    <form>
+    <form @submit.prevent="saveWeight">
       <label>
         Exercice
         <select v-model="form.exercise_name">
@@ -94,7 +94,7 @@ const isFormValid = computed(() => {
         <input type="number" v-model="form.weight" step="0.5" />
       </label>
 
-      <button @click="saveWeight" :disabled="!isFormValid">Enregistrer</button>
+      <button type="submit" :disabled="!isFormValid">Enregistrer</button>
     </form>
 
     <h3>Historique des poids</h3>
@@ -128,6 +128,7 @@ const isFormValid = computed(() => {
   select {
     width: 100%;
   }
+
   .sport-container {
     max-width: 100vw;
     padding: 1rem;

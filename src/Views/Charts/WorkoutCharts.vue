@@ -104,24 +104,24 @@ const minValues = {
 }
 
 const maxValues = {
-  developpe_couche_barre: 50,
+  developpe_couche_barre: 75,
   developpe_incline_halteres: 25,
   developpe_militaire_barre: 50,
   chest_press_machine: 50,
-  dips_assistes: 50,
+  dips_assistes: 60,
   extensions_triceps_poulie: 30,
   elevations_laterales_halteres: 20,
-  tractions_assistees: 50,
+  tractions_assistees: 60,
   rowing_barre: 60,
   tirage_vertical_poulie: 50,
   curl_barre: 50,
-  curl_halteres: 40,
+  curl_halteres: 15,
   squat_barre: 100,
   souleve_de_terre: 100,
   presse_a_cuisses: 140,
   fentes_halteres: 60,
   leg_curl: 80,
-  mollets: 80,
+  mollets: 30,
 }
 
 const filteredCharts = computed(() =>
@@ -168,10 +168,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div
-    class="my-6 mx-auto max-w-6xl p-8 rounded-2xl"
-    style="box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08)"
-  >
+  <div class="my-6 mx-auto max-w-6xl p-8 rounded-2xl" style="box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08)">
     <div class="charts-title flex justify-between items-center mb-4">
       <h2>Progression des exercices</h2>
       <button @click="selectedGroup = 'PUSH'">PUSH</button>
@@ -180,17 +177,12 @@ onMounted(async () => {
     </div>
 
     <div class="charts-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <div
-        v-for="chart in filteredCharts"
-        :key="chart.key"
-        class="bg-[var(--color-secondary)] rounded-2xl p-4"
-        style="
+      <div v-for="chart in filteredCharts" :key="chart.key" class="bg-[var(--color-secondary)] rounded-2xl p-4" style="
           box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
           transition:
             transform 0.2s ease,
             box-shadow 0.2s ease;
-        "
-      >
+        ">
         <Line :data="chart.data" :options="chart.options" />
       </div>
     </div>
