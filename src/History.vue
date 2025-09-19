@@ -44,10 +44,7 @@ const formattedDate = date.toLocaleDateString('fr-FR', {
 </script>
 
 <template>
-  <div
-    class="bg-[var(--color-surface)] p-5 rounded-2xl"
-    style="box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08)"
-  >
+  <div class="bg-[var(--color-surface)] p-5 rounded-2xl" style="box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08)">
     <div class="flex justify-center items-center mb-4 w-full">
       <p>Date actuelle : {{ formattedDate }}</p>
     </div>
@@ -69,6 +66,7 @@ const formattedDate = date.toLocaleDateString('fr-FR', {
             <th>Cardio</th>
             <th>Km</th>
             <th>Type de cardio</th>
+            <th>Abdos</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -99,21 +97,11 @@ const formattedDate = date.toLocaleDateString('fr-FR', {
               <span v-else>{{ entry.pas }}</span>
             </td>
             <td>
-              <input
-                v-if="editingId === entry.id"
-                v-model="editedEntry.eau"
-                type="number"
-                step="0.1"
-              />
+              <input v-if="editingId === entry.id" v-model="editedEntry.eau" type="number" step="0.1" />
               <span v-else>{{ entry.eau }}</span>
             </td>
             <td>
-              <input
-                v-if="editingId === entry.id"
-                v-model="editedEntry.poids"
-                type="number"
-                step="0.01"
-              />
+              <input v-if="editingId === entry.id" v-model="editedEntry.poids" type="number" step="0.01" />
               <span v-else>{{ entry.poids }}</span>
             </td>
             <td>
@@ -139,6 +127,12 @@ const formattedDate = date.toLocaleDateString('fr-FR', {
             <td>
               <input v-if="editingId === entry.id" v-model="editedEntry.typeof_cardio" />
               <span v-else>{{ entry.typeof_cardio || '-' }}</span>
+            </td>
+            <td>
+              <input v-if="editingId === entry.id" type="checkbox" v-model="editedEntry.abdos" />
+              <span v-else :class="entry.abdos ? 'badge badge-green' : 'badge badge-red'">
+                {{ entry.abdos ? 'Oui' : 'Non' }}
+              </span>
             </td>
             <td>
               <div class="button-group" v-if="editingId === entry.id">
