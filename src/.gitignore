@@ -1,1 +1,13 @@
+# Ignorer les fichiers de log
+*.log
+
+# Ignorer les dossiers node_modules et dist
+node_modules/
+dist/
+
+# Ignorer les fichiers de configuration système
+.DS_Store
+Thumbs.db
+
+# Ignorer les fichiers d’environnement
 .env
