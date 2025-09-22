@@ -7,7 +7,8 @@ const store = useDailyStore()
 const editingId = ref(null)
 const editedEntry = ref({})
 const toast = useToast()
-
+const password = import.meta.env.VITE_PASSWORD
+const passwordCheck = ref('')
 onMounted(() => {
   store.fetchDaily()
 })
@@ -47,6 +48,12 @@ const formattedDate = date.toLocaleDateString('fr-FR', {
   <div class="bg-[var(--color-surface)] p-5 rounded-2xl" style="box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08)">
     <div class="flex justify-center items-center mb-4 w-full">
       <p>Date actuelle : {{ formattedDate }}</p>
+    </div>
+
+    <div class="flex items-center justify-center gap-3 mb-3">
+      <input type="password" v-model="passwordCheck" placeholder="Mot de passe"
+        class="p-2 border border-gray-300 rounded" />
+      <span v-if="passwordCheck !== password" class="text-red-500">Mot de passe incorrect</span>
     </div>
 
     <div class="overflow-x-auto">
@@ -134,7 +141,7 @@ const formattedDate = date.toLocaleDateString('fr-FR', {
                 {{ entry.abdos ? 'Oui' : 'Non' }}
               </span>
             </td>
-            <td>
+            <td v-if="password === passwordCheck">
               <div class="button-group" v-if="editingId === entry.id">
                 <button class="btn btn-save" @click="saveEdit">💾 Sauvegarder</button>
                 <button class="btn btn-cancel" @click="cancelEdit">❌ Annuler</button>

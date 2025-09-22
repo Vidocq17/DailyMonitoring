@@ -7,6 +7,8 @@ const store = useDailyStore()
 const sportOptions = ['Push', 'Pull', 'Legs', 'Full Body', 'Cardio']
 const cardioOptions = ['Course', 'Marche inclinée', 'Marche']
 const toast = useToast()
+const password = import.meta.env.VITE_PASSWORD
+const passwordCheck = ref(false)
 
 const form = ref({
   date_du_jour: new Date().toISOString().split('T')[0],
@@ -62,6 +64,7 @@ watch(
 
 const isFormValid = computed(() => {
   const requiredFieldsFilled =
+    passwordCheck.value === password &&
     form.value.kcal !== '' &&
     form.value.glucides !== '' &&
     form.value.lipides !== '' &&
@@ -85,6 +88,12 @@ const isFormValid = computed(() => {
     <div class="bg-[var(--color-light)] p-8 rounded-2xl w-full max-w-10/12 flex flex-col items-center"
       style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1)">
       <div class="daily-form-data">
+
+        <div class="flex items-center justify-center gap-3 mb-3">
+          <input type="password" v-model="passwordCheck" placeholder="Mot de passe"
+            class="p-2 border border-gray-300 rounded" />
+          <span v-if="passwordCheck !== password" class="text-red-500">Mot de passe incorrect</span>
+        </div>
 
         <section class="border border-blue-700 rounded-2xl p-4 grid grid-col-1 md:grid-cols-3 m-auto gap-[2rem] mb-5">
           <div class="flex flex-col items-center my-3 mx-0">

@@ -5,6 +5,8 @@ import { useToast } from 'vue-toastification'
 
 const store = useWorkoutStore()
 const toast = useToast()
+const password = import.meta.env.VITE_PASSWORD
+const passwordCheck = ref(false)
 
 const form = ref({
   exercise_name: '',
@@ -72,13 +74,19 @@ onMounted(() => {
 })
 
 const isFormValid = computed(() => {
-  return form.value.exercise_name !== '' && form.value.weight !== ''
+  return form.value.exercise_name !== '' && form.value.weight !== '' && passwordCheck.value === password
 })
 </script>
 
 <template>
   <div class="sport-container w-10/12 mx-auto my-6 p-8 text-center overflow-x-auto">
     <h2>Enregistrer vos poids</h2>
+
+    <div class="flex items-center justify-center gap-3 mb-3">
+      <input type="password" v-model="passwordCheck" placeholder="Mot de passe"
+        class="p-2 border border-gray-300 rounded" />
+      <span v-if="passwordCheck !== password" class="text-red-500">Mot de passe incorrect</span>
+    </div>
 
     <form @submit.prevent="saveWeight">
       <label>
