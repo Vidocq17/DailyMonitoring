@@ -2,13 +2,8 @@
   <div id="app">
     <Header v-if="$route.name !== 'Home'" />
     <RouterView v-slot="{ Component }">
-      <div
-        v-motion
-        :initial="{ opacity: 0, x: 50 }"
-        :enter="{ opacity: 1, x: 0 }"
-        :leave="{ opacity: 0, x: -50 }"
-        transition="{ duration: 0.4 }"
-      >
+      <div v-motion :initial="{ opacity: 0, x: 50 }" :enter="{ opacity: 1, x: 0 }" :leave="{ opacity: 0, x: -50 }"
+        transition="{ duration: 0.4 }">
         <component :is="Component" />
       </div>
     </RouterView>
@@ -23,6 +18,7 @@ import Header from './components/Header.vue'
 // TODO : Notifications - FAIT
 // TODO : Passer en Typescript
 // TODO : Framer motion - FAIT
+// TODO : Refaire le darkmodeButton avec le store en parenthèse et corriger les erreurs
 // TODO : Filtres sur l'historique
 // TODO : Améliorer le design
 // TODO : Barre de progression vers l’objectif de poids => Knob primevue
