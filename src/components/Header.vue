@@ -22,6 +22,7 @@ import DarkModeButton from './DarkModeButton.vue'
   header {
     justify-content: space-around;
   }
+
   nav {
     width: 100%;
     justify-content: space-around;
