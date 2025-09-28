@@ -31,8 +31,9 @@ const exercises = [
   'Soulevé de terre - LEGS',
   'Presse à cuisses - LEGS',
   // 'Fentes marchées haltères - LEGS',
-  'Hip Thrust - LEGS',
+  // 'Hip Thrust - LEGS',
   'Leg curl - LEGS',
+  'Leg extansion - LEGS',
   'Mollets - LEGS',
 ]
 
@@ -42,22 +43,25 @@ const labelToKey = [
   { label: 'Développé militaire barre - PUSH', key: 'developpe_militaire_barre' },
   { label: 'Chest press machine - PUSH', key: 'chest_press_machine' },
   { label: 'Dips assistés - PUSH', key: 'dips_assistes' },
-  // { label: 'Extensions triceps poulie - PUSH', key: 'extensions_triceps_poulie' },
   { label: 'Élévations latérales haltères - PUSH', key: 'elevations_laterales_halteres' },
+
   { label: 'Tractions assistées - PULL', key: 'tractions_assistees' },
   { label: 'Rowing barre - PULL', key: 'rowing_barre' },
   { label: 'Tirage vertical - PULL', key: 'tirage_vertical_poulie' },
   { label: 'Curl barre EZ - PULL', key: 'curl_barre' },
   { label: 'Curl haltères supination - PULL', key: 'curl_halteres' },
   { label: 'Shrug haltères - PULL', key: 'shrug_halteres' },
+
   { label: 'Squat barre guidée - LEGS', key: 'squat_barre' },
   { label: 'Soulevé de terre - LEGS', key: 'souleve_de_terre' },
   { label: 'Presse à cuisses - LEGS', key: 'presse_a_cuisses' },
-  // { label: 'Fentes marchées haltères - LEGS', key: 'fentes_halteres' },
-  { label: 'Hip Thrust - LEGS', key: 'hip_thrust' },
   { label: 'Leg curl - LEGS', key: 'leg_curl' },
+  { label: 'Leg extansion - LEGS', key: 'leg_extansion' },
   { label: 'Mollets - LEGS', key: 'mollets' },
 ]
+// { label: 'Extensions triceps poulie - PUSH', key: 'extensions_triceps_poulie' },
+// { label: 'Fentes marchées haltères - LEGS', key: 'fentes_halteres' },
+// { label: 'Hip Thrust - LEGS', key: 'hip_thrust' },
 
 const saveWeight = async () => {
   if (!form.value.exercise_name || !form.value.weight) {

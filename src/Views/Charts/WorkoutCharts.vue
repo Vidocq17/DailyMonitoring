@@ -34,13 +34,14 @@ const groups = {
     'tirage_vertical_poulie',
     'curl_barre',
     'curl_halteres',
+    'shrug_halteres'
   ],
   LEGS: [
     'squat_barre',
     'souleve_de_terre',
     'presse_a_cuisses',
-    'fentes_halteres',
     'leg_curl',
+    'leg_extansion',
     'mollets',
   ],
 }
