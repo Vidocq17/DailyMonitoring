@@ -48,38 +48,24 @@ const groups = {
 
 const exercises = [
   { key: 'developpe_couche_barre', label: 'Développé couché barre', color: 'rgb(255, 99, 132)' },
-  {
-    key: 'developpe_incline_halteres',
-    label: 'Développé incliné haltères',
-    color: 'rgb(75, 192, 192)',
-  },
-  {
-    key: 'developpe_militaire_barre',
-    label: 'Développé militaire barre',
-    color: 'rgb(255, 159, 64)',
-  },
+  { key: 'developpe_incline_halteres', label: 'Développé incliné haltères', color: 'rgb(75, 192, 192)' },
+  { key: 'developpe_militaire_barre', label: 'Développé militaire barre', color: 'rgb(255, 159, 64)' },
   { key: 'chest_press_machine', label: 'Chest press machine', color: 'rgb(153, 102, 255)' },
   { key: 'dips_assistes', label: 'Dips assistés', color: 'rgb(54, 162, 235)' },
-  {
-    key: 'extensions_triceps_poulie',
-    label: 'Extensions triceps poulie',
-    color: 'rgb(201, 203, 207)',
-  },
-  {
-    key: 'elevations_laterales_halteres',
-    label: 'Élévations latérales haltères',
-    color: 'rgb(255, 205, 86)',
-  },
+  { key: 'elevations_laterales_halteres', label: 'Élévations latérales haltères', color: 'rgb(255, 205, 86)' },
+
   { key: 'tractions_assistees', label: 'Tractions assistées', color: 'rgb(100, 150, 250)' },
   { key: 'rowing_barre', label: 'Rowing barre', color: 'rgb(200, 100, 150)' },
   { key: 'tirage_vertical_poulie', label: 'Tirage vertical poulie', color: 'rgb(150, 200, 100)' },
-  { key: 'curl_barre', label: 'Curl barre supination', color: 'rgb(50, 250, 150)' },
-  { key: 'curl_halteres', label: 'Curl haltères', color: 'rgb(250, 150, 50)' },
+  { key: 'curl_barre', label: 'Curl barre EZ', color: 'rgb(50, 250, 150)' },
+  { key: 'curl_halteres', label: 'Curl haltères supination', color: 'rgb(250, 150, 50)' },
+  { key: 'shrug_halteres', label: 'Shrug haltères', color: 'rgb(250, 200, 100)' },
+
   { key: 'squat_barre', label: 'Squat barre guidée', color: 'rgb(150, 50, 250)' },
   { key: 'souleve_de_terre', label: 'Soulevé de terre', color: 'rgb(150, 50, 250)' },
   { key: 'presse_a_cuisses', label: 'Presse à cuisses', color: 'rgb(100, 250, 50)' },
-  { key: 'fentes_halteres', label: 'Fentes haltères', color: 'rgb(250, 50, 100)' },
   { key: 'leg_curl', label: 'Leg curl', color: 'rgb(150, 250, 200)' },
+  { key: 'leg_extansion', label: 'Leg extansion', color: 'rgb(250, 100, 200)' },
   { key: 'mollets', label: 'Mollets', color: 'rgb(20, 50, 150)' },
 ]
 
