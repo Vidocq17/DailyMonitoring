@@ -48,7 +48,6 @@ const resetForm = () => {
 
 const saveEntry = async () => {
   await store.addDaily({ ...form.value })
-  compareWithLastWeight()
   toast.success('Entrée enregistrée ✅')
   resetForm()
   window.alert('Entrée enregistrée avec succès !')
@@ -57,9 +56,6 @@ const saveEntry = async () => {
 
 watch(
   () => form.value.poids,
-  () => {
-    compareWithLastWeight()
-  },
 )
 
 const isFormValid = computed(() => {

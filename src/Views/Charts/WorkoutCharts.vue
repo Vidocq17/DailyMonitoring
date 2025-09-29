@@ -75,18 +75,20 @@ const minValues = {
   developpe_militaire_barre: 10,
   chest_press_machine: 10,
   dips_assistes: 0,
-  extensions_triceps_poulie: 5,
   elevations_laterales_halteres: 2.5,
+
   tractions_assistees: 0,
   rowing_barre: 20,
   tirage_vertical_poulie: 20,
   curl_barre: 10,
   curl_halteres: 5,
+  shrug_halteres: 10,
+
   squat_barre: 20,
   souleve_de_terre: 40,
   presse_a_cuisses: 60,
-  fentes_halteres: 0,
   leg_curl: 10,
+  leg_extansion: 10,
   mollets: 0,
 }
 
@@ -96,18 +98,20 @@ const maxValues = {
   developpe_militaire_barre: 50,
   chest_press_machine: 50,
   dips_assistes: 60,
-  extensions_triceps_poulie: 30,
   elevations_laterales_halteres: 20,
+
   tractions_assistees: 60,
   rowing_barre: 60,
   tirage_vertical_poulie: 50,
   curl_barre: 50,
   curl_halteres: 15,
+  shrug_halteres: 30,
+
   squat_barre: 100,
   souleve_de_terre: 100,
   presse_a_cuisses: 140,
-  fentes_halteres: 60,
   leg_curl: 80,
+  leg_extansion: 80,
   mollets: 30,
 }
 
