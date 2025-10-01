@@ -22,4 +22,5 @@ import Header from './components/Header.vue'
 // TODO : Filtres sur l'historique
 // TODO : Améliorer le design
 // TODO : Barre de progression vers l’objectif de poids => Knob primevue
+// TODO : Passer en offline pour les charts
 </script>

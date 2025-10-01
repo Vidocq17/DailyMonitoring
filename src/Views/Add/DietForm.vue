@@ -67,14 +67,14 @@ const isFormValid = computed(() => {
     form.value.proteines !== '' &&
     form.value.pas !== '' &&
     form.value.eau !== '' &&
-    form.value.poids !== '' &&
-    form.value.km !== ''
+    form.value.poids !== ''
 
-  const sportValid = !form.value.sport || (form.value.sport && form.value.seance !== '')
-  const cardioValid = !form.value.cardio || (form.value.cardio && form.value.typeof_cardio !== '')
-  const abdosValid = form.value.abdos !== '' // Abdos is optional, so always valid
+  // const sportValid = !form.value.sport || (form.value.sport && form.value.seance !== '')
+  // const cardioValid = !form.value.cardio || (form.value.cardio && form.value.typeof_cardio !== '')
+  // const abdosValid = form.value.abdos !== '' // Abdos is optional, so always valid
 
-  return requiredFieldsFilled && sportValid && cardioValid && abdosValid
+  // return requiredFieldsFilled && sportValid && cardioValid && abdosValid
+  return requiredFieldsFilled
 })
 </script>
 
@@ -154,7 +154,7 @@ const isFormValid = computed(() => {
             <label>
               Séance (optionnel)
               <select v-model="form.seance" :disabled="!form.sport">
-                <option value="" disabled>Sélectionner une séance</option>
+                <option value="" disabled>Sélectionner</option>
                 <option v-for="option in sportOptions" :key="option" :value="option">
                   {{ option }}
                 </option>
@@ -187,7 +187,7 @@ const isFormValid = computed(() => {
             <label>
               Type de cardio
               <select v-model="form.typeof_cardio" :disabled="!form.cardio">
-                <option value="" disabled>Sélectionner un type de cardio</option>
+                <option value="" disabled>Sélectionner</option>
                 <option v-for="option in cardioOptions" :key="option" :value="option">
                   {{ option }}
                 </option>
