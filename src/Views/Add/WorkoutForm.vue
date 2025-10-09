@@ -56,7 +56,7 @@ const labelToKey = [
   { label: 'Soulevé de terre - LEGS', key: 'souleve_de_terre' },
   { label: 'Presse à cuisses - LEGS', key: 'presse_a_cuisses' },
   { label: 'Leg curl - LEGS', key: 'leg_curl' },
-  { label: 'Leg extansion - LEGS', key: 'leg_extansion' },
+  { label: 'Leg extansion - LEGS', key: 'leg_extension' },
   { label: 'Mollets - LEGS', key: 'mollets' },
 ]
 // { label: 'Extensions triceps poulie - PUSH', key: 'extensions_triceps_poulie' },

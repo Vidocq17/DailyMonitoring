@@ -29,5 +29,15 @@ export const useWorkoutStore = defineStore('workout', {
         this.entries.push(...data)
       }
     },
+    getBestWeight(exerciseKey) {
+      const weights = this.entries
+        .filter((e) => e.exercise_name === exerciseKey)
+        .map((e) => e.weight)
+      if (exerciseKey !== 'dips_assistes' || exerciseKey !== 'tractions_assistees') {
+        return weights.length ? Math.max(...weights) : null
+      } else {
+        return weights.length ? Math.min(...weights) : null
+      }
+    },
   },
 })
