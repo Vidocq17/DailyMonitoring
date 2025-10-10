@@ -12,6 +12,7 @@ import {
   PointElement,
 } from 'chart.js'
 import { Line } from 'vue-chartjs'
+import { getStandards } from '../composables/StrengthStandards'
 
 ChartJS.register(Title, Tooltip, Legend, LineElement, CategoryScale, LinearScale, PointElement)
 
@@ -129,6 +130,8 @@ const actualTotal = computed(() => (bestDeadlift.value + bestBenchPress.value + 
 const myRoadTo1000Lbs = computed(() => (1000 - kgToLbs(actualTotal.value)).toFixed(2));
 const goalLbsToKg = lbsToKg(1000)
 
+const strength = getStandards(90)
+
 onMounted(async () => {
   await store.fetchWeights()
   await store.getBestWeight()
@@ -203,6 +206,28 @@ onMounted(async () => {
         <span class="block text-sm text-gray-500">
           {{ goalLbsToKg - actualTotal }} kg restants
         </span>
+      </div>
+    </div>
+
+    <div class="flex flex-col items-center items-center mb-8">
+      <div>
+        <small class="text-xs text-gray-500 block mt-2">
+          Bench standard (débutant/intermédiaire/avancé) :
+          {{ strength.bench_press.beginner }} / {{ strength.bench_press.intermediate }} / {{
+            strength.bench_press.advanced }} kg
+        </small>
+      </div>
+      <div>
+        <small class="text-xs text-gray-500 block mt-2">
+          Squat standard (débutant/intermédiaire/avancé) :
+          {{ strength.squat.beginner }} / {{ strength.squat.intermediate }} / {{ strength.squat.advanced }} kg
+        </small>
+      </div>
+      <div>
+        <small class="text-xs text-gray-500 block mt-2">
+          Deadlift standard (débutant/intermédiaire/avancé) :
+          {{ strength.deadlift.beginner }} / {{ strength.deadlift.intermediate }} / {{ strength.deadlift.advanced }} kg
+        </small>
       </div>
     </div>
 
