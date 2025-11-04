@@ -198,13 +198,13 @@ onMounted(async () => {
       <div class="flex items-center gap-2">
         <strong>Objectif 453 kg (Développé couché + Squat + Soulevé de terre) :</strong>
         <span v-if="myRoadTo1000Lbs !== null">
-          Total actuel : {{ actualTotal }} kg
+          Total actuel : {{ Math.round(actualTotal) }} kg
         </span>
         <span v-else>
           Aucune donnée
         </span>
         <span class="block text-sm text-gray-500">
-          {{ goalLbsToKg - actualTotal }} kg restants
+          {{ Math.round(goalLbsToKg - actualTotal) }} kg restants
         </span>
       </div>
     </div>
