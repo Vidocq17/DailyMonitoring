@@ -94,23 +94,23 @@ const minValues = {
 }
 
 const maxValues = {
-  developpe_couche_barre: 75,
-  developpe_incline_halteres: 25,
+  developpe_couche_barre: 100,
+  developpe_incline_halteres: 30,
   developpe_militaire_barre: 50,
-  chest_press_machine: 50,
+  chest_press_machine: 60,
   dips_assistes: 60,
   elevations_laterales_halteres: 20,
 
   tractions_assistees: 60,
-  rowing_barre: 60,
-  tirage_vertical_poulie: 50,
+  rowing_barre: 80,
+  tirage_vertical_poulie: 60,
   curl_barre: 50,
   curl_halteres: 15,
   shrug_halteres: 30,
 
   squat_barre: 100,
   souleve_de_terre: 100,
-  presse_a_cuisses: 140,
+  presse_a_cuisses: 160,
   leg_curl: 80,
   leg_extension: 80,
   mollets: 30,
