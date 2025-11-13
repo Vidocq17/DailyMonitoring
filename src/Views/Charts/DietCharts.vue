@@ -26,17 +26,17 @@ const minValues = {
   proteines: 100,
   lipides: 40,
   eau: 1,
-  pas: 0,
+  pas: 3000,
 }
 
 const maxValues = {
-  poids: 92,
+  poids: 91,
   kcal: 2600,
   glucides: 300,
   proteines: 200,
-  lipides: 100,
-  eau: 5,
-  pas: 30000,
+  lipides: 160,
+  eau: 4,
+  pas: 21000,
 }
 
 const chartConfig = [
@@ -91,25 +91,17 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div
-    class="my-6 mx-auto max-w-6xl p-8 rounded-2xl"
-    style="box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08)"
-  >
+  <div class="my-6 mx-auto max-w-6xl p-8 rounded-2xl" style="box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08)">
     <div class="flex justify-center items-center">
       <h2>Évolution quotidienne</h2>
     </div>
     <div class="charts-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <div
-        v-for="chart in chartsData"
-        :key="chart.key"
-        class="bg-[var(--color-secondary)] rounded-2xl p-4"
-        style="
+      <div v-for="chart in chartsData" :key="chart.key" class="bg-[var(--color-secondary)] rounded-2xl p-4" style="
           box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
           transition:
             transform 0.2s ease,
             box-shadow 0.2s ease;
-        "
-      >
+        ">
         <Line :data="chart.data" :options="chart.options" />
       </div>
     </div>
