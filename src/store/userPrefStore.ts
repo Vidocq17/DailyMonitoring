@@ -1,32 +1,30 @@
 import { defineStore } from 'pinia'
-import { ref, watch } from 'vue'
+import { shallowRef, watch, type ShallowRef } from 'vue'
 
-function usePersistentRef(key, defaultValue) {
+function usePersistentRef<T>(key: string, defaultValue: T): ShallowRef<T> {
   const storedValue = localStorage.getItem(key)
-  let parsed
+  let parsed: T
 
   try {
-    parsed = storedValue !== null ? JSON.parse(storedValue) : defaultValue
+    parsed = storedValue ? (JSON.parse(storedValue) as T) : defaultValue
   } catch {
     parsed = defaultValue
   }
 
-  const state = ref(parsed)
+  const state = shallowRef<T>(parsed)
 
   watch(
     state,
     (newValue) => {
       localStorage.setItem(key, JSON.stringify(newValue))
     },
-    { deep: true },
   )
 
   return state
 }
 
-// Le store Pinia
 export const useUserPrefStore = defineStore('userPref', () => {
-  const darkmode = usePersistentRef('darkmode', false)
+  const darkmode = usePersistentRef<boolean>('darkmode', false)
 
   return {
     darkmode,

@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, ref, computed } from 'vue'
-import { useWorkoutStore } from '@/store/useWorkoutStore'
+import { useWorkoutStore } from '@/store/useWorkoutStore.ts'
 import {
   Chart as ChartJS,
   Title,

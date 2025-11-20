@@ -32,8 +32,10 @@
     "autoprefixer": "^9.8.8",
     "postcss": "^7.0.39",
     "prettier": "3.6.2",
+    "typescript": "^5.9.3",
     "vite": "^7.0.6",
     "vite-plugin-pwa": "^1.0.3",
-    "vite-plugin-vue-devtools": "^8.0.0"
+    "vite-plugin-vue-devtools": "^8.0.0",
+    "vue-tsc": "^3.1.4"
   }
 }

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, watch } from 'vue'
-import { useUserPrefStore } from '@/store/userPrefStore'
-import Moon from '@/assets/svg/moon.svg'
-import Sun from '@/assets/svg/sun.svg'
+import { useUserPrefStore } from '../store/userPrefStore'
+import Moon from '../assets/svg/moon.svg'
+import Sun from '../assets/svg/sun.svg'
 
 const userPref = useUserPrefStore()
 
