@@ -33,9 +33,11 @@ const groups = {
     'tractions_assistees',
     'rowing_barre',
     'tirage_vertical_poulie',
+    'reverse_cable',
+    'shrug_halteres',
     'curl_barre',
     'curl_halteres',
-    'shrug_halteres'
+    'grip_halteres',
   ],
   LEGS: [
     'squat_barre',
@@ -43,6 +45,8 @@ const groups = {
     'presse_a_cuisses',
     'leg_curl',
     'leg_extension',
+    'leg_abduction',
+    'leg_adduction',
     'mollets',
   ],
 }
@@ -58,15 +62,19 @@ const exercises = [
   { key: 'tractions_assistees', label: 'Tractions assistées', color: 'rgb(100, 150, 250)' },
   { key: 'rowing_barre', label: 'Rowing barre', color: 'rgb(200, 100, 150)' },
   { key: 'tirage_vertical_poulie', label: 'Tirage vertical poulie', color: 'rgb(150, 200, 100)' },
+  { key: 'reverse_cable', label: 'Reverse cable', color: 'rgb(100, 200, 250)' },
+  { key: 'shrug_halteres', label: 'Shrug haltères', color: 'rgb(250, 200, 100)' },
   { key: 'curl_barre', label: 'Curl barre EZ', color: 'rgb(50, 250, 150)' },
   { key: 'curl_halteres', label: 'Curl haltères supination', color: 'rgb(250, 150, 50)' },
-  { key: 'shrug_halteres', label: 'Shrug haltères', color: 'rgb(250, 200, 100)' },
+  { key: 'grip_halteres', label: 'Grip haltères', color: 'rgb(150, 250, 50)' },
 
   { key: 'squat_barre', label: 'Squat barre guidée', color: 'rgb(150, 50, 250)' },
   { key: 'souleve_de_terre', label: 'Soulevé de terre', color: 'rgb(150, 50, 250)' },
   { key: 'presse_a_cuisses', label: 'Presse à cuisses', color: 'rgb(100, 250, 50)' },
   { key: 'leg_curl', label: 'Leg curl', color: 'rgb(150, 250, 200)' },
-  { key: 'leg_extension', label: 'Leg extansion', color: 'rgb(250, 100, 200)' },
+  { key: 'leg_extension', label: 'Leg extension', color: 'rgb(250, 100, 200)' },
+  { key: 'leg_abduction', label: 'Leg abduction', color: 'rgb(100, 250, 200)' },
+  { key: 'leg_adduction', label: 'Leg adduction', color: 'rgb(200, 100, 250)' },
   { key: 'mollets', label: 'Mollets', color: 'rgb(20, 50, 150)' },
 ]
 
@@ -81,15 +89,19 @@ const minValues = {
   tractions_assistees: 0,
   rowing_barre: 20,
   tirage_vertical_poulie: 20,
+  reverse_cable: 5,
+  shrug_halteres: 10,
   curl_barre: 10,
   curl_halteres: 5,
-  shrug_halteres: 10,
+  grip_halteres: 5,
 
   squat_barre: 20,
   souleve_de_terre: 40,
   presse_a_cuisses: 60,
   leg_curl: 10,
   leg_extension: 10,
+  leg_abduction: 10,
+  leg_adduction: 10,
   mollets: 0,
 }
 
@@ -104,33 +116,27 @@ const maxValues = {
   tractions_assistees: 60,
   rowing_barre: 80,
   tirage_vertical_poulie: 60,
+  reverse_cable: 40,
+  shrug_halteres: 30,
   curl_barre: 50,
   curl_halteres: 15,
-  shrug_halteres: 30,
+  grip_halteres: 30,
 
   squat_barre: 100,
   souleve_de_terre: 100,
   presse_a_cuisses: 160,
   leg_curl: 80,
   leg_extension: 80,
+  leg_abduction: 80,
+  leg_adduction: 80,
   mollets: 30,
 }
+
+const groupTabs = ['PUSH', 'PULL', 'LEGS']
 
 const filteredCharts = computed(() =>
   chartsData.value.filter((chart) => groups[selectedGroup.value].includes(chart.key)),
 )
-
-const kgToLbs = (kg) => kg * 2.20462
-const lbsToKg = (lbs) => (lbs / 2.20462).toFixed(2)
-
-const bestDeadlift = computed(() => store.getBestWeight('souleve_de_terre') || 0)
-const bestBenchPress = computed(() => store.getBestWeight('developpe_couche_barre') || 0)
-const bestSquat = computed(() => store.getBestWeight('squat_barre') || 0)
-const actualTotal = computed(() => (bestDeadlift.value + bestBenchPress.value + bestSquat.value))
-const myRoadTo1000Lbs = computed(() => (1000 - kgToLbs(actualTotal.value)).toFixed(2));
-const goalLbsToKg = lbsToKg(1000)
-
-const strength = getStandards(90)
 
 onMounted(async () => {
   await store.fetchWeights()
@@ -143,7 +149,12 @@ onMounted(async () => {
       key: ex.key,
       label: ex.label,
       data: {
-        labels: dataEntries.map((e) => new Date(e.created_at).toLocaleDateString()),
+        labels: dataEntries.map((e) =>
+          new Date(e.created_at).toLocaleDateString('fr-FR', {
+            day: '2-digit',
+            month: '2-digit',
+          }),
+        ),
         datasets: [
           {
             label: ex.label,
@@ -158,7 +169,9 @@ onMounted(async () => {
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        plugins: { legend: { display: true } },
+        plugins: {
+          legend: { display: false },
+        },
         scales: {
           y: {
             min: minValues[ex.key] || 0,
@@ -173,79 +186,62 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="my-6 mx-auto max-w-6xl p-8 rounded-2xl" style="box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08)">
-    <div class="charts-title flex justify-between items-center mb-4">
-      <h2 class="mt-2">Progression des exercices</h2>
-      <button @click="selectedGroup = 'PUSH'">PUSH</button>
-      <button @click="selectedGroup = 'PULL'">PULL</button>
-      <button @click="selectedGroup = 'LEGS'">LEGS</button>
-    </div>
-
-    <div class="my-8 text-center">
-      <div class="flex items-center gap-2">
-        <strong>Objectif 1000 Lbs (Développé couché + Squat + Soulevé de terre) :</strong>
-        <span v-if="myRoadTo1000Lbs !== null">
-          Total actuel : {{ kgToLbs(actualTotal).toFixed(2) }} Lbs
-        </span>
-        <span v-else>
-          Aucune donnée
-        </span>
-        <span class="block text-sm text-gray-500">
-          {{ myRoadTo1000Lbs }} Lbs restants
-        </span>
+  <div
+    class="my-6 mx-auto max-w-6xl p-6 md:p-8 rounded-2xl bg-[var(--color-light)] border border-[var(--color-border)]"
+    style="box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08)"
+  >
+    <!-- Header -->
+    <div class="charts-title flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-6">
+      <div>
+        <h2 class="text-2xl font-semibold">Progression des exercices</h2>
+        <p class="text-sm text-[var(--color-muted)]">
+          Visualise l’évolution de tes charges par groupe musculaire.
+        </p>
       </div>
-      <br />
-      <div class="flex items-center gap-2">
-        <strong>Objectif 453 kg (Développé couché + Squat + Soulevé de terre) :</strong>
-        <span v-if="myRoadTo1000Lbs !== null">
-          Total actuel : {{ Math.round(actualTotal) }} kg
-        </span>
-        <span v-else>
-          Aucune donnée
-        </span>
-        <span class="block text-sm text-gray-500">
-          {{ Math.round(goalLbsToKg - actualTotal) }} kg restants
-        </span>
+
+      <!-- Onglets groupe -->
+      <div class="flex flex-wrap gap-2 justify-center md:justify-end">
+        <button
+          v-for="tab in groupTabs"
+          :key="tab"
+          type="button"
+          @click="selectedGroup = tab"
+          :class="[
+            'px-3 py-1.5 text-xs md:text-sm rounded-full border transition !w-auto',
+            selectedGroup === tab
+              ? 'btn-save border-transparent'
+              : 'btn-edit border-[var(--color-border)]',
+          ]"
+        >
+          {{ tab }}
+        </button>
       </div>
     </div>
 
-    <div class="flex flex-col items-center items-center mb-8">
-      <div>
-        <small class="text-xs text-gray-500 block mt-2">
-          Bench standard (débutant/intermédiaire/avancé) :
-          {{ strength.bench_press.beginner }} / {{ strength.bench_press.intermediate }} / {{
-            strength.bench_press.advanced }} kg
-        </small>
-      </div>
-      <div>
-        <small class="text-xs text-gray-500 block mt-2">
-          Squat standard (débutant/intermédiaire/avancé) :
-          {{ strength.squat.beginner }} / {{ strength.squat.intermediate }} / {{ strength.squat.advanced }} kg
-        </small>
-      </div>
-      <div>
-        <small class="text-xs text-gray-500 block mt-2">
-          Deadlift standard (débutant/intermédiaire/avancé) :
-          {{ strength.deadlift.beginner }} / {{ strength.deadlift.intermediate }} / {{ strength.deadlift.advanced }} kg
-        </small>
-      </div>
-    </div>
-
-    <div class="charts-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      <div v-for="chart in filteredCharts" :key="chart.key" class="bg-[var(--color-secondary)] rounded-2xl p-4" style="
+    <!-- Grille des charts -->
+    <div class="charts-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div
+        v-for="chart in filteredCharts"
+        :key="chart.key"
+        class="bg-[var(--color-surface)] rounded-2xl p-4 flex flex-col justify-between border border-[var(--color-border)]"
+        style="
           box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-          max-height: 200px;
+          min-height: 220px;
           transition:
             transform 0.2s ease,
             box-shadow 0.2s ease;
-        ">
-        <Line :data="chart.data" :options="chart.options" />
-        <div class="mt-5 text-center">
+        "
+      >
+        <div class="h-40">
+          <Line :data="chart.data" :options="chart.options" />
+        </div>
+
+        <div class="mt-4 text-center text-sm">
           <strong>Meilleure performance :</strong>
           <span v-if="store.getBestWeight(chart.key) !== null">
             {{ store.getBestWeight(chart.key) }} kg
           </span>
-          <span v-else>
+          <span v-else class="empty">
             Aucune donnée
           </span>
         </div>
@@ -258,12 +254,7 @@ onMounted(async () => {
 @media (max-width: 600px) {
   .charts-title {
     flex-direction: column;
-    align-items: center;
-  }
-
-  .charts-title button {
-    width: 100%;
-    margin: 5px 0;
+    align-items: flex-start;
   }
 }
 </style>
