@@ -1,20 +1,27 @@
-<script setup>
-import { ref, onMounted } from 'vue'
+<script setup lang="ts">
+import { ref, computed, onMounted } from 'vue'
 import { useDailyStore } from './store/useDailyStore'
 import { useToast } from 'vue-toastification'
 
 const store = useDailyStore()
-const editingId = ref(null)
-const editedEntry = ref({})
+const editingId = ref<number | null>(null)
+const editedEntry = ref<any>({})
 const toast = useToast()
 const password = import.meta.env.VITE_PASSWORD
 const passwordCheck = ref('')
+
+// --- FILTRES ---
+const fromDate = ref<string>('')         // début de période
+const toDate = ref<string>('')           // fin de période
+const onlySport = ref(false)             // ne garder que les jours avec sport
+const onlyCardio = ref(false)            // ne garder que les jours avec cardio
+const onlyAbdos = ref(false)             // ne garder que les jours avec abdos
 
 onMounted(() => {
   store.fetchDaily()
 })
 
-const startEdit = (entry) => {
+const startEdit = (entry: any) => {
   editingId.value = entry.id
   editedEntry.value = { ...entry }
 }
@@ -25,12 +32,13 @@ const cancelEdit = () => {
 }
 
 const saveEdit = async () => {
+  if (!editingId.value) return
   await store.updateDaily(editingId.value, editedEntry.value)
   editingId.value = null
   toast.success('Entrée mise à jour ✅')
 }
 
-const deleteDaily = async (id) => {
+const deleteDaily = async (id: number) => {
   if (confirm('Es-tu sûr de vouloir supprimer cette entrée ?')) {
     await store.deleteDaily(id)
     toast.success('Entrée supprimée ✅')
@@ -41,6 +49,37 @@ const formattedDate = new Date().toLocaleDateString('fr-FR', {
   year: 'numeric',
   month: '2-digit',
   day: '2-digit',
+})
+
+// Entries filtrées
+const filteredEntries = computed(() => {
+  return store.entries.filter((entry) => {
+    const entryDate = new Date(entry.date_du_jour)
+
+    // Filtre date début
+    if (fromDate.value) {
+      const from = new Date(fromDate.value)
+      if (entryDate < from) return false
+    }
+
+    // Filtre date fin (on inclut la fin)
+    if (toDate.value) {
+      const to = new Date(toDate.value)
+      to.setHours(23, 59, 59, 999)
+      if (entryDate > to) return false
+    }
+
+    // Filtre sport
+    if (onlySport.value && !entry.sport) return false
+
+    // Filtre cardio
+    if (onlyCardio.value && !entry.cardio) return false
+
+    // Filtre abdos
+    if (onlyAbdos.value && !entry.abdos) return false
+
+    return true
+  })
 })
 </script>
 
@@ -53,7 +92,9 @@ const formattedDate = new Date().toLocaleDateString('fr-FR', {
     <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-2">
       <div>
         <h2 class="text-2xl font-semibold">Historique quotidien</h2>
-        <p class="text-sm text-[var(--color-muted)]">Modifie ou supprime tes données passées.</p>
+        <p class="text-sm text-[var(--color-muted)]">
+          Modifie ou supprime tes données passées, et filtre ton historique.
+        </p>
       </div>
 
       <p class="text-sm bg-[var(--color-surface)] px-3 py-1 rounded-lg border border-[var(--color-border)]">
@@ -80,6 +121,43 @@ const formattedDate = new Date().toLocaleDateString('fr-FR', {
       </p>
     </div>
 
+    <!-- FILTRES -->
+    <section
+      class="mb-6 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl p-4 md:p-5"
+    >
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <!-- Dates -->
+        <div class="flex flex-wrap gap-3 items-end">
+          <div>
+            <label class="text-xs font-medium block mb-1">Du</label>
+            <input type="date" v-model="fromDate" />
+          </div>
+          <div>
+            <label class="text-xs font-medium block mb-1">Au</label>
+            <input type="date" v-model="toDate" />
+          </div>
+        </div>
+
+        <!-- Booléens -->
+        <div class="flex flex-wrap gap-3 justify-start md:justify-end text-sm">
+          <label class="flex items-center gap-1 cursor-pointer">
+            <input type="checkbox" v-model="onlySport" />
+            <span>Sport uniquement</span>
+          </label>
+
+          <label class="flex items-center gap-1 cursor-pointer">
+            <input type="checkbox" v-model="onlyCardio" />
+            <span>Cardio uniquement</span>
+          </label>
+
+          <label class="flex items-center gap-1 cursor-pointer">
+            <input type="checkbox" v-model="onlyAbdos" />
+            <span>Abdos uniquement</span>
+          </label>
+        </div>
+      </div>
+    </section>
+
     <!-- TABLE -->
     <div class="overflow-x-auto">
       <table class="daily-table w-full border-collapse min-w-[950px] bg-[var(--color-surface)] rounded-lg">
@@ -104,7 +182,7 @@ const formattedDate = new Date().toLocaleDateString('fr-FR', {
         </thead>
 
         <tbody>
-          <tr v-for="entry in store.entries" :key="entry.id">
+          <tr v-for="entry in filteredEntries" :key="entry.id">
             <!-- DATE -->
             <td>
               <input
