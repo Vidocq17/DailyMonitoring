@@ -5,7 +5,7 @@ import Add from '@/Views/Add.vue'
 import Homepage from '@/Views/Homepage.vue'
 import WorkoutStats from '@/Views/Charts/WorkoutCharts.vue'
 
-const routes = [
+const routes: RouteRecordRaw[] = [
   { path: '/', name: 'Home', component: Homepage },
   { path: '/add', component: Add },
   { path: '/history', component: History },

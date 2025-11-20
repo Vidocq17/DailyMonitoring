@@ -1,10 +1,19 @@
 <template>
   <div id="app">
     <Header v-if="$route.name !== 'Home'" />
-    <RouterView v-slot="{ Component }">
-      <div v-motion :initial="{ opacity: 0, x: 50 }" :enter="{ opacity: 1, x: 0 }" :leave="{ opacity: 0, x: -50 }"
-        transition="{ duration: 0.4 }">
-        <component :is="Component" />
+
+    <RouterView v-slot="slotProps">
+      <div
+        v-motion
+        :initial="{ opacity: 0, x: 50 }"
+        :enter="{ opacity: 1, x: 0 }"
+        :leave="{ opacity: 0, x: -50 }"
+        :transition="{ duration: 0.4 }"
+      >
+        <component
+          v-if="slotProps && slotProps.Component"
+          :is="slotProps.Component"
+        />
       </div>
     </RouterView>
   </div>
