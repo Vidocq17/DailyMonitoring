@@ -1,10 +1,33 @@
 import { defineStore } from 'pinia'
-import { supabase } from '../../supabaseClient'
-import type { WorkoutEntry, ExerciseKey } from '../types/index'
+import { supabase } from '../../supabaseClient'
+import type { WorkoutEntry, ExerciseKey } from '@/types'
+
+const WORKOUT_STORAGE_KEY = 'workout_entries_v1'
+
+function loadInitialWorkoutEntries(): WorkoutEntry[] {
+  if (typeof window === 'undefined') return []
+  const raw = localStorage.getItem(WORKOUT_STORAGE_KEY)
+  if (!raw) return []
+  try {
+    return JSON.parse(raw) as WorkoutEntry[]
+  } catch {
+    console.warn('Impossible de parser workout_entries_v1 depuis localStorage')
+    return []
+  }
+}
+
+function persistWorkoutEntries(entries: WorkoutEntry[]): void {
+  if (typeof window === 'undefined') return
+  try {
+    localStorage.setItem(WORKOUT_STORAGE_KEY, JSON.stringify(entries))
+  } catch (e) {
+    console.warn('Impossible de sauvegarder les workout entries en localStorage', e)
+  }
+}
 
 export const useWorkoutStore = defineStore('workout', {
   state: () => ({
-    entries: [] as WorkoutEntry[],
+    entries: loadInitialWorkoutEntries() as WorkoutEntry[],
   }),
 
   actions: {
@@ -15,11 +38,13 @@ export const useWorkoutStore = defineStore('workout', {
         .order('created_at', { ascending: true })
 
       if (error) {
-        console.error(error)
+        console.error('Erreur fetchWeights:', error)
+        // OFFLINE : on garde les données locales existantes
         return
       }
 
       this.entries = (data as WorkoutEntry[]) || []
+      persistWorkoutEntries(this.entries)
     },
 
     getExerciseWeights(exerciseKey: ExerciseKey): WorkoutEntry[] {
@@ -44,7 +69,8 @@ export const useWorkoutStore = defineStore('workout', {
         return
       }
 
-      await this.fetchWeights() // recharge les données proprement
+      await this.fetchWeights()
+      // fetchWeights appelle déjà persistWorkoutEntries
     },
 
     getBestWeight(exerciseKey: ExerciseKey): number | null {
@@ -54,7 +80,6 @@ export const useWorkoutStore = defineStore('workout', {
 
       if (!weights.length) return null
 
-      // Correction : ta condition était incorrecte (OR -> toujours vrai)
       if (exerciseKey !== 'dips_assistes' && exerciseKey !== 'tractions_assistees') {
         return Math.max(...weights)
       }

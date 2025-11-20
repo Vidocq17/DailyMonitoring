@@ -1,10 +1,34 @@
 import { defineStore } from 'pinia'
-import { supabase } from '../../supabaseClient'
-import type { DailyEntry } from  '../types/index'
+import { supabase } from '../../supabaseClient'
+import type { DailyEntry } from '@/types'
+
+const DAILY_STORAGE_KEY = 'daily_entries_v1'
+
+function loadInitialEntriesFromStorage(): DailyEntry[] {
+  if (typeof window === 'undefined') return []
+  const raw = localStorage.getItem(DAILY_STORAGE_KEY)
+  if (!raw) return []
+  try {
+    return JSON.parse(raw) as DailyEntry[]
+  } catch {
+    console.warn('Impossible de parser daily_entries_v1 depuis localStorage')
+    return []
+  }
+}
+
+function persistEntries(entries: DailyEntry[]): void {
+  if (typeof window === 'undefined') return
+  try {
+    localStorage.setItem(DAILY_STORAGE_KEY, JSON.stringify(entries))
+  } catch (e) {
+    console.warn('Impossible de sauvegarder les daily entries en localStorage', e)
+  }
+}
 
 export const useDailyStore = defineStore('daily', {
   state: () => ({
-    entries: [] as DailyEntry[],
+    // 🔥 au premier chargement, on essaie de charger depuis localStorage
+    entries: loadInitialEntriesFromStorage() as DailyEntry[],
   }),
 
   actions: {
@@ -16,10 +40,13 @@ export const useDailyStore = defineStore('daily', {
 
       if (error) {
         console.error(error)
+        // ⚠️ très important : on NE vide PAS entries
+        // -> si offline, on garde les données locales
         return
       }
 
       this.entries = (data as DailyEntry[]) || []
+      persistEntries(this.entries)
     },
 
     async addDaily(newEntry: Omit<DailyEntry, 'id'>): Promise<void> {
@@ -35,6 +62,7 @@ export const useDailyStore = defineStore('daily', {
 
       if (data && data.length > 0) {
         this.entries.push(data[0] as DailyEntry)
+        persistEntries(this.entries)
       }
     },
 
@@ -54,12 +82,16 @@ export const useDailyStore = defineStore('daily', {
         const index = this.entries.findIndex((e) => e.id === id)
         if (index !== -1) {
           this.entries[index] = data[0] as DailyEntry
+          persistEntries(this.entries)
         }
       }
     },
 
     async deleteDaily(id: number): Promise<void> {
-      const { error } = await supabase.from('daily_monitoring').delete().eq('id', id)
+      const { error } = await supabase
+        .from('daily_monitoring')
+        .delete()
+        .eq('id', id)
 
       if (error) {
         console.error('Erreur suppression :', error)
@@ -67,18 +99,18 @@ export const useDailyStore = defineStore('daily', {
       }
 
       this.entries = this.entries.filter((entry) => entry.id !== id)
+      persistEntries(this.entries)
     },
 
     getLastWeight(): number | null {
       if (!this.entries.length) return null
 
       return (
-        [...this.entries]
-          .sort(
-            (a, b) =>
-              new Date(b.date_du_jour).getTime() -
-              new Date(a.date_du_jour).getTime(),
-          )[0].poids ?? null
+        [...this.entries].sort(
+          (a, b) =>
+            new Date(b.date_du_jour).getTime() -
+            new Date(a.date_du_jour).getTime(),
+        )[0].poids ?? null
       )
     },
 
