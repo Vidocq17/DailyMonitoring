@@ -1,6 +1,5 @@
-// DarkModeButton.vue
 <script setup lang="ts">
-import { computed, watch, onMounted } from 'vue'
+import { computed, watch } from 'vue'
 import { useUserPrefStore } from '@/store/userPrefStore'
 import Moon from '@/assets/svg/moon.svg'
 import Sun from '@/assets/svg/sun.svg'
@@ -9,7 +8,9 @@ const userPref = useUserPrefStore()
 
 const isDark = computed({
   get: () => userPref.darkmode,
-  set: (val) => (userPref.darkmode = val),
+  set: (val: boolean) => {
+    userPref.darkmode = val
+  },
 })
 
 const applyTheme = (dark: boolean) => {
@@ -21,21 +22,12 @@ const toggle = () => {
 }
 
 watch(
-  () => isDark.value,
-  (val) => {
+  isDark,
+  (val: boolean) => {
     applyTheme(val)
   },
   { immediate: true },
 )
-
-onMounted(() => {
-  // si tu veux prendre aussi en compte prefers-color-scheme au tout début,
-  // seulement si rien en storage
-  if (localStorage.getItem('darkmode') === null) {
-    const prefersDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches
-    userPref.darkmode = prefersDark
-  }
-})
 </script>
 
 <template>
