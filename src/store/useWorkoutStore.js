@@ -16,18 +16,18 @@ export const useWorkoutStore = defineStore('workout', {
         .sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
     },
     async addWeight(exerciseKey, weight) {
-      const { data, error } = await supabase.from('workout_weights').insert([
-        {
-          exercise_name: exerciseKey,
-          weight: Number(weight),
-        },
-      ])
+      const { error } = await supabase.from('workout_weights').insert({
+        exercise_name: exerciseKey,
+        weight: Number(weight),
+      })
 
       if (error) {
         console.error('Erreur addWeight:', error)
-      } else {
-        this.entries.push(...data)
+        return
       }
+
+      // On recharge tout proprement
+      await this.fetchWeights()
     },
     getBestWeight(exerciseKey) {
       const weights = this.entries
