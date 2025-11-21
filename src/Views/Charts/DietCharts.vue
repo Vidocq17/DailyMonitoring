@@ -131,7 +131,7 @@ onMounted(async () => {
       </div>
 
       <div class="flex flex-wrap gap-2 justify-center md:justify-end charts-title w-full">
-        <button type="button" class="btn-save text-xs md:text-sm">
+        <button type="button" class="btn-save text-xs md:text-sm" style="width: auto;">
           Derniers {{ store.entries.length || 0 }} jours
         </button>
       </div>
