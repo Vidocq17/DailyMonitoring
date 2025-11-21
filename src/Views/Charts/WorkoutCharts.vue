@@ -12,7 +12,6 @@ import {
   PointElement,
 } from 'chart.js'
 import { Line } from 'vue-chartjs'
-import { getStandards } from '../composables/StrengthStandards'
 
 ChartJS.register(Title, Tooltip, Legend, LineElement, CategoryScale, LinearScale, PointElement)
 
@@ -232,6 +231,9 @@ onMounted(async () => {
             box-shadow 0.2s ease;
         "
       >
+        <h3 class="text-sm font-semibold mb-2 text-[var(--color-text)]">
+          {{ chart.label }}
+        </h3>
         <div class="h-40">
           <Line :data="chart.data" :options="chart.options" />
         </div>
