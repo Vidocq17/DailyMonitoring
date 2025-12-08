@@ -20,6 +20,7 @@ const exercises = [
   'Chest press machine - PUSH',
   'Dips assistés - PUSH',
   'Élévations latérales haltères - PUSH',
+  'SkullCrusher - PUSH',
   'Tractions assistées - PULL',
   'Rowing barre - PULL',
   'Tirage vertical - PULL',
@@ -45,6 +46,7 @@ const labelToKey = [
   { label: 'Chest press machine - PUSH', key: 'chest_press_machine' },
   { label: 'Dips assistés - PUSH', key: 'dips_assistes' },
   { label: 'Élévations latérales haltères - PUSH', key: 'elevations_laterales_halteres' },
+  { label: 'SkullCrusher - PUSH', key: 'skullcrusher' },
 
   { label: 'Tractions assistées - PULL', key: 'tractions_assistees' },
   { label: 'Rowing barre - PULL', key: 'rowing_barre' },
@@ -123,18 +125,12 @@ const saveWeight = async () => {
 
       <!-- Carte formulaire -->
       <div
-        class="bg-[var(--color-light)] p-6 md:p-8 rounded-2xl shadow-md border border-[var(--color-border)] space-y-6"
-      >
+        class="bg-[var(--color-light)] p-6 md:p-8 rounded-2xl shadow-md border border-[var(--color-border)] space-y-6">
         <!-- Mot de passe -->
         <div class="flex flex-col items-center gap-2">
           <label class="w-full max-w-xs text-sm font-medium text-left">
             Mot de passe
-            <input
-              type="password"
-              v-model="passwordCheck"
-              placeholder="••••••••"
-              class="w-full mt-1"
-            />
+            <input type="password" v-model="passwordCheck" placeholder="••••••••" class="w-full mt-1" />
           </label>
           <p v-if="isPasswordInvalid" class="text-xs text-red-500">
             Mot de passe incorrect
@@ -142,10 +138,7 @@ const saveWeight = async () => {
         </div>
 
         <!-- Formulaire -->
-        <form
-          @submit.prevent="saveWeight"
-          class="space-y-4"
-        >
+        <form @submit.prevent="saveWeight" class="space-y-4">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <label class="flex flex-col text-sm font-medium">
               Exercice
@@ -159,12 +152,7 @@ const saveWeight = async () => {
 
             <label class="flex flex-col text-sm font-medium">
               Poids (kg)
-              <input
-                type="number"
-                v-model="form.weight"
-                step="0.5"
-                min="0"
-              />
+              <input type="number" v-model="form.weight" step="0.5" min="0" />
             </label>
           </div>
 

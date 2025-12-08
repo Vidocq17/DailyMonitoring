@@ -27,6 +27,7 @@ const groups = {
     'chest_press_machine',
     'dips_assistes',
     'elevations_laterales_halteres',
+    'skullcrusher',
   ],
   PULL: [
     'tractions_assistees',
@@ -57,6 +58,7 @@ const exercises = [
   { key: 'chest_press_machine', label: 'Chest press machine', color: 'rgb(153, 102, 255)' },
   { key: 'dips_assistes', label: 'Dips assistés', color: 'rgb(54, 162, 235)' },
   { key: 'elevations_laterales_halteres', label: 'Élévations latérales haltères', color: 'rgb(255, 205, 86)' },
+  { key: 'skullcrusher', label: 'SkullCrusher', color: 'rgb(255, 159, 64)' },
 
   { key: 'tractions_assistees', label: 'Tractions assistées', color: 'rgb(100, 150, 250)' },
   { key: 'rowing_barre', label: 'Rowing barre', color: 'rgb(200, 100, 150)' },
@@ -84,6 +86,7 @@ const minValues = {
   chest_press_machine: 10,
   dips_assistes: 0,
   elevations_laterales_halteres: 2.5,
+  skullcrusher: 5,
 
   tractions_assistees: 0,
   rowing_barre: 20,
@@ -111,6 +114,7 @@ const maxValues = {
   chest_press_machine: 60,
   dips_assistes: 60,
   elevations_laterales_halteres: 20,
+  skullcrusher: 30,
 
   tractions_assistees: 60,
   rowing_barre: 80,
@@ -185,10 +189,8 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div
-    class="my-6 mx-auto max-w-6xl p-6 md:p-8 rounded-2xl bg-[var(--color-light)] border border-[var(--color-border)]"
-    style="box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08)"
-  >
+  <div class="my-6 mx-auto max-w-6xl p-6 md:p-8 rounded-2xl bg-[var(--color-light)] border border-[var(--color-border)]"
+    style="box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08)">
     <!-- Header -->
     <div class="charts-title flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-6">
       <div>
@@ -200,18 +202,12 @@ onMounted(async () => {
 
       <!-- Onglets groupe -->
       <div class="flex flex-wrap gap-2 justify-center md:justify-end">
-        <button
-          v-for="tab in groupTabs"
-          :key="tab"
-          type="button"
-          @click="selectedGroup = tab"
-          :class="[
-            'px-3 py-1.5 text-xs md:text-sm rounded-full border transition !w-auto',
-            selectedGroup === tab
-              ? 'btn-save border-transparent'
-              : 'btn-edit border-[var(--color-border)]',
-          ]"
-        >
+        <button v-for="tab in groupTabs" :key="tab" type="button" @click="selectedGroup = tab" :class="[
+          'px-3 py-1.5 text-xs md:text-sm rounded-full border transition !w-auto',
+          selectedGroup === tab
+            ? 'btn-save border-transparent'
+            : 'btn-edit border-[var(--color-border)]',
+        ]">
           {{ tab }}
         </button>
       </div>
@@ -219,9 +215,7 @@ onMounted(async () => {
 
     <!-- Grille des charts -->
     <div class="charts-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <div
-        v-for="chart in filteredCharts"
-        :key="chart.key"
+      <div v-for="chart in filteredCharts" :key="chart.key"
         class="bg-[var(--color-surface)] rounded-2xl p-4 flex flex-col justify-between border border-[var(--color-border)]"
         style="
           box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
@@ -229,8 +223,7 @@ onMounted(async () => {
           transition:
             transform 0.2s ease,
             box-shadow 0.2s ease;
-        "
-      >
+        ">
         <h3 class="text-sm font-semibold mb-2 text-[var(--color-text)]">
           {{ chart.label }}
         </h3>

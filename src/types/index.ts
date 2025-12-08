@@ -14,6 +14,7 @@ export type ExerciseKey =
   | 'chest_press_machine'
   | 'dips_assistes'
   | 'elevations_laterales_halteres'
+  | 'skullcrusher'
   | 'tractions_assistees'
   | 'rowing_barre'
   | 'tirage_vertical_poulie'
