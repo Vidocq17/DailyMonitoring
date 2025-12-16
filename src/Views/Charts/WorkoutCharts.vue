@@ -125,8 +125,8 @@ const maxValues = {
   curl_halteres: 15,
   grip_halteres: 30,
 
-  squat_barre: 100,
-  souleve_de_terre: 100,
+  squat_barre: 120,
+  souleve_de_terre: 120,
   presse_a_cuisses: 160,
   leg_curl: 80,
   leg_extension: 80,
