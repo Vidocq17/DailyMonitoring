@@ -1,7 +1,8 @@
 <script setup>
 import { ref } from 'vue'
 import DietCharts from './Charts/DietCharts.vue'
-import WorkoutCharts from './Charts/WorkoutCharts.vue'
+import WorkoutChartsPPL from './Charts/WorkoutChartsPPL.vue'
+import WorkoutChartsSplit from './Charts/WorkoutChartsSplit.vue';
 
 const selectedTab = ref('daily')
 </script>
@@ -10,10 +11,12 @@ const selectedTab = ref('daily')
   <div>
     <div class="flex justify-center gap-4 mb-4">
       <button @click="selectedTab = 'daily'">Régime</button>
-      <button @click="selectedTab = 'sport'">Sport</button>
+      <button @click="selectedTab = 'sport'">Sport PPL</button>
+      <button @click="selectedTab = 'sportSplit'">Sport Split</button>
     </div>
 
     <DietCharts v-if="selectedTab === 'daily'" />
-    <WorkoutCharts v-if="selectedTab === 'sport'" />
+    <WorkoutChartsPPL v-if="selectedTab === 'sport'" />
+    <WorkoutChartsSplit v-if="selectedTab === 'sportSplit'" />
   </div>
 </template>

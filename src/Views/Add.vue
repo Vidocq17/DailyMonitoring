@@ -1,7 +1,8 @@
 <script setup>
 import { ref } from 'vue'
 import DailyForm from './Add/DietForm.vue'
-import WorkoutForm from './Add/WorkoutForm.vue'
+import WorkoutFormPPL from './Add/WorkoutFormPPL.vue'
+import WorkoutFormSplit from './Add/WorkoutFormSplit.vue';
 
 const selectedTab = ref('daily')
 </script>
@@ -10,11 +11,13 @@ const selectedTab = ref('daily')
   <div>
     <div class="flex justify-center gap-4 mb-4 overflow-x-auto">
       <button @click="selectedTab = 'daily'">Régime</button>
-      <button @click="selectedTab = 'sport'">Sport</button>
+      <button @click="selectedTab = 'sport PPL'">Sport PPL</button>
+      <button @click="selectedTab = 'sport Split'">Sport Split</button>
     </div>
 
     <DailyForm v-if="selectedTab === 'daily'" />
-    <WorkoutForm v-if="selectedTab === 'sport'" />
+    <WorkoutFormPPL v-if="selectedTab === 'sport PPL'" />
+    <WorkoutFormSplit v-if="selectedTab === 'sport Split'" />
   </div>
 </template>
 

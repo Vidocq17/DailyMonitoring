@@ -86,5 +86,6 @@ export const useWorkoutStore = defineStore('workout', {
 
       return Math.min(...weights)
     },
+    
   },
 })

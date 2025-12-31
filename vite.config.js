@@ -9,6 +9,7 @@ export default defineConfig({
     vue(),
     tailwindcss(),
     VitePWA({
+      disableDevLogs: true,
       registerType: 'autoUpdate',
       manifest: {
         name: 'Daily Monitoring',
@@ -29,20 +30,18 @@ export default defineConfig({
         skipWaiting: true,
         runtimeCaching: [
           {
-            urlPattern: ({ url }) => url.origin === self.location.origin,
+            urlPattern: ({ url }) =>
+              url.origin === self.location.origin &&
+              !url.pathname.startsWith('/node_modules/') &&
+              !url.pathname.startsWith('/@vite/') &&
+              !url.pathname.startsWith('/@id/') &&
+              !url.pathname.startsWith('/src/') &&
+              (url.pathname.startsWith('/assets/') ||
+                url.pathname.match(/\.(css|js|png|jpg|jpeg|svg|webp|ico|woff2?)$/)),
             handler: 'CacheFirst',
             options: {
               cacheName: 'static-cache',
               expiration: { maxEntries: 200, maxAgeSeconds: 60 * 60 * 24 * 30 },
-            },
-          },
-          {
-            urlPattern: ({ url }) =>
-              url.href.includes('supabase.co') || url.href.includes('supabase.in'),
-            handler: 'NetworkFirst',
-            options: {
-              cacheName: 'supabase-cache',
-              expiration: { maxEntries: 100, maxAgeSeconds: 60 * 60 * 24 },
             },
           },
         ],
