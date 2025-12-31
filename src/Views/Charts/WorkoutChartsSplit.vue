@@ -32,14 +32,14 @@ const groups = {
     'dips_assistes',
     'ecarte_poulie',
     'pushdown_cable',
-    'pec_deck',
+    'chest_press_machine',
   ],
   DOS: [
     'tractions_assistees',
     'rowing_barre',
     'tirage_poulie_basse',
     'pullover_cable',
-    'reverse_cable_crossover',
+    'reverse_cable',
   ],
   EPAULES: [
     'developpe_militaire_barre',
@@ -80,14 +80,14 @@ const exercises = [
   { key: 'dips_assistes', label: 'Dips', color: 'rgb(54, 162, 235)' },
   { key: 'ecarte_poulie', label: 'Écarté à la poulie', color: 'rgb(255, 205, 86)' },
   { key: 'pushdown_cable', label: 'Pushdown câble', color: 'rgb(153, 102, 255)' },
-  { key: 'pec_deck', label: 'Pec deck', color: 'rgb(255, 159, 64)' },
+  { key: 'chest_press_machine', label: 'Pec deck', color: 'rgb(255, 159, 64)' },
 
   // DOS
   { key: 'tractions_assistees', label: 'Tractions assistées / Tirage vertical', color: 'rgb(100, 150, 250)' },
   { key: 'rowing_barre', label: 'Rowing barre', color: 'rgb(200, 100, 150)' },
   { key: 'tirage_poulie_basse', label: 'Tirage poulie basse', color: 'rgb(150, 200, 100)' },
   { key: 'pullover_cable', label: 'Pullover câble', color: 'rgb(100, 200, 250)' },
-  { key: 'reverse_cable_crossover', label: 'Reverse cable crossover', color: 'rgb(250, 200, 100)' },
+  { key: 'reverse_cable', label: 'Reverse cable crossover', color: 'rgb(250, 200, 100)' },
 
   // EPAULES
   { key: 'developpe_militaire_barre', label: 'Développé militaire barre', color: 'rgb(255, 159, 64)' },
@@ -126,14 +126,14 @@ const minValues = {
   dips: 0,
   ecarte_poulie: 2.5,
   pushdown_cable: 5,
-  pec_deck: 10,
+  chest_press_machine: 10,
 
   // DOS
   tractions_assistees: 0,
   rowing_barre: 20,
   tirage_poulie_basse: 20,
   pullover_cable: 5,
-  reverse_cable_crossover: 2.5,
+  reverse_cable: 2.5,
 
   // EPAULES
   developpe_militaire_barre: 10,
@@ -168,14 +168,14 @@ const maxValues = {
   dips: 80,
   ecarte_poulie: 40,
   pushdown_cable: 60,
-  pec_deck: 120,
+  chest_press_machine: 120,
 
   // DOS
   tractions_assistees: 80,
   rowing_barre: 120,
   tirage_poulie_basse: 120,
   pullover_cable: 60,
-  reverse_cable_crossover: 40,
+  reverse_cable: 40,
 
   // EPAULES
   developpe_militaire_barre: 60,

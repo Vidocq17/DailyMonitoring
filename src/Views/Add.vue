@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import DailyForm from './Add/DietForm.vue'
 import WorkoutFormPPL from './Add/WorkoutFormPPL.vue'
 import WorkoutFormSplit from './Add/WorkoutFormSplit.vue';
+import Run from './Add/Run.vue';
 
 const selectedTab = ref('daily')
 </script>
@@ -13,11 +14,13 @@ const selectedTab = ref('daily')
       <button @click="selectedTab = 'daily'">Régime</button>
       <button @click="selectedTab = 'sport PPL'">Sport PPL</button>
       <button @click="selectedTab = 'sport Split'">Sport Split</button>
+      <button @click="selectedTab = 'run'">Course</button>
     </div>
 
     <DailyForm v-if="selectedTab === 'daily'" />
     <WorkoutFormPPL v-if="selectedTab === 'sport PPL'" />
     <WorkoutFormSplit v-if="selectedTab === 'sport Split'" />
+    <Run v-if="selectedTab === 'run'" />
   </div>
 </template>
 

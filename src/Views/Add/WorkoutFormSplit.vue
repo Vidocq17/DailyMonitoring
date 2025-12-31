@@ -85,14 +85,14 @@ const labelToKey = [
   { label: 'Dips', key: 'dips' },
   { label: 'Écarté à la poulie', key: 'ecarte_poulie' },
   { label: 'Pushdown câble', key: 'pushdown_cable' },
-  { label: 'Pec deck', key: 'pec_deck' },
+  { label: 'Pec deck', key: 'chest_press_machine' },
 
   // DOS
   { label: 'Tractions assistées / Tirage vertical', key: 'tractions_assistees' },
   { label: 'Rowing barre', key: 'rowing_barre' },
   { label: 'Tirage poulie basse', key: 'tirage_poulie_basse' },
   { label: 'Pullover câble', key: 'pullover_cable' },
-  { label: 'Reverse cable crossover', key: 'reverse_cable_crossover' },
+  { label: 'Reverse cable crossover', key: 'reverse_cable' },
 
   // EPAULES
   { label: 'Développé militaire barre', key: 'developpe_militaire_barre' },
