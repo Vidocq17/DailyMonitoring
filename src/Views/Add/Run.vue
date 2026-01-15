@@ -10,9 +10,9 @@ const password = import.meta.env.VITE_PASSWORD
 const passwordCheck = ref('')
 
 const form = ref({
-  run_at: new Date().toISOString().slice(0, 16), // input datetime-local
-  duration: '', // "hh:mm:ss" ou "mm:ss"
-  distance_km: '', // optionnel
+  run_at: new Date().toISOString().slice(0, 16),
+  duration: '',
+  distance_km: '',
   comment: '',
 })
 
@@ -98,7 +98,8 @@ const saveRun = async () => {
         </p>
       </div>
 
-      <div class="bg-[var(--color-light)] p-6 md:p-8 rounded-2xl shadow-md border border-[var(--color-border)] space-y-6">
+      <div
+        class="bg-[var(--color-light)] p-6 md:p-8 rounded-2xl shadow-md border border-[var(--color-border)] space-y-6">
         <div class="flex flex-col items-center gap-2">
           <label class="w-full max-w-xs text-sm font-medium text-left">
             Mot de passe

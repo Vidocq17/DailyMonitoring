@@ -16,9 +16,8 @@ import { Line } from 'vue-chartjs'
 ChartJS.register(Title, Tooltip, Legend, LineElement, CategoryScale, LinearScale, PointElement)
 
 const store = useWorkoutStore()
-const mode = ref<'duration' | 'pace'>('duration')
+const mode = ref<'duration' | 'pace' | 'distance'>('distance')
 
-// ✅ jamais undefined
 const runs = computed(() => store.runs ?? [])
 
 const labels = computed(() =>
@@ -39,11 +38,23 @@ const paceMinPerKm = computed(() =>
   }),
 )
 
+const distanceKm = computed(() =>
+  runs.value.map((r) =>
+    r.distance_km ? Math.round(r.distance_km * 100) / 100 : null,
+  ),
+)
+
+
 const chartData = computed(() => {
-  const dataset =
-    mode.value === 'duration'
-      ? { label: 'Durée (min)', data: durationMinutes.value }
-      : { label: 'Allure (min/km)', data: paceMinPerKm.value }
+  let dataset
+
+  if (mode.value === 'duration') {
+    dataset = { label: 'Durée (min)', data: durationMinutes.value }
+  } else if (mode.value === 'distance') {
+    dataset = { label: 'Distance (km)', data: distanceKm.value }
+  } else {
+    dataset = { label: 'Allure (min/km)', data: paceMinPerKm.value }
+  }
 
   return {
     labels: labels.value,
@@ -60,6 +71,7 @@ const chartData = computed(() => {
   }
 })
 
+
 const chartOptions = computed(() => ({
   responsive: true,
   maintainAspectRatio: false,
@@ -72,10 +84,8 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div
-    class="my-6 mx-auto max-w-6xl p-6 md:p-8 rounded-2xl bg-[var(--color-light)] border border-[var(--color-border)]"
-    style="box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08)"
-  >
+  <div class="my-6 mx-auto max-w-6xl p-6 md:p-8 rounded-2xl bg-[var(--color-light)] border border-[var(--color-border)]"
+    style="box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08)">
     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-6">
       <div>
         <h2 class="text-2xl font-semibold">Progression – Courses</h2>
@@ -85,33 +95,32 @@ onMounted(async () => {
       </div>
 
       <div class="flex flex-wrap gap-2">
-        <button
-          type="button"
-          @click="mode = 'duration'"
-          :class="[
-            'px-3 py-1.5 text-xs md:text-sm rounded-full border transition !w-auto',
-            mode === 'duration' ? 'btn-save border-transparent' : 'btn-edit border-[var(--color-border)]',
-          ]"
-        >
+        <button type="button" @click="mode = 'distance'" :class="[
+          'px-3 py-1.5 text-xs md:text-sm rounded-full border transition !w-auto',
+          mode === 'distance'
+            ? 'btn-save border-transparent'
+            : 'btn-edit border-[var(--color-border)]',
+        ]">
+          Distance
+        </button>
+        <button type="button" @click="mode = 'duration'" :class="[
+          'px-3 py-1.5 text-xs md:text-sm rounded-full border transition !w-auto',
+          mode === 'duration' ? 'btn-save border-transparent' : 'btn-edit border-[var(--color-border)]',
+        ]">
           Durée
         </button>
-        <button
-          type="button"
-          @click="mode = 'pace'"
-          :class="[
-            'px-3 py-1.5 text-xs md:text-sm rounded-full border transition !w-auto',
-            mode === 'pace' ? 'btn-save border-transparent' : 'btn-edit border-[var(--color-border)]',
-          ]"
-        >
+        <button type="button" @click="mode = 'pace'" :class="[
+          'px-3 py-1.5 text-xs md:text-sm rounded-full border transition !w-auto',
+          mode === 'pace' ? 'btn-save border-transparent' : 'btn-edit border-[var(--color-border)]',
+        ]">
           Allure
         </button>
+
       </div>
     </div>
 
-    <div
-      class="bg-[var(--color-surface)] rounded-2xl p-4 border border-[var(--color-border)]"
-      style="min-height: 320px"
-    >
+    <div class="bg-[var(--color-surface)] rounded-2xl p-4 border border-[var(--color-border)]"
+      style="min-height: 320px">
       <div v-if="runs.length" class="h-72">
         <Line :data="chartData" :options="chartOptions" />
       </div>

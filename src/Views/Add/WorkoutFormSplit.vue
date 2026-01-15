@@ -5,6 +5,7 @@ import { useToast } from 'vue-toastification'
 
 const store = useWorkoutStore()
 const toast = useToast()
+const errorMessage = ref(false)
 
 const password = import.meta.env.VITE_PASSWORD
 const passwordCheck = ref('')
@@ -17,10 +18,6 @@ const form = ref({
 
 const seances = ['PECS', 'DOS', 'EPAULES', 'QUADRICEPS', 'BRAS', 'ISCHIOS/FESSIERS']
 
-/**
- * ✅ Exos par séance (nouveau programme)
- * Tu peux réordonner comme tu veux, l’UI suivra.
- */
 const exercisesBySession = {
   PECS: [
     'Développé couché barre',
@@ -70,7 +67,6 @@ const filteredExercises = computed(() => {
   return exercisesBySession[form.value.session] ?? []
 })
 
-// Quand on change de séance => on reset l’exercice sélectionné
 watch(
   () => form.value.session,
   () => {
@@ -79,7 +75,6 @@ watch(
 )
 
 const labelToKey = [
-  // PECS
   { label: 'Développé couché barre', key: 'developpe_couche_barre' },
   { label: 'Développé incliné haltères', key: 'developpe_incline_halteres' },
   { label: 'Dips', key: 'dips' },
@@ -87,32 +82,27 @@ const labelToKey = [
   { label: 'Pushdown câble', key: 'pushdown_cable' },
   { label: 'Pec deck', key: 'chest_press_machine' },
 
-  // DOS
   { label: 'Tractions assistées / Tirage vertical', key: 'tractions_assistees' },
   { label: 'Rowing barre', key: 'rowing_barre' },
   { label: 'Tirage poulie basse', key: 'tirage_poulie_basse' },
   { label: 'Pullover câble', key: 'pullover_cable' },
   { label: 'Reverse cable crossover', key: 'reverse_cable' },
 
-  // EPAULES
   { label: 'Développé militaire barre', key: 'developpe_militaire_barre' },
   { label: 'Élévations latérales haltères', key: 'elevations_laterales_halteres' },
   { label: 'Oiseau haltères / câble', key: 'oiseau_halteres_cable' },
   { label: 'Shrug haltères', key: 'shrug_halteres' },
 
-  // QUADRICEPS
   { label: 'Squat barre guidée', key: 'squat_barre' },
   { label: 'Fentes marchées', key: 'fentes_marchees' },
   { label: 'Leg extension', key: 'leg_extension' },
   { label: 'Mollets debout / presse', key: 'mollets_debout_presse' },
 
-  // BRAS
   { label: 'Curl barre EZ', key: 'curl_barre' },
   { label: 'Curl incliné haltères', key: 'curl_halteres' },
   { label: 'Skullcrusher barre EZ', key: 'skullcrusher' },
   { label: 'Avant-bras / Grip', key: 'grip_halteres' },
 
-  // ISCHIOS/FESSIERS
   { label: 'Soulevé de terre roumain', key: 'souleve_de_terre' },
   { label: 'Hip thrust', key: 'hip_thrust' },
   { label: 'Leg curl', key: 'leg_curl' },
@@ -153,14 +143,17 @@ const saveWeight = async () => {
     toast.error("Exercice inconnu, merci de re-sélectionner l'exercice.")
     return
   }
+  console.log('tu as cliqué')
 
   try {
     await store.addWeight(exercise.key, parseFloat(form.value.weight))
     toast.success('Entrée enregistrée ✅')
+    console.log('Saved weight:', form.value.weight, 'for exercise:', exercise.key)
     resetForm()
   } catch (err) {
     console.error(err)
     toast.error("Une erreur est survenue lors de l'enregistrement.")
+    errorMessage.value = true
   }
 }
 </script>
@@ -175,16 +168,12 @@ const saveWeight = async () => {
         </p>
       </div>
 
-      <div class="bg-[var(--color-light)] p-6 md:p-8 rounded-2xl shadow-md border border-[var(--color-border)] space-y-6">
+      <div
+        class="bg-[var(--color-light)] p-6 md:p-8 rounded-2xl shadow-md border border-[var(--color-border)] space-y-6">
         <div class="flex flex-col items-center gap-2">
           <label class="w-full max-w-xs text-sm font-medium text-left">
             Mot de passe
-            <input
-              type="password"
-              v-model="passwordCheck"
-              placeholder="••••••••"
-              class="w-full mt-1"
-            />
+            <input type="password" v-model="passwordCheck" placeholder="••••••••" class="w-full mt-1" />
           </label>
           <p v-if="isPasswordInvalid" class="text-xs text-red-500">Mot de passe incorrect</p>
         </div>
@@ -223,6 +212,8 @@ const saveWeight = async () => {
           <div class="flex justify-center pt-2">
             <button type="submit" :disabled="!isFormValid">Enregistrer</button>
           </div>
+
+          <p v-if="errorMessage" class="text-xs text-red-500">Une erreur est survenue lors de l'enregistrement.</p>
         </form>
       </div>
     </div>
