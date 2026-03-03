@@ -155,7 +155,6 @@ const saveWeight = async () => {
     toast.error("Exercice inconnu, merci de re-sélectionner l'exercice.")
     return
   }
-  console.log('tu as cliqué')
 
   try {
     await store.addWeight(exercise.key, parseFloat(form.value.weight))

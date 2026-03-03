@@ -12,6 +12,7 @@ import {
   PointElement,
 } from 'chart.js'
 import { Line } from 'vue-chartjs'
+import { color } from 'motion'
 
 ChartJS.register(Title, Tooltip, Legend, LineElement, CategoryScale, LinearScale, PointElement)
 
@@ -72,45 +73,45 @@ const groups = {
 
 const exercises = [
   // PECS
-  { label: 'Développé couché barre', key: 'developpe_couche_barre' },
-  { label: 'Développé incliné haltères', key: 'developpe_incline_halteres' },
-  { label: 'Écarté à la poulie', key: 'ecarte_poulie' },
-  { label: 'Pec deck', key: 'chest_press_machine' },
-// DOS
-  { label: 'Tractions assistées / Tirage vertical', key: 'tractions_assistees' },
-  { label: 'Rowing barre', key: 'rowing_barre' },
-  { label: 'Rowing unilateral haltères', key: 'rowing_unilateral_halteres' },
-  { label: 'Tirage poulie basse', key: 'tirage_poulie_basse' },
-  { label: 'Pullover câble', key: 'pullover_cable' },
-  { label: 'Reverse cable crossover', key: 'reverse_cable' },
-// EPAULES
-  { label: 'Développé militaire barre', key: 'developpe_militaire_barre' },
-  { label: 'Élévations latérales haltères', key: 'elevations_laterales_halteres' },
-  { label: 'Oiseau haltères / câble', key: 'oiseau_halteres_cable' },
-  { label: 'Shrug haltères', key: 'shrug_halteres' },
-  { label: 'Farmer Walk', key: 'farmer_walk' },
-// QUADRICEPS
-  { label: 'Squat barre guidée', key: 'squat_barre' },
-  { label: 'Presse inclinée', key: 'presse_incline' },
-  { label: 'Fentes marchées', key: 'fentes_marchees' },
-  { label: 'Bulgarian split squat', key: 'bulgarian_split_squat' },
-  { label: 'Leg extension', key: 'leg_extension' },
-  { label: 'Mollets', key: 'mollets' },
-// BICEPS
-  { label: 'Curl incliné haltères', key: 'curl_halteres' },
-  { label: 'Curl marteau haltères', key: 'curl_marteau_halteres' },
-  { label: 'Curl barre EZ', key: 'curl_barre' },
-  { label: 'Avant-bras / Grip', key: 'grip_halteres' },
-// TRICEPS
-  { label: 'Skullcrusher barre EZ', key: 'skullcrusher' },
-  { label: 'Pushdown câble', key: 'pushdown_cable' },
-  { label: 'extension overhead', key: 'extension_overhead' },
-  { label: 'Dips', key: 'dips' },
-// FESSIOS/ISCHIOS
-  { label: 'Soulevé de terre roumain', key: 'souleve_de_terre' },
-  { label: 'Hip thrust', key: 'hip_thrust' },
-  { label: 'Leg curl', key: 'leg_curl' },
-  { label: 'Abducteurs machine', key: 'leg_abduction' },
+  { label: 'Développé couché barre', key: 'developpe_couche_barre', color: 'rgb(239, 68, 68)' },
+  { label: 'Développé incliné haltères', key: 'developpe_incline_halteres', color: 'rgb(239, 68, 68)' },
+  { label: 'Écarté à la poulie', key: 'ecarte_poulie', color: 'rgb(239, 68, 68)' },
+  { label: 'Pec deck', key: 'chest_press_machine', color: 'rgb(239, 68, 68)' },
+  // DOS
+  { label: 'Tractions assistées / Tirage vertical', key: 'tractions_assistees', color: 'rgb(100, 100, 100)' },
+  { label: 'Rowing barre', key: 'rowing_barre', color: 'rgb(100, 100, 100)' },
+  { label: 'Rowing unilateral haltères', key: 'rowing_unilateral_halteres', color: 'rgb(100, 100, 100)' },
+  { label: 'Tirage poulie basse', key: 'tirage_poulie_basse', color: 'rgb(100, 100, 100)' },
+  { label: 'Pullover câble', key: 'pullover_cable', color: 'rgb(100, 100, 100)' },
+  { label: 'Reverse cable crossover', key: 'reverse_cable', color: 'rgb(100, 100, 100)' },
+  // EPAULES
+  { label: 'Développé militaire barre', key: 'developpe_militaire_barre', color: 'rgb(255, 150, 0)' },
+  { label: 'Élévations latérales haltères', key: 'elevations_laterales_halteres', color: 'rgb(255, 150, 0)' },
+  { label: 'Oiseau haltères / câble', key: 'oiseau_halteres_cable', color: 'rgb(255, 150, 0)' },
+  { label: 'Shrug haltères', key: 'shrug_halteres', color: 'rgb(255, 150, 0)' },
+  { label: 'Farmer Walk', key: 'farmer_walk', color: 'rgb(255, 150, 0)' },
+  // QUADRICEPS
+  { label: 'Squat barre guidée', key: 'squat_barre', color: 'rgb(100, 200, 100)' },
+  { label: 'Presse inclinée', key: 'presse_incline', color: 'rgb(100, 200, 100)' },
+  { label: 'Fentes marchées', key: 'fentes_marchees', color: 'rgb(100, 200, 100)' },
+  { label: 'Bulgarian split squat', key: 'bulgarian_split_squat', color: 'rgb(100, 200, 100)' },
+  { label: 'Leg extension', key: 'leg_extension', color: 'rgb(100, 200, 100)' },
+  { label: 'Mollets', key: 'mollets', color: 'rgb(100, 200, 100)' },
+  // BICEPS
+  { label: 'Curl incliné haltères', key: 'curl_halteres', color: 'rgb(255, 150, 255)' },
+  { label: 'Curl marteau haltères', key: 'curl_marteau_halteres', color: 'rgb(255, 150, 255)' },
+  { label: 'Curl barre EZ', key: 'curl_barre', color: 'rgb(255, 150, 255)' },
+  { label: 'Avant-bras / Grip', key: 'grip_halteres', color: 'rgb(255, 150, 255)' },
+  // TRICEPS
+  { label: 'Skullcrusher barre EZ', key: 'skullcrusher', color: 'rgb(239, 68, 68)' },
+  { label: 'Pushdown câble', key: 'pushdown_cable', color: 'rgb(239, 68, 68)' },
+  { label: 'extension overhead', key: 'extension_overhead', color: 'rgb(239, 68, 68)' },
+  { label: 'Dips', key: 'dips', color: 'rgb(239, 68, 68)' },
+  // FESSIOS/ISCHIOS
+  { label: 'Soulevé de terre roumain', key: 'souleve_de_terre', color: 'rgb(100, 100, 100)' },
+  { label: 'Hip thrust', key: 'hip_thrust', color: 'rgb(100, 100, 100)' },
+  { label: 'Leg curl', key: 'leg_curl', color: 'rgb(100, 100, 100)' },
+  { label: 'Abducteurs machine', key: 'leg_abduction', color: 'rgb(100, 100, 100)' },
 ]
 
 const minValues = {
@@ -137,16 +138,17 @@ const minValues = {
 
   // QUADRICEPS
   squat_barre: 20,
+  presse_incline: 60,
   fentes_marchees: 0,
   leg_extension: 10,
   mollets: 0,
 
-  // BRAS
+  // BICEPS
   curl_halteres: 2.5,
   curl_marteau_halteres: 2.5,
   curl_barre: 10,
   grip_halteres: 5,
-  
+
   // TRICEPS
   skullcrusher: 5,
   pushdown_cable: 5,
@@ -184,11 +186,12 @@ const maxValues = {
 
   // QUADRICEPS
   squat_barre: 200,
+  presse_incline: 160,
   fentes_marchees: 40,
   leg_extension: 120,
   mollets: 120,
 
-  // BRAS
+  // BICEPS
   curl_halteres: 30,
   curl_marteau_halteres: 30,
   curl_barre: 80,
@@ -207,10 +210,10 @@ const maxValues = {
   leg_abduction: 140,
 }
 
-const groupTabs = ['PECS', 'DOS', 'EPAULES', 'QUADRICEPS', 'BRAS', 'ISCHIOS/FESSIERS']
+const groupTabs = ['PECS', 'DOS', 'EPAULES', 'QUADRICEPS', 'BICEPS', 'TRICEPS', 'ISCHIOS/FESSIERS']
 
 const filteredCharts = computed(() =>
-  chartsData.value.filter((chart) => (groups[selectedGroup.value] ?? []).includes(chart.key)),
+  chartsData.value.filter((chart) => groups[selectedGroup.value].includes(chart.label))
 )
 
 onMounted(async () => {
@@ -223,6 +226,10 @@ onMounted(async () => {
     return {
       key: ex.key,
       label: ex.label,
+      borderColor: ex.color ?? 'rgb(99, 102, 241)',
+      backgroundColor: (ex.color ?? 'rgb(99, 102, 241)').replace('rgb', 'rgba').replace(')', ', 0.2)'),
+      fill: true,
+      tension: 0.25,
       data: {
         labels: dataEntries.map((e) =>
           new Date(e.created_at).toLocaleDateString('fr-FR', {
@@ -261,10 +268,8 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div
-    class="my-6 mx-auto max-w-6xl p-6 md:p-8 rounded-2xl bg-[var(--color-light)] border border-[var(--color-border)]"
-    style="box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08)"
-  >
+  <div class="my-6 mx-auto max-w-6xl p-6 md:p-8 rounded-2xl bg-[var(--color-light)] border border-[var(--color-border)]"
+    style="box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08)">
     <!-- Header -->
     <div class="charts-title flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-6">
       <div>
@@ -276,18 +281,12 @@ onMounted(async () => {
 
       <!-- Onglets séance -->
       <div class="flex flex-wrap gap-2 justify-center md:justify-end">
-        <button
-          v-for="tab in groupTabs"
-          :key="tab"
-          type="button"
-          @click="selectedGroup = tab"
-          :class="[
-            'px-3 py-1.5 text-xs md:text-sm rounded-full border transition !w-auto',
-            selectedGroup === tab
-              ? 'btn-save border-transparent'
-              : 'btn-edit border-[var(--color-border)]',
-          ]"
-        >
+        <button v-for="tab in groupTabs" :key="tab" type="button" @click="selectedGroup = tab" :class="[
+          'px-3 py-1.5 text-xs md:text-sm rounded-full border transition !w-auto',
+          selectedGroup === tab
+            ? 'btn-save border-transparent'
+            : 'btn-edit border-[var(--color-border)]',
+        ]">
           {{ tab }}
         </button>
       </div>
@@ -295,16 +294,13 @@ onMounted(async () => {
 
     <!-- Grille des charts -->
     <div class="charts-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <div
-        v-for="chart in filteredCharts"
-        :key="chart.key"
+      <div v-for="chart in filteredCharts" :key="chart.key"
         class="bg-[var(--color-surface)] rounded-2xl p-4 flex flex-col justify-between border border-[var(--color-border)]"
         style="
           box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
           min-height: 220px;
           transition: transform 0.2s ease, box-shadow 0.2s ease;
-        "
-      >
+        ">
         <h3 class="text-sm font-semibold mb-2 text-[var(--color-text)]">
           {{ chart.label }}
         </h3>
