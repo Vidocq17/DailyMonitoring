@@ -5,7 +5,7 @@ import { useToast } from 'vue-toastification'
 
 const store = useDailyStore()
 // const sportOptions = ['Push', 'Pull', 'Legs', 'Full Body', 'Cardio']
-const sportOptions = ['Pecs', 'Dos', 'Épaules', 'Jambes', 'Bras']
+const sportOptions = ['UPPER', 'LOWER', 'FULL BODY', 'CARDIO']
 const cardioOptions = ['Course', 'Marche inclinée', 'Marche']
 const toast = useToast()
 const password = import.meta.env.VITE_PASSWORD

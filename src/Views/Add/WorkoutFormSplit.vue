@@ -16,20 +16,19 @@ const form = ref({
   weight: '',
 })
 
-const seances = ['PECS', 'DOS', 'EPAULES', 'QUADRICEPS', 'BRAS', 'ISCHIOS/FESSIERS']
+const groupes_muscu = ['PECS', 'DOS', 'EPAULES', 'QUADRICEPS', 'BICEPS', 'TRICEPS', 'ISCHIOS/FESSIERS']
 
 const exercisesBySession = {
   PECS: [
     'Développé couché barre',
     'Développé incliné haltères',
-    'Dips',
     'Écarté à la poulie',
-    'Pushdown câble',
     'Pec deck',
   ],
   DOS: [
     'Tractions assistées / Tirage vertical',
     'Rowing barre',
+    'Rowing unilateral haltères',
     'Tirage poulie basse',
     'Pullover câble',
     'Reverse cable crossover',
@@ -39,26 +38,33 @@ const exercisesBySession = {
     'Élévations latérales haltères',
     'Oiseau haltères / câble',
     'Shrug haltères',
+    'Farmer Walk',
   ],
   QUADRICEPS: [
-    'Squat barre guidée / Presse',
+    'Squat barre guidée',
+    'Presse inclinée',
     'Fentes marchées',
+    'Bulgarian split squat',
     'Leg extension',
-    'Mollets debout / presse',
+    'Mollets',
   ],
-  BRAS: [
-    'Curl barre EZ',
+  BICEPS: [
     'Curl incliné haltères',
+    'Curl marteau haltères',
+    'Curl barre EZ',
+    'Avant-bras / Grip',
+  ],
+  TRICEPS: [
     'Skullcrusher barre EZ',
     'Pushdown câble',
-    'Avant-bras / Grip',
+    'extension overhead',
+    'Dips',
   ],
   'ISCHIOS/FESSIERS': [
     'Soulevé de terre roumain',
     'Hip thrust',
     'Leg curl',
     'Abducteurs machine',
-    'Mollets assis',
   ],
 }
 
@@ -77,13 +83,12 @@ watch(
 const labelToKey = [
   { label: 'Développé couché barre', key: 'developpe_couche_barre' },
   { label: 'Développé incliné haltères', key: 'developpe_incline_halteres' },
-  { label: 'Dips', key: 'dips' },
   { label: 'Écarté à la poulie', key: 'ecarte_poulie' },
-  { label: 'Pushdown câble', key: 'pushdown_cable' },
   { label: 'Pec deck', key: 'chest_press_machine' },
 
   { label: 'Tractions assistées / Tirage vertical', key: 'tractions_assistees' },
   { label: 'Rowing barre', key: 'rowing_barre' },
+  { label: 'Rowing unilateral haltères', key: 'rowing_unilateral_halteres' },
   { label: 'Tirage poulie basse', key: 'tirage_poulie_basse' },
   { label: 'Pullover câble', key: 'pullover_cable' },
   { label: 'Reverse cable crossover', key: 'reverse_cable' },
@@ -92,22 +97,29 @@ const labelToKey = [
   { label: 'Élévations latérales haltères', key: 'elevations_laterales_halteres' },
   { label: 'Oiseau haltères / câble', key: 'oiseau_halteres_cable' },
   { label: 'Shrug haltères', key: 'shrug_halteres' },
+  { label: 'Farmer Walk', key: 'farmer_walk' },
 
   { label: 'Squat barre guidée', key: 'squat_barre' },
+  { label: 'Presse inclinée', key: 'presse_incline' },
   { label: 'Fentes marchées', key: 'fentes_marchees' },
+  { label: 'Bulgarian split squat', key: 'bulgarian_split_squat' },
   { label: 'Leg extension', key: 'leg_extension' },
-  { label: 'Mollets debout / presse', key: 'mollets_debout_presse' },
+  { label: 'Mollets', key: 'mollets' },
 
-  { label: 'Curl barre EZ', key: 'curl_barre' },
   { label: 'Curl incliné haltères', key: 'curl_halteres' },
-  { label: 'Skullcrusher barre EZ', key: 'skullcrusher' },
+  { label: 'Curl marteau haltères', key: 'curl_marteau_halteres' },
+  { label: 'Curl barre EZ', key: 'curl_barre' },
   { label: 'Avant-bras / Grip', key: 'grip_halteres' },
+  
+  { label: 'Skullcrusher barre EZ', key: 'skullcrusher' },
+  { label: 'Pushdown câble', key: 'pushdown_cable' },
+  { label: 'extension overhead', key: 'extension_overhead' },
+  { label: 'Dips', key: 'dips' },
 
   { label: 'Soulevé de terre roumain', key: 'souleve_de_terre' },
   { label: 'Hip thrust', key: 'hip_thrust' },
   { label: 'Leg curl', key: 'leg_curl' },
   { label: 'Abducteurs machine', key: 'leg_abduction' },
-  { label: 'Mollets assis', key: 'mollets_assis' },
 ]
 
 const isPasswordInvalid = computed(
@@ -162,7 +174,7 @@ const saveWeight = async () => {
   <div class="flex flex-col items-center my-6 px-4">
     <div class="w-full max-w-3xl space-y-6">
       <div class="text-center space-y-1">
-        <h2 class="text-2xl font-semibold">Enregistrer vos poids</h2>
+        <h2 class="text-2xl font-semibold">Enregistrez vos poids</h2>
         <p class="text-sm text-[var(--color-muted)]">
           Choisissez une séance puis un exercice (liste filtrée).
         </p>
@@ -181,10 +193,10 @@ const saveWeight = async () => {
         <form @submit.prevent="saveWeight" class="space-y-4">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <label class="flex flex-col text-sm font-medium">
-              Séance
+              Groupe musculaire
               <select v-model="form.session">
-                <option value="" disabled>Sélectionner une séance</option>
-                <option v-for="session in seances" :key="session" :value="session">
+                <option value="" disabled>Sélectionner un groupe musculaire</option>
+                <option v-for="session in groupes_muscu" :key="session" :value="session">
                   {{ session }}
                 </option>
               </select>

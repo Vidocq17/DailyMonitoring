@@ -12,7 +12,7 @@ const selectedTab = ref('daily')
   <div>
     <div class="flex justify-center gap-4 mb-4 overflow-x-auto">
       <button @click="selectedTab = 'daily'">Régime</button>
-      <button @click="selectedTab = 'sport PPL'">Sport PPL</button>
+      <!-- <button @click="selectedTab = 'sport PPL'">Sport PPL</button> -->
       <button @click="selectedTab = 'sport Split'">Sport Split</button>
       <button @click="selectedTab = 'run'">Course</button>
     </div>
