@@ -105,7 +105,11 @@ export const useWorkoutStore = defineStore('workout', {
       this.runs = (data ?? []) as RunRow[]
     },
 
-    async addRun(payload: { duration_sec: number; distance_km: number; comment?: string }): Promise<void> {
+    async addRun(payload: {
+      duration_sec: number
+      distance_km: number
+      comment?: string
+    }): Promise<void> {
       const { error } = await supabase.from('runs').insert({
         duration_sec: payload.duration_sec,
         distance_km: payload.distance_km,

@@ -13,12 +13,9 @@ function usePersistentRef<T>(key: string, defaultValue: T): ShallowRef<T> {
 
   const state = shallowRef<T>(parsed)
 
-  watch(
-    state,
-    (newValue) => {
-      localStorage.setItem(key, JSON.stringify(newValue))
-    },
-  )
+  watch(state, (newValue) => {
+    localStorage.setItem(key, JSON.stringify(newValue))
+  })
 
   return state
 }

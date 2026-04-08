@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <SpeedInsights />
     <Header v-if="$route.name !== 'Home'" />
 
     <RouterView v-slot="slotProps">
@@ -10,16 +11,14 @@
         :leave="{ opacity: 0, x: -50 }"
         :transition="{ duration: 0.4 }"
       >
-        <component
-          v-if="slotProps && slotProps.Component"
-          :is="slotProps.Component"
-        />
+        <component v-if="slotProps && slotProps.Component" :is="slotProps.Component" />
       </div>
     </RouterView>
   </div>
 </template>
 
 <script setup>
+import { SpeedInsights } from '@vercel/speed-insights/vue'
 import Header from './components/Header.vue'
 
 // TODO : REfacto tout le style en tailwindcss - FAIT

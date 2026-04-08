@@ -11,11 +11,11 @@ const password = import.meta.env.VITE_PASSWORD
 const passwordCheck = ref('')
 
 // --- FILTRES ---
-const fromDate = ref<string>('')         // début de période
-const toDate = ref<string>('')           // fin de période
-const onlySport = ref(false)             // ne garder que les jours avec sport
-const onlyCardio = ref(false)            // ne garder que les jours avec cardio
-const onlyAbdos = ref(false)             // ne garder que les jours avec abdos
+const fromDate = ref<string>('') // début de période
+const toDate = ref<string>('') // fin de période
+const onlySport = ref(false) // ne garder que les jours avec sport
+const onlyCardio = ref(false) // ne garder que les jours avec cardio
+const onlyAbdos = ref(false) // ne garder que les jours avec abdos
 
 onMounted(() => {
   store.fetchDaily()
@@ -97,7 +97,9 @@ const filteredEntries = computed(() => {
         </p>
       </div>
 
-      <p class="text-sm bg-[var(--color-surface)] px-3 py-1 rounded-lg border border-[var(--color-border)]">
+      <p
+        class="text-sm bg-[var(--color-surface)] px-3 py-1 rounded-lg border border-[var(--color-border)]"
+      >
         Date actuelle : <strong>{{ formattedDate }}</strong>
       </p>
     </div>
@@ -106,12 +108,7 @@ const filteredEntries = computed(() => {
     <div class="flex flex-col items-center mb-6">
       <label class="w-full max-w-xs text-sm font-medium">
         Mot de passe
-        <input
-          type="password"
-          v-model="passwordCheck"
-          placeholder="••••••••"
-          class="w-full mt-1"
-        />
+        <input type="password" v-model="passwordCheck" placeholder="••••••••" class="w-full mt-1" />
       </label>
       <p
         v-if="passwordCheck !== '' && passwordCheck !== password"
@@ -160,7 +157,9 @@ const filteredEntries = computed(() => {
 
     <!-- TABLE -->
     <div class="overflow-x-auto">
-      <table class="daily-table w-full border-collapse min-w-[950px] bg-[var(--color-surface)] rounded-lg">
+      <table
+        class="daily-table w-full border-collapse min-w-[950px] bg-[var(--color-surface)] rounded-lg"
+      >
         <thead>
           <tr>
             <th>Date</th>
@@ -185,11 +184,7 @@ const filteredEntries = computed(() => {
           <tr v-for="entry in filteredEntries" :key="entry.id">
             <!-- DATE -->
             <td>
-              <input
-                v-if="editingId === entry.id"
-                v-model="editedEntry.date_du_jour"
-                type="date"
-              />
+              <input v-if="editingId === entry.id" v-model="editedEntry.date_du_jour" type="date" />
               <span v-else>{{ new Date(entry.date_du_jour).toLocaleDateString() }}</span>
             </td>
 

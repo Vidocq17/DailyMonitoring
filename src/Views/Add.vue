@@ -2,8 +2,8 @@
 import { ref } from 'vue'
 import DailyForm from './Add/DietForm.vue'
 import WorkoutFormPPL from './Add/WorkoutFormPPL.vue'
-import WorkoutFormSplit from './Add/WorkoutFormSplit.vue';
-import Run from './Add/Run.vue';
+import WorkoutFormSplit from './Add/WorkoutFormSplit.vue'
+import Run from './Add/Run.vue'
 
 const selectedTab = ref('daily')
 </script>
