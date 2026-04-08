@@ -16,6 +16,7 @@
     "@primeuix/themes": "^1.2.3",
     "@supabase/supabase-js": "^2.56.0",
     "@tailwindcss/vite": "^4.1.13",
+    "@vercel/speed-insights": "^2.0.0",
     "@vueuse/motion": "^3.0.3",
     "motion": "^12.23.12",
     "papaparse": "^5.5.3",

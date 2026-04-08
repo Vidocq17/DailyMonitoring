@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <Header v-if="$route.name !== 'Home'" />
-
+    <SpeedInsights />
     <RouterView v-slot="slotProps">
       <div
         v-motion
@@ -21,6 +21,7 @@
 
 <script setup>
 import Header from './components/Header.vue'
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 // TODO : REfacto tout le style en tailwindcss - FAIT
 // TODO : Darkode - FAIT
