@@ -16,15 +16,18 @@ const form = ref({
   weight: '',
 })
 
-const groupes_muscu = ['PECS', 'DOS', 'EPAULES', 'QUADRICEPS', 'BICEPS', 'TRICEPS', 'ISCHIOS/FESSIERS']
+const groupes_muscu = [
+  'PECS',
+  'DOS',
+  'EPAULES',
+  'QUADRICEPS',
+  'BICEPS',
+  'TRICEPS',
+  'ISCHIOS/FESSIERS',
+]
 
 const exercisesBySession = {
-  PECS: [
-    'Développé couché barre',
-    'Développé incliné haltères',
-    'Écarté à la poulie',
-    'Pec deck',
-  ],
+  PECS: ['Développé couché barre', 'Développé incliné haltères', 'Écarté à la poulie', 'Pec deck'],
   DOS: [
     'Tractions assistées / Tirage vertical',
     'Rowing barre',
@@ -49,24 +52,9 @@ const exercisesBySession = {
     'Leg extension',
     'Mollets',
   ],
-  BICEPS: [
-    'Curl incliné haltères',
-    'Curl marteau haltères',
-    'Curl barre EZ',
-    'Avant-bras / Grip',
-  ],
-  TRICEPS: [
-    'Skullcrusher barre EZ',
-    'Pushdown câble',
-    'extension overhead',
-    'Dips',
-  ],
-  'ISCHIOS/FESSIERS': [
-    'Soulevé de terre roumain',
-    'Hip thrust',
-    'Leg curl',
-    'Abducteurs machine',
-  ],
+  BICEPS: ['Curl incliné haltères', 'Curl marteau haltères', 'Curl barre EZ', 'Avant-bras / Grip'],
+  TRICEPS: ['Skullcrusher barre EZ', 'Pushdown câble', 'extension overhead', 'Dips'],
+  'ISCHIOS/FESSIERS': ['Soulevé de terre roumain', 'Hip thrust', 'Leg curl', 'Abducteurs machine'],
 }
 
 const filteredExercises = computed(() => {
@@ -112,7 +100,7 @@ const labelToKey = [
   { label: 'Curl marteau haltères', key: 'curl_marteau_halteres' },
   { label: 'Curl barre EZ', key: 'curl_barre' },
   { label: 'Avant-bras / Grip', key: 'grip_halteres' },
-  
+
   { label: 'Skullcrusher barre EZ', key: 'skullcrusher' },
   { label: 'Pushdown câble', key: 'pushdown_cable' },
   { label: 'extension overhead', key: 'extension_overhead' },
@@ -182,11 +170,17 @@ const saveWeight = async () => {
       </div>
 
       <div
-        class="bg-[var(--color-light)] p-6 md:p-8 rounded-2xl shadow-md border border-[var(--color-border)] space-y-6">
+        class="bg-[var(--color-light)] p-6 md:p-8 rounded-2xl shadow-md border border-[var(--color-border)] space-y-6"
+      >
         <div class="flex flex-col items-center gap-2">
           <label class="w-full max-w-xs text-sm font-medium text-left">
             Mot de passe
-            <input type="password" v-model="passwordCheck" placeholder="••••••••" class="w-full mt-1" />
+            <input
+              type="password"
+              v-model="passwordCheck"
+              placeholder="••••••••"
+              class="w-full mt-1"
+            />
           </label>
           <p v-if="isPasswordInvalid" class="text-xs text-red-500">Mot de passe incorrect</p>
         </div>
@@ -226,7 +220,9 @@ const saveWeight = async () => {
             <button type="submit" :disabled="!isFormValid">Enregistrer</button>
           </div>
 
-          <p v-if="errorMessage" class="text-xs text-red-500">Une erreur est survenue lors de l'enregistrement.</p>
+          <p v-if="errorMessage" class="text-xs text-red-500">
+            Une erreur est survenue lors de l'enregistrement.
+          </p>
         </form>
       </div>
     </div>

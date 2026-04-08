@@ -39,11 +39,8 @@ const paceMinPerKm = computed(() =>
 )
 
 const distanceKm = computed(() =>
-  runs.value.map((r) =>
-    r.distance_km ? Math.round(r.distance_km * 100) / 100 : null,
-  ),
+  runs.value.map((r) => (r.distance_km ? Math.round(r.distance_km * 100) / 100 : null)),
 )
-
 
 const chartData = computed(() => {
   let dataset
@@ -71,7 +68,6 @@ const chartData = computed(() => {
   }
 })
 
-
 const chartOptions = computed(() => ({
   responsive: true,
   maintainAspectRatio: false,
@@ -84,8 +80,10 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="my-6 mx-auto max-w-6xl p-6 md:p-8 rounded-2xl bg-[var(--color-light)] border border-[var(--color-border)]"
-    style="box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08)">
+  <div
+    class="my-6 mx-auto max-w-6xl p-6 md:p-8 rounded-2xl bg-[var(--color-light)] border border-[var(--color-border)]"
+    style="box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08)"
+  >
     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-6">
       <div>
         <h2 class="text-2xl font-semibold">Progression – Courses</h2>
@@ -95,32 +93,49 @@ onMounted(async () => {
       </div>
 
       <div class="flex flex-wrap gap-2">
-        <button type="button" @click="mode = 'distance'" :class="[
-          'px-3 py-1.5 text-xs md:text-sm rounded-full border transition !w-auto',
-          mode === 'distance'
-            ? 'btn-save border-transparent'
-            : 'btn-edit border-[var(--color-border)]',
-        ]">
+        <button
+          type="button"
+          @click="mode = 'distance'"
+          :class="[
+            'px-3 py-1.5 text-xs md:text-sm rounded-full border transition !w-auto',
+            mode === 'distance'
+              ? 'btn-save border-transparent'
+              : 'btn-edit border-[var(--color-border)]',
+          ]"
+        >
           Distance
         </button>
-        <button type="button" @click="mode = 'duration'" :class="[
-          'px-3 py-1.5 text-xs md:text-sm rounded-full border transition !w-auto',
-          mode === 'duration' ? 'btn-save border-transparent' : 'btn-edit border-[var(--color-border)]',
-        ]">
+        <button
+          type="button"
+          @click="mode = 'duration'"
+          :class="[
+            'px-3 py-1.5 text-xs md:text-sm rounded-full border transition !w-auto',
+            mode === 'duration'
+              ? 'btn-save border-transparent'
+              : 'btn-edit border-[var(--color-border)]',
+          ]"
+        >
           Durée
         </button>
-        <button type="button" @click="mode = 'pace'" :class="[
-          'px-3 py-1.5 text-xs md:text-sm rounded-full border transition !w-auto',
-          mode === 'pace' ? 'btn-save border-transparent' : 'btn-edit border-[var(--color-border)]',
-        ]">
+        <button
+          type="button"
+          @click="mode = 'pace'"
+          :class="[
+            'px-3 py-1.5 text-xs md:text-sm rounded-full border transition !w-auto',
+            mode === 'pace'
+              ? 'btn-save border-transparent'
+              : 'btn-edit border-[var(--color-border)]',
+          ]"
+        >
           Allure
         </button>
-
       </div>
     </div>
 
-    <div class="bg-[var(--color-surface)] rounded-2xl p-4 border border-[var(--color-border)]"
-      style="min-height: 320px">
+    <div
+      class="bg-[var(--color-surface)] rounded-2xl p-4 border border-[var(--color-border)]"
+      style="min-height: 320px"
+    >
       <div v-if="runs.length" class="h-72">
         <Line :data="chartData" :options="chartOptions" />
       </div>

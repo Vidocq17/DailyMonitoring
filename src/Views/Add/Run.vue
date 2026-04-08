@@ -21,13 +21,18 @@ const isPasswordInvalid = computed(
 )
 
 function parseDurationToSeconds(input: string): number | null {
-  const parts = input.trim().split(':').map((p) => p.trim())
+  const parts = input
+    .trim()
+    .split(':')
+    .map((p) => p.trim())
   if (parts.length < 2 || parts.length > 3) return null
 
   const nums = parts.map((p) => Number(p))
   if (nums.some((n) => Number.isNaN(n) || n < 0)) return null
 
-  let h = 0, m = 0, s = 0
+  let h = 0,
+    m = 0,
+    s = 0
   if (nums.length === 2) [m, s] = nums
   if (nums.length === 3) [h, m, s] = nums
 
@@ -37,12 +42,7 @@ function parseDurationToSeconds(input: string): number | null {
 
 const isFormValid = computed(() => {
   const sec = parseDurationToSeconds(form.value.duration)
-  return (
-    passwordCheck.value === password &&
-    form.value.run_at !== '' &&
-    sec !== null &&
-    sec > 0
-  )
+  return passwordCheck.value === password && form.value.run_at !== '' && sec !== null && sec > 0
 })
 
 const resetForm = () => {
@@ -99,11 +99,17 @@ const saveRun = async () => {
       </div>
 
       <div
-        class="bg-[var(--color-light)] p-6 md:p-8 rounded-2xl shadow-md border border-[var(--color-border)] space-y-6">
+        class="bg-[var(--color-light)] p-6 md:p-8 rounded-2xl shadow-md border border-[var(--color-border)] space-y-6"
+      >
         <div class="flex flex-col items-center gap-2">
           <label class="w-full max-w-xs text-sm font-medium text-left">
             Mot de passe
-            <input type="password" v-model="passwordCheck" placeholder="••••••••" class="w-full mt-1" />
+            <input
+              type="password"
+              v-model="passwordCheck"
+              placeholder="••••••••"
+              class="w-full mt-1"
+            />
           </label>
           <p v-if="isPasswordInvalid" class="text-xs text-red-500">Mot de passe incorrect</p>
         </div>
@@ -127,7 +133,11 @@ const saveRun = async () => {
 
             <label class="flex flex-col text-sm font-medium md:col-span-2">
               Commentaire (optionnel)
-              <input type="text" v-model="form.comment" placeholder="EF, fractionné, sensations..." />
+              <input
+                type="text"
+                v-model="form.comment"
+                placeholder="EF, fractionné, sensations..."
+              />
             </label>
           </div>
 

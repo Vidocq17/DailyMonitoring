@@ -73,9 +73,7 @@ const isPasswordInvalid = computed(
 
 const isFormValid = computed(() => {
   return (
-    form.value.exercise_name !== '' &&
-    form.value.weight !== '' &&
-    passwordCheck.value === password
+    form.value.exercise_name !== '' && form.value.weight !== '' && passwordCheck.value === password
   )
 })
 
@@ -92,9 +90,7 @@ const saveWeight = async () => {
     return
   }
 
-  const exercise = labelToKey.find(
-    (item) => item.label === form.value.exercise_name,
-  )
+  const exercise = labelToKey.find((item) => item.label === form.value.exercise_name)
 
   if (!exercise) {
     toast.error("Exercice inconnu, merci de re-sélectionner l'exercice.")
@@ -125,16 +121,20 @@ const saveWeight = async () => {
 
       <!-- Carte formulaire -->
       <div
-        class="bg-[var(--color-light)] p-6 md:p-8 rounded-2xl shadow-md border border-[var(--color-border)] space-y-6">
+        class="bg-[var(--color-light)] p-6 md:p-8 rounded-2xl shadow-md border border-[var(--color-border)] space-y-6"
+      >
         <!-- Mot de passe -->
         <div class="flex flex-col items-center gap-2">
           <label class="w-full max-w-xs text-sm font-medium text-left">
             Mot de passe
-            <input type="password" v-model="passwordCheck" placeholder="••••••••" class="w-full mt-1" />
+            <input
+              type="password"
+              v-model="passwordCheck"
+              placeholder="••••••••"
+              class="w-full mt-1"
+            />
           </label>
-          <p v-if="isPasswordInvalid" class="text-xs text-red-500">
-            Mot de passe incorrect
-          </p>
+          <p v-if="isPasswordInvalid" class="text-xs text-red-500">Mot de passe incorrect</p>
         </div>
 
         <!-- Formulaire -->
@@ -157,9 +157,7 @@ const saveWeight = async () => {
           </div>
 
           <div class="flex justify-center pt-2">
-            <button type="submit" :disabled="!isFormValid">
-              Enregistrer
-            </button>
+            <button type="submit" :disabled="!isFormValid">Enregistrer</button>
           </div>
         </form>
       </div>

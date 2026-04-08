@@ -50,10 +50,7 @@ export const useDailyStore = defineStore('daily', {
     },
 
     async addDaily(newEntry: Omit<DailyEntry, 'id'>): Promise<void> {
-      const { data, error } = await supabase
-        .from('daily_monitoring')
-        .insert(newEntry)
-        .select()
+      const { data, error } = await supabase.from('daily_monitoring').insert(newEntry).select()
 
       if (error) {
         console.error(error)
@@ -88,10 +85,7 @@ export const useDailyStore = defineStore('daily', {
     },
 
     async deleteDaily(id: number): Promise<void> {
-      const { error } = await supabase
-        .from('daily_monitoring')
-        .delete()
-        .eq('id', id)
+      const { error } = await supabase.from('daily_monitoring').delete().eq('id', id)
 
       if (error) {
         console.error('Erreur suppression :', error)
@@ -107,9 +101,7 @@ export const useDailyStore = defineStore('daily', {
 
       return (
         [...this.entries].sort(
-          (a, b) =>
-            new Date(b.date_du_jour).getTime() -
-            new Date(a.date_du_jour).getTime(),
+          (a, b) => new Date(b.date_du_jour).getTime() - new Date(a.date_du_jour).getTime(),
         )[0].poids ?? null
       )
     },
@@ -119,9 +111,7 @@ export const useDailyStore = defineStore('daily', {
 
       return (
         [...this.entries].sort(
-          (a, b) =>
-            new Date(b.date_du_jour).getTime() -
-            new Date(a.date_du_jour).getTime(),
+          (a, b) => new Date(b.date_du_jour).getTime() - new Date(a.date_du_jour).getTime(),
         )[0] ?? null
       )
     },

@@ -22,12 +22,7 @@ const chartsData = ref([])
 const selectedGroup = ref('PECS')
 
 const groups = {
-  PECS: [
-    'Développé couché barre',
-    'Développé incliné haltères',
-    'Écarté à la poulie',
-    'Pec deck',
-  ],
+  PECS: ['Développé couché barre', 'Développé incliné haltères', 'Écarté à la poulie', 'Pec deck'],
   DOS: [
     'Tractions assistées / Tirage vertical',
     'Rowing barre',
@@ -52,43 +47,48 @@ const groups = {
     'Leg extension',
     'Mollets',
   ],
-  BICEPS: [
-    'Curl incliné haltères',
-    'Curl marteau haltères',
-    'Curl barre EZ',
-    'Avant-bras / Grip',
-  ],
-  TRICEPS: [
-    'Skullcrusher barre EZ',
-    'Pushdown câble',
-    'extension overhead',
-    'Dips',
-  ],
-  'ISCHIOS/FESSIERS': [
-    'Soulevé de terre roumain',
-    'Hip thrust',
-    'Leg curl',
-    'Abducteurs machine',
-  ],
+  BICEPS: ['Curl incliné haltères', 'Curl marteau haltères', 'Curl barre EZ', 'Avant-bras / Grip'],
+  TRICEPS: ['Skullcrusher barre EZ', 'Pushdown câble', 'extension overhead', 'Dips'],
+  'ISCHIOS/FESSIERS': ['Soulevé de terre roumain', 'Hip thrust', 'Leg curl', 'Abducteurs machine'],
 }
 
 const exercises = [
   // PECS
   { label: 'Développé couché barre', key: 'developpe_couche_barre', color: 'rgb(239, 68, 68)' },
-  { label: 'Développé incliné haltères', key: 'developpe_incline_halteres', color: 'rgb(239, 68, 68)' },
+  {
+    label: 'Développé incliné haltères',
+    key: 'developpe_incline_halteres',
+    color: 'rgb(239, 68, 68)',
+  },
   { label: 'Écarté à la poulie', key: 'ecarte_poulie', color: 'rgb(239, 68, 68)' },
   { label: 'Pec deck', key: 'chest_press_machine', color: 'rgb(239, 68, 68)' },
   // DOS
-  { label: 'Tractions assistées / Tirage vertical', key: 'tractions_assistees', color: 'rgb(100, 100, 100)' },
+  {
+    label: 'Tractions assistées / Tirage vertical',
+    key: 'tractions_assistees',
+    color: 'rgb(100, 100, 100)',
+  },
   { label: 'Rowing barre', key: 'rowing_barre', color: 'rgb(100, 100, 100)' },
-  { label: 'Rowing unilateral haltères', key: 'rowing_unilateral_halteres', color: 'rgb(100, 100, 100)' },
+  {
+    label: 'Rowing unilateral haltères',
+    key: 'rowing_unilateral_halteres',
+    color: 'rgb(100, 100, 100)',
+  },
   { label: 'Rowing poitrine appuyée', key: 'rowing_poitrine_appuyee', color: 'rgb(100, 100, 100)' },
   { label: 'Tirage poulie basse', key: 'tirage_poulie_basse', color: 'rgb(100, 100, 100)' },
   { label: 'Pullover câble', key: 'pullover_cable', color: 'rgb(100, 100, 100)' },
   { label: 'Reverse cable crossover', key: 'reverse_cable', color: 'rgb(100, 100, 100)' },
   // EPAULES
-  { label: 'Développé militaire barre', key: 'developpe_militaire_barre', color: 'rgb(255, 150, 0)' },
-  { label: 'Élévations latérales haltères', key: 'elevations_laterales_halteres', color: 'rgb(255, 150, 0)' },
+  {
+    label: 'Développé militaire barre',
+    key: 'developpe_militaire_barre',
+    color: 'rgb(255, 150, 0)',
+  },
+  {
+    label: 'Élévations latérales haltères',
+    key: 'elevations_laterales_halteres',
+    color: 'rgb(255, 150, 0)',
+  },
   { label: 'Oiseau haltères / câble', key: 'oiseau_halteres_cable', color: 'rgb(255, 150, 0)' },
   { label: 'Shrug haltères', key: 'shrug_halteres', color: 'rgb(255, 150, 0)' },
   { label: 'Farmer Walk', key: 'farmer_walk', color: 'rgb(255, 150, 0)' },
@@ -215,7 +215,7 @@ const maxValues = {
 const groupTabs = ['PECS', 'DOS', 'EPAULES', 'QUADRICEPS', 'BICEPS', 'TRICEPS', 'ISCHIOS/FESSIERS']
 
 const filteredCharts = computed(() =>
-  chartsData.value.filter((chart) => groups[selectedGroup.value].includes(chart.label))
+  chartsData.value.filter((chart) => groups[selectedGroup.value].includes(chart.label)),
 )
 
 onMounted(async () => {
@@ -229,7 +229,9 @@ onMounted(async () => {
       key: ex.key,
       label: ex.label,
       borderColor: ex.color ?? 'rgb(99, 102, 241)',
-      backgroundColor: (ex.color ?? 'rgb(99, 102, 241)').replace('rgb', 'rgba').replace(')', ', 0.2)'),
+      backgroundColor: (ex.color ?? 'rgb(99, 102, 241)')
+        .replace('rgb', 'rgba')
+        .replace(')', ', 0.2)'),
       fill: true,
       tension: 0.25,
       data: {
@@ -270,10 +272,14 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="my-6 mx-auto max-w-6xl p-6 md:p-8 rounded-2xl bg-[var(--color-light)] border border-[var(--color-border)]"
-    style="box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08)">
+  <div
+    class="my-6 mx-auto max-w-6xl p-6 md:p-8 rounded-2xl bg-[var(--color-light)] border border-[var(--color-border)]"
+    style="box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08)"
+  >
     <!-- Header -->
-    <div class="charts-title flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-6">
+    <div
+      class="charts-title flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-6"
+    >
       <div>
         <h2 class="text-2xl font-semibold">Progression des exercices</h2>
         <p class="text-sm text-[var(--color-muted)]">
@@ -283,12 +289,18 @@ onMounted(async () => {
 
       <!-- Onglets séance -->
       <div class="flex flex-wrap gap-2 justify-center md:justify-end">
-        <button v-for="tab in groupTabs" :key="tab" type="button" @click="selectedGroup = tab" :class="[
-          'px-3 py-1.5 text-xs md:text-sm rounded-full border transition !w-auto',
-          selectedGroup === tab
-            ? 'btn-save border-transparent'
-            : 'btn-edit border-[var(--color-border)]',
-        ]">
+        <button
+          v-for="tab in groupTabs"
+          :key="tab"
+          type="button"
+          @click="selectedGroup = tab"
+          :class="[
+            'px-3 py-1.5 text-xs md:text-sm rounded-full border transition !w-auto',
+            selectedGroup === tab
+              ? 'btn-save border-transparent'
+              : 'btn-edit border-[var(--color-border)]',
+          ]"
+        >
           {{ tab }}
         </button>
       </div>
@@ -296,13 +308,18 @@ onMounted(async () => {
 
     <!-- Grille des charts -->
     <div class="charts-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <div v-for="chart in filteredCharts" :key="chart.key"
+      <div
+        v-for="chart in filteredCharts"
+        :key="chart.key"
         class="bg-[var(--color-surface)] rounded-2xl p-4 flex flex-col justify-between border border-[var(--color-border)]"
         style="
           box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
           min-height: 220px;
-          transition: transform 0.2s ease, box-shadow 0.2s ease;
-        ">
+          transition:
+            transform 0.2s ease,
+            box-shadow 0.2s ease;
+        "
+      >
         <h3 class="text-sm font-semibold mb-2 text-[var(--color-text)]">
           {{ chart.label }}
         </h3>

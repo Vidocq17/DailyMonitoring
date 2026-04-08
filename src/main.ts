@@ -11,12 +11,7 @@ import '@/assets/styles/tailwind.css'
 
 const app = createApp(App)
 
-app
-  .use(createPinia())
-  .use(Primevue)
-  .use(router)
-  .use(MotionPlugin)
-  .mount('#app')
+app.use(createPinia()).use(Primevue).use(router).use(MotionPlugin).mount('#app')
 
 // 🔥 PWA : gestion des mises à jour
 const updateSW = registerSW({

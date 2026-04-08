@@ -2,8 +2,8 @@
 import { ref } from 'vue'
 import DietCharts from './Charts/DietCharts.vue'
 import WorkoutChartsPPL from './Charts/WorkoutChartsPPL.vue'
-import WorkoutChartsSplit from './Charts/WorkoutChartsSplit.vue';
-import RunCharts from './Charts/RunCharts.vue';
+import WorkoutChartsSplit from './Charts/WorkoutChartsSplit.vue'
+import RunCharts from './Charts/RunCharts.vue'
 
 const selectedTab = ref('daily')
 </script>

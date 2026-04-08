@@ -131,7 +131,7 @@ onMounted(async () => {
       </div>
 
       <div class="flex flex-wrap gap-2 justify-center md:justify-end charts-title w-full">
-        <button type="button" class="btn-save text-xs md:text-sm" style="width: auto;">
+        <button type="button" class="btn-save text-xs md:text-sm" style="width: auto">
           Derniers {{ store.entries.length || 0 }} jours
         </button>
       </div>
@@ -152,10 +152,7 @@ onMounted(async () => {
     </div>
 
     <!-- Grille des charts -->
-    <div
-      v-else
-      class="charts-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-    >
+    <div v-else class="charts-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <div
         v-for="chart in chartsData"
         :key="chart.key"
