@@ -31,6 +31,7 @@ const groups = {
   DOS: [
     'Tractions assistées / Tirage vertical',
     'Rowing barre',
+    'Rowing unnilateral poulie haute',
     'Rowing unilateral haltères',
     'Rowing poitrine appuyée',
     'Tirage poulie basse',
@@ -81,6 +82,7 @@ const exercises = [
   // DOS
   { label: 'Tractions assistées / Tirage vertical', key: 'tractions_assistees', color: 'rgb(100, 100, 100)' },
   { label: 'Rowing barre', key: 'rowing_barre', color: 'rgb(100, 100, 100)' },
+  { label: 'Rowing unnilateral poulie haute', key: 'rowing_unilateral_poulie', color: 'rgb(100, 100, 100)' },
   { label: 'Rowing unilateral haltères', key: 'rowing_unilateral_halteres', color: 'rgb(100, 100, 100)' },
   { label: 'Rowing poitrine appuyée', key: 'rowing_poitrine_appuyee', color: 'rgb(100, 100, 100)' },
   { label: 'Tirage poulie basse', key: 'tirage_poulie_basse', color: 'rgb(100, 100, 100)' },

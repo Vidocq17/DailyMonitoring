@@ -28,6 +28,7 @@ const exercisesBySession = {
   DOS: [
     'Tractions assistées / Tirage vertical',
     'Rowing barre',
+    'Rowing unnilateral poulie haute',
     'Rowing unilateral haltères',
     'Rowing poitrine appuyée',
     'Tirage poulie basse',
@@ -89,6 +90,7 @@ const labelToKey = [
 
   { label: 'Tractions assistées / Tirage vertical', key: 'tractions_assistees' },
   { label: 'Rowing barre', key: 'rowing_barre' },
+  { label: 'Rowing unnilateral poulie haute', key: 'rowing_unilateral_poulie' },
   { label: 'Rowing unilateral haltères', key: 'rowing_unilateral_halteres' },
   { label: 'Rowing poitrine appuyée', key: 'rowing_poitrine_appuyee' },
   { label: 'Tirage poulie basse', key: 'tirage_poulie_basse' },
