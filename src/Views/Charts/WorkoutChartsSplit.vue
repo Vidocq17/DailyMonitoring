@@ -29,7 +29,8 @@ const groups = {
     'Pec deck',
   ],
   DOS: [
-    'Tractions assistées / Tirage vertical',
+    'Tractions',
+    'Tirage vertical',
     'Rowing barre',
     'Rowing unnilateral poulie haute',
     'Rowing unilateral haltères',
@@ -46,6 +47,7 @@ const groups = {
     'Farmer Walk',
   ],
   QUADRICEPS: [
+    'Squat barre',
     'Squat barre guidée',
     'Presse inclinée',
     'Fentes marchées',
@@ -56,6 +58,8 @@ const groups = {
   BICEPS: [
     'Curl incliné haltères',
     'Curl marteau haltères',
+    'Curl Baleysien',
+    'Curl marteau poulie',
     'Curl barre EZ',
     'Avant-bras / Grip',
   ],
@@ -65,11 +69,12 @@ const groups = {
     'extension overhead',
     'Dips',
   ],
-  'ISCHIOS/FESSIERS': [
+  ISCHIOS_FESSIERS: [
     'Soulevé de terre roumain',
     'Hip thrust',
     'Leg curl',
     'Abducteurs machine',
+    'Adducteurs machine',
   ],
 }
 
@@ -80,7 +85,8 @@ const exercises = [
   { label: 'Écarté à la poulie', key: 'ecarte_poulie', color: 'rgb(239, 68, 68)' },
   { label: 'Pec deck', key: 'chest_press_machine', color: 'rgb(239, 68, 68)' },
   // DOS
-  { label: 'Tractions assistées / Tirage vertical', key: 'tractions_assistees', color: 'rgb(100, 100, 100)' },
+  { label: 'Tractions', key: 'tractions_assistees', color: 'rgb(100, 100, 100)' },
+  { label: 'Tirage vertical', key: 'tirage_vertical_poulie', color: 'rgb(100, 100, 100)' },
   { label: 'Rowing barre', key: 'rowing_barre', color: 'rgb(100, 100, 100)' },
   { label: 'Rowing unnilateral poulie haute', key: 'rowing_unilateral_poulie', color: 'rgb(100, 100, 100)' },
   { label: 'Rowing unilateral haltères', key: 'rowing_unilateral_halteres', color: 'rgb(100, 100, 100)' },
@@ -95,6 +101,7 @@ const exercises = [
   { label: 'Shrug haltères', key: 'shrug_halteres', color: 'rgb(255, 150, 0)' },
   { label: 'Farmer Walk', key: 'farmer_walk', color: 'rgb(255, 150, 0)' },
   // QUADRICEPS
+  { label: 'Squat barre', key: 'squat', color: 'rgb(100, 200, 100)' },
   { label: 'Squat barre guidée', key: 'squat_barre', color: 'rgb(100, 200, 100)' },
   { label: 'Presse inclinée', key: 'presse_incline', color: 'rgb(100, 200, 100)' },
   { label: 'Fentes marchées', key: 'fentes_marchees', color: 'rgb(100, 200, 100)' },
@@ -104,6 +111,8 @@ const exercises = [
   // BICEPS
   { label: 'Curl incliné haltères', key: 'curl_halteres', color: 'rgb(255, 150, 255)' },
   { label: 'Curl marteau haltères', key: 'curl_marteau_halteres', color: 'rgb(255, 150, 255)' },
+  { label: 'Curl Baleysien', key: 'curl_baleysien', color: 'rgb(255, 150, 255)' },
+  { label: 'Curl marteau poulie', key: 'curl_marteau_poulie', color: 'rgb(255, 150, 255)' },
   { label: 'Curl barre EZ', key: 'curl_barre', color: 'rgb(255, 150, 255)' },
   { label: 'Avant-bras / Grip', key: 'grip_halteres', color: 'rgb(255, 150, 255)' },
   // TRICEPS
@@ -116,6 +125,7 @@ const exercises = [
   { label: 'Hip thrust', key: 'hip_thrust', color: 'rgb(100, 100, 100)' },
   { label: 'Leg curl', key: 'leg_curl', color: 'rgb(100, 100, 100)' },
   { label: 'Abducteurs machine', key: 'leg_abduction', color: 'rgb(100, 100, 100)' },
+  { label: 'Adducteurs machine', key: 'leg_adduction', color: 'rgb(100, 100, 100)' },
 ]
 
 const minValues = {

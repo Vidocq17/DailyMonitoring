@@ -26,7 +26,8 @@ const exercisesBySession = {
     'Pec deck',
   ],
   DOS: [
-    'Tractions assistées / Tirage vertical',
+    'Tractions',
+    'Tirage vertical',
     'Rowing barre',
     'Rowing unnilateral poulie haute',
     'Rowing unilateral haltères',
@@ -43,6 +44,7 @@ const exercisesBySession = {
     'Farmer Walk',
   ],
   QUADRICEPS: [
+    'Squat barre',
     'Squat barre guidée',
     'Presse inclinée',
     'Fentes marchées',
@@ -53,6 +55,8 @@ const exercisesBySession = {
   BICEPS: [
     'Curl incliné haltères',
     'Curl marteau haltères',
+    'Curl Baleysien',
+    'Curl marteau poulie',
     'Curl barre EZ',
     'Avant-bras / Grip',
   ],
@@ -62,11 +66,12 @@ const exercisesBySession = {
     'extension overhead',
     'Dips',
   ],
-  'ISCHIOS/FESSIERS': [
+  ISCHIOS_FESSIERS: [
     'Soulevé de terre roumain',
     'Hip thrust',
     'Leg curl',
     'Abducteurs machine',
+    'Adducteurs machine',
   ],
 }
 
@@ -88,7 +93,8 @@ const labelToKey = [
   { label: 'Écarté à la poulie', key: 'ecarte_poulie' },
   { label: 'Pec deck', key: 'chest_press_machine' },
 
-  { label: 'Tractions assistées / Tirage vertical', key: 'tractions_assistees' },
+  { label: 'Tractions', key: 'tractions_assistees' },
+  { label: 'Tirage vertical', key: 'tirage_vertical_poulie' },
   { label: 'Rowing barre', key: 'rowing_barre' },
   { label: 'Rowing unnilateral poulie haute', key: 'rowing_unilateral_poulie' },
   { label: 'Rowing unilateral haltères', key: 'rowing_unilateral_halteres' },
@@ -103,6 +109,7 @@ const labelToKey = [
   { label: 'Shrug haltères', key: 'shrug_halteres' },
   { label: 'Farmer Walk', key: 'farmer_walk' },
 
+  { label: 'Squat barre', key: 'squat' },
   { label: 'Squat barre guidée', key: 'squat_barre' },
   { label: 'Presse inclinée', key: 'presse_incline' },
   { label: 'Fentes marchées', key: 'fentes_marchees' },
@@ -112,9 +119,11 @@ const labelToKey = [
 
   { label: 'Curl incliné haltères', key: 'curl_halteres' },
   { label: 'Curl marteau haltères', key: 'curl_marteau_halteres' },
+  { label: 'Curl Baleysien', key: 'curl_baleysien' },
+  { label: 'Curl marteau poulie', key: 'curl_marteau_poulie' },
   { label: 'Curl barre EZ', key: 'curl_barre' },
   { label: 'Avant-bras / Grip', key: 'grip_halteres' },
-  
+
   { label: 'Skullcrusher barre EZ', key: 'skullcrusher' },
   { label: 'Pushdown câble', key: 'pushdown_cable' },
   { label: 'extension overhead', key: 'extension_overhead' },
@@ -124,6 +133,7 @@ const labelToKey = [
   { label: 'Hip thrust', key: 'hip_thrust' },
   { label: 'Leg curl', key: 'leg_curl' },
   { label: 'Abducteurs machine', key: 'leg_abduction' },
+  { label: 'Adducteurs machine', key: 'leg_adduction' },
 ]
 
 const isPasswordInvalid = computed(

@@ -21,7 +21,7 @@
 
 <script setup>
 import Header from './components/Header.vue'
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import { SpeedInsights } from "@vercel/speed-insights/vue"
 
 // TODO : REfacto tout le style en tailwindcss - FAIT
 // TODO : Darkode - FAIT
