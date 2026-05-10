@@ -224,7 +224,7 @@ const maxValues = {
   leg_abduction: 140,
 }
 
-const groupTabs = ['PECS', 'DOS', 'EPAULES', 'QUADRICEPS', 'BICEPS', 'TRICEPS', 'ISCHIOS/FESSIERS']
+const groupTabs = ['PECS', 'DOS', 'EPAULES', 'QUADRICEPS', 'BICEPS', 'TRICEPS', 'ISCHIOS_FESSIERS']
 
 const filteredCharts = computed(() =>
   chartsData.value.filter((chart) => groups[selectedGroup.value].includes(chart.label))

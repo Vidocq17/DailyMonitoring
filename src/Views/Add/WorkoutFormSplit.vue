@@ -16,7 +16,7 @@ const form = ref({
   weight: '',
 })
 
-const groupes_muscu = ['PECS', 'DOS', 'EPAULES', 'QUADRICEPS', 'BICEPS', 'TRICEPS', 'ISCHIOS/FESSIERS']
+const groupes_muscu = ['PECS', 'DOS', 'EPAULES', 'QUADRICEPS', 'BICEPS', 'TRICEPS', 'ISCHIOS_FESSIERS']
 
 const exercisesBySession = {
   PECS: [
