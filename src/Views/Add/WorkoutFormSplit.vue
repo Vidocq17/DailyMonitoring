@@ -2,6 +2,7 @@
 import { ref, computed, watch } from 'vue'
 import { useWorkoutStore } from '@/store/useWorkoutStore'
 import { useToast } from 'vue-toastification'
+import { MUSCLE_GROUPS, EXERCISES_BY_GROUP, LABEL_TO_KEY } from '@/data/splitWorkoutData'
 
 const store = useWorkoutStore()
 const toast = useToast()
@@ -16,70 +17,9 @@ const form = ref({
   weight: '',
 })
 
-const groupes_muscu = ['PECS', 'DOS', 'EPAULES', 'QUADRICEPS', 'BICEPS', 'TRICEPS', 'ISCHIOS_FESSIERS']
-
-const exercisesBySession = {
-  PECS: [
-    'Développé couché barre',
-    'Développé incliné haltères',
-    'Écarté à la poulie',
-    'Pec deck',
-    'Presse pectorale machine',
-    'Écartés bas-haut à la poulie',
-  ],
-  DOS: [
-    'Tractions',
-    'Tirage vertical',
-    'Rowing barre',
-    'Rowing unnilateral poulie haute',
-    'Rowing unilateral haltères',
-    'Rowing poitrine appuyée',
-    'Tirage poulie basse',
-    'Pullover câble',
-    'Reverse cable crossover',
-  ],
-  EPAULES: [
-    'Développé militaire barre',
-    'Élévations latérales haltères',
-    'Oiseau haltères / câble',
-    'Shrug haltères',
-    'Farmer Walk',
-  ],
-  QUADRICEPS: [
-    'Squat barre',
-    'Squat barre guidée',
-    'Presse inclinée',
-    'Fentes marchées',
-    'Bulgarian split squat',
-    'Leg extension',
-    'Mollets',
-  ],
-  BICEPS: [
-    'Curl incliné haltères',
-    'Curl marteau haltères',
-    'Curl Baleysien',
-    'Curl marteau poulie',
-    'Curl barre EZ',
-    'Avant-bras / Grip',
-  ],
-  TRICEPS: [
-    'Skullcrusher barre EZ',
-    'Pushdown câble',
-    'extension overhead',
-    'Dips',
-  ],
-  ISCHIOS_FESSIERS: [
-    'Soulevé de terre roumain',
-    'Hip thrust',
-    'Leg curl',
-    'Abducteurs machine',
-    'Adducteurs machine',
-  ],
-}
-
 const filteredExercises = computed(() => {
   if (!form.value.session) return []
-  return exercisesBySession[form.value.session] ?? []
+  return EXERCISES_BY_GROUP[form.value.session] ?? []
 })
 
 watch(
@@ -88,57 +28,6 @@ watch(
     form.value.exercise_name = ''
   },
 )
-
-const labelToKey = [
-  { label: 'Développé couché barre', key: 'developpe_couche_barre' },
-  { label: 'Développé incliné haltères', key: 'developpe_incline_halteres' },
-  { label: 'Écarté à la poulie', key: 'ecarte_poulie' },
-  { label: 'Pec deck', key: 'chest_press_machine' },
-  { label: 'Presse pectorale machine', key: 'chest_press_machine' },
-  { label: 'Écartés bas-haut à la poulie', key: 'ecartes_bas_haut_poulie' },
-
-  { label: 'Tractions', key: 'tractions_assistees' },
-  { label: 'Tirage vertical', key: 'tirage_vertical_poulie' },
-  { label: 'Rowing barre', key: 'rowing_barre' },
-  { label: 'Rowing unnilateral poulie haute', key: 'rowing_unilateral_poulie' },
-  { label: 'Rowing unilateral haltères', key: 'rowing_unilateral_halteres' },
-  { label: 'Rowing poitrine appuyée', key: 'rowing_poitrine_appuyee' },
-  { label: 'Tirage poulie basse', key: 'tirage_poulie_basse' },
-  { label: 'Pullover câble', key: 'pullover_cable' },
-  { label: 'Reverse cable crossover', key: 'reverse_cable' },
-
-  { label: 'Développé militaire barre', key: 'developpe_militaire_barre' },
-  { label: 'Élévations latérales haltères', key: 'elevations_laterales_halteres' },
-  { label: 'Oiseau haltères / câble', key: 'oiseau_halteres_cable' },
-  { label: 'Shrug haltères', key: 'shrug_halteres' },
-  { label: 'Farmer Walk', key: 'farmer_walk' },
-
-  { label: 'Squat barre', key: 'squat' },
-  { label: 'Squat barre guidée', key: 'squat_barre' },
-  { label: 'Presse inclinée', key: 'presse_incline' },
-  { label: 'Fentes marchées', key: 'fentes_marchees' },
-  { label: 'Bulgarian split squat', key: 'bulgarian_split_squat' },
-  { label: 'Leg extension', key: 'leg_extension' },
-  { label: 'Mollets', key: 'mollets' },
-
-  { label: 'Curl incliné haltères', key: 'curl_halteres' },
-  { label: 'Curl marteau haltères', key: 'curl_marteau_halteres' },
-  { label: 'Curl Baleysien', key: 'curl_baleysien' },
-  { label: 'Curl marteau poulie', key: 'curl_marteau_poulie' },
-  { label: 'Curl barre EZ', key: 'curl_barre' },
-  { label: 'Avant-bras / Grip', key: 'grip_halteres' },
-
-  { label: 'Skullcrusher barre EZ', key: 'skullcrusher' },
-  { label: 'Pushdown câble', key: 'pushdown_cable' },
-  { label: 'extension overhead', key: 'extension_overhead' },
-  { label: 'Dips', key: 'dips' },
-
-  { label: 'Soulevé de terre roumain', key: 'souleve_de_terre' },
-  { label: 'Hip thrust', key: 'hip_thrust' },
-  { label: 'Leg curl', key: 'leg_curl' },
-  { label: 'Abducteurs machine', key: 'leg_abduction' },
-  { label: 'Adducteurs machine', key: 'leg_adduction' },
-]
 
 const isPasswordInvalid = computed(
   () => passwordCheck.value !== '' && passwordCheck.value !== password,
@@ -154,11 +43,7 @@ const isFormValid = computed(() => {
 })
 
 const resetForm = () => {
-  form.value = {
-    session: '',
-    exercise_name: '',
-    weight: '',
-  }
+  form.value = { session: '', exercise_name: '', weight: '' }
 }
 
 const saveWeight = async () => {
@@ -167,17 +52,16 @@ const saveWeight = async () => {
     return
   }
 
-  const exercise = labelToKey.find((item) => item.label === form.value.exercise_name)
+  const key = LABEL_TO_KEY[form.value.exercise_name]
 
-  if (!exercise) {
+  if (!key) {
     toast.error("Exercice inconnu, merci de re-sélectionner l'exercice.")
     return
   }
 
   try {
-    await store.addWeight(exercise.key, parseFloat(form.value.weight))
+    await store.addWeight(key, parseFloat(form.value.weight))
     toast.success('Entrée enregistrée ✅')
-    console.log('Saved weight:', form.value.weight, 'for exercise:', exercise.key)
     resetForm()
   } catch (err) {
     console.error(err)
@@ -197,8 +81,7 @@ const saveWeight = async () => {
         </p>
       </div>
 
-      <div
-        class="bg-[var(--color-light)] p-6 md:p-8 rounded-2xl shadow-md border border-[var(--color-border)] space-y-6">
+      <div class="glass-card bg-[var(--color-light)] p-6 md:p-8 rounded-2xl space-y-6">
         <div class="flex flex-col items-center gap-2">
           <label class="w-full max-w-xs text-sm font-medium text-left">
             Mot de passe
@@ -213,8 +96,8 @@ const saveWeight = async () => {
               Groupe musculaire
               <select v-model="form.session">
                 <option value="" disabled>Sélectionner un groupe musculaire</option>
-                <option v-for="session in groupes_muscu" :key="session" :value="session">
-                  {{ session }}
+                <option v-for="group in MUSCLE_GROUPS" :key="group" :value="group">
+                  {{ group }}
                 </option>
               </select>
             </label>
@@ -223,9 +106,8 @@ const saveWeight = async () => {
               Exercice
               <select v-model="form.exercise_name" :disabled="!form.session">
                 <option value="" disabled>
-                  {{ form.session ? 'Sélectionner un exercice' : 'Choisir une séance d’abord' }}
+                  {{ form.session ? 'Sélectionner un exercice' : 'Choisir une séance d'abord' }}
                 </option>
-
                 <option v-for="ex in filteredExercises" :key="ex" :value="ex">
                   {{ ex }}
                 </option>
