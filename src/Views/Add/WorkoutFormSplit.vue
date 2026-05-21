@@ -24,6 +24,8 @@ const exercisesBySession = {
     'Développé incliné haltères',
     'Écarté à la poulie',
     'Pec deck',
+    'Presse pectorale machine',
+    'Écartés bas-haut à la poulie',
   ],
   DOS: [
     'Tractions',
@@ -92,6 +94,8 @@ const labelToKey = [
   { label: 'Développé incliné haltères', key: 'developpe_incline_halteres' },
   { label: 'Écarté à la poulie', key: 'ecarte_poulie' },
   { label: 'Pec deck', key: 'chest_press_machine' },
+  { label: 'Presse pectorale machine', key: 'chest_press_machine' },
+  { label: 'Écartés bas-haut à la poulie', key: 'ecartes_bas_haut_poulie' },
 
   { label: 'Tractions', key: 'tractions_assistees' },
   { label: 'Tirage vertical', key: 'tirage_vertical_poulie' },

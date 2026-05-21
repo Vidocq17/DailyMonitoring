@@ -27,6 +27,8 @@ const groups = {
     'Développé incliné haltères',
     'Écarté à la poulie',
     'Pec deck',
+    'Presse pectorale machine',
+    'Écartés bas-haut à la poulie',
   ],
   DOS: [
     'Tractions',
@@ -84,6 +86,8 @@ const exercises = [
   { label: 'Développé incliné haltères', key: 'developpe_incline_halteres', color: 'rgb(239, 68, 68)' },
   { label: 'Écarté à la poulie', key: 'ecarte_poulie', color: 'rgb(239, 68, 68)' },
   { label: 'Pec deck', key: 'chest_press_machine', color: 'rgb(239, 68, 68)' },
+  { label: 'Presse pectorale machine', key: 'chest_press_machine', color: 'rgb(239, 68, 68)' },
+  { label: 'Écartés bas-haut à la poulie', key: 'ecartes_bas_haut_poulie', color: 'rgb(239, 68, 68)' },
   // DOS
   { label: 'Tractions', key: 'tractions_assistees', color: 'rgb(100, 100, 100)' },
   { label: 'Tirage vertical', key: 'tirage_vertical_poulie', color: 'rgb(100, 100, 100)' },
