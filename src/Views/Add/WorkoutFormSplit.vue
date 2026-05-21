@@ -106,7 +106,7 @@ const saveWeight = async () => {
               Exercice
               <select v-model="form.exercise_name" :disabled="!form.session">
                 <option value="" disabled>
-                  {{ form.session ? 'Sélectionner un exercice' : 'Choisir une séance d'abord' }}
+                  {{ form.session ? "Sélectionner un exercice" : "Choisir une séance d'abord" }}
                 </option>
                 <option v-for="ex in filteredExercises" :key="ex" :value="ex">
                   {{ ex }}
