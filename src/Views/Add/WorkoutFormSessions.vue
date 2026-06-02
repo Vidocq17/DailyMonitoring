@@ -2,7 +2,7 @@
 import { ref, computed, watch } from 'vue'
 import { useWorkoutStore } from '@/store/useWorkoutStore'
 import { useToast } from 'vue-toastification'
-import { MUSCLE_GROUPS, EXERCISES_BY_GROUP, LABEL_TO_KEY } from '@/data/splitWorkoutData'
+import { SESSIONS, EXERCISES_BY_SESSION, SESSION_LABEL_TO_KEY } from '@/data/sessionsWorkoutData'
 
 const store = useWorkoutStore()
 const toast = useToast()
@@ -20,7 +20,7 @@ const form = ref({
 
 const filteredExercises = computed(() => {
   if (!form.value.session) return []
-  return EXERCISES_BY_GROUP[form.value.session] ?? []
+  return EXERCISES_BY_SESSION[form.value.session]?.map(e => e.label) ?? []
 })
 
 watch(
@@ -55,7 +55,7 @@ const saveWeight = async () => {
     return
   }
 
-  const key = LABEL_TO_KEY[form.value.exercise_name]
+  const key = SESSION_LABEL_TO_KEY[form.value.exercise_name]
 
   if (!key) {
     toast.error("Exercice inconnu, merci de re-sélectionner l'exercice.")
@@ -78,13 +78,13 @@ const saveWeight = async () => {
   <div class="flex flex-col items-center my-6 px-4">
     <div class="w-full max-w-3xl space-y-6">
       <div class="text-center space-y-1">
-        <h2 class="text-2xl font-semibold">Enregistrez vos poids</h2>
+        <h2 class="text-2xl font-semibold">Enregistrez vos poids (Séances)</h2>
         <p class="text-sm text-[var(--color-muted)]">
-          Choisissez une séance puis un exercice (liste filtrée).
+          Choisissez une séance puis un exercice pour enregistrer vos performances.
         </p>
       </div>
 
-      <div class="glass-card bg-[var(--color-light)] p-6 md:p-8 rounded-2xl space-y-6">
+      <div class="glass-card bg-[var(--color-light)] p-6 md:p-8 rounded-2xl space-y-6 shadow-md border border-[var(--color-border)]">
         <div class="flex flex-col items-center gap-2">
           <label class="w-full max-w-xs text-sm font-medium text-left">
             Mot de passe
@@ -96,11 +96,11 @@ const saveWeight = async () => {
         <form @submit.prevent="saveWeight" class="space-y-4">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <label class="flex flex-col text-sm font-medium">
-              Groupe musculaire
+              Séance
               <select v-model="form.session" :class="{'border-red-500': hasSubmitted && form.session === ''}">
-                <option value="" disabled>Sélectionner un groupe musculaire</option>
-                <option v-for="group in MUSCLE_GROUPS" :key="group" :value="group">
-                  {{ group }}
+                <option value="" disabled>Sélectionner une séance</option>
+                <option v-for="session in SESSIONS" :key="session" :value="session">
+                  {{ session }}
                 </option>
               </select>
               <span v-if="hasSubmitted && form.session === ''" class="text-xs text-red-500 mt-1">Requis</span>
@@ -130,9 +130,12 @@ const saveWeight = async () => {
             <button type="submit">Enregistrer</button>
           </div>
 
-          <p v-if="errorMessage" class="text-xs text-red-500">Une erreur est survenue lors de l'enregistrement.</p>
+          <p v-if="errorMessage" class="text-xs text-red-500 text-center">Une erreur est survenue lors de l'enregistrement.</p>
         </form>
       </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+</style>

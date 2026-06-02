@@ -7,6 +7,7 @@ const store = useWorkoutStore()
 const toast = useToast()
 const password = import.meta.env.VITE_PASSWORD
 const passwordCheck = ref('')
+const hasSubmitted = ref(false)
 
 const form = ref({
   exercise_name: '',
@@ -84,9 +85,11 @@ const resetForm = () => {
     exercise_name: '',
     weight: '',
   }
+  hasSubmitted.value = false
 }
 
 const saveWeight = async () => {
+  hasSubmitted.value = true
   if (!isFormValid.value) {
     toast.error('Veuillez remplir tous les champs et saisir le mot de passe.')
     return
@@ -130,10 +133,10 @@ const saveWeight = async () => {
         <div class="flex flex-col items-center gap-2">
           <label class="w-full max-w-xs text-sm font-medium text-left">
             Mot de passe
-            <input type="password" v-model="passwordCheck" placeholder="••••••••" class="w-full mt-1" />
+            <input type="password" v-model="passwordCheck" placeholder="••••••••" class="w-full mt-1" :class="{'border-red-500': hasSubmitted && passwordCheck !== password}" />
           </label>
-          <p v-if="isPasswordInvalid" class="text-xs text-red-500">
-            Mot de passe incorrect
+          <p v-if="isPasswordInvalid || (hasSubmitted && passwordCheck === '')" class="text-xs text-red-500">
+            Mot de passe manquant ou incorrect
           </p>
         </div>
 
@@ -142,22 +145,24 @@ const saveWeight = async () => {
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <label class="flex flex-col text-sm font-medium">
               Exercice
-              <select v-model="form.exercise_name">
+              <select v-model="form.exercise_name" :class="{'border-red-500': hasSubmitted && form.exercise_name === ''}">
                 <option value="" disabled>Sélectionner un exercice</option>
                 <option v-for="ex in exercises" :key="ex" :value="ex">
                   {{ ex }}
                 </option>
               </select>
+              <span v-if="hasSubmitted && form.exercise_name === ''" class="text-xs text-red-500 mt-1">Requis</span>
             </label>
 
             <label class="flex flex-col text-sm font-medium">
               Poids (kg)
-              <input type="number" v-model="form.weight" step="0.5" min="0" />
+              <input type="number" v-model="form.weight" step="0.5" min="0" :class="{'border-red-500': hasSubmitted && form.weight === ''}" />
+              <span v-if="hasSubmitted && form.weight === ''" class="text-xs text-red-500 mt-1">Requis</span>
             </label>
           </div>
 
           <div class="flex justify-center pt-2">
-            <button type="submit" :disabled="!isFormValid">
+            <button type="submit">
               Enregistrer
             </button>
           </div>

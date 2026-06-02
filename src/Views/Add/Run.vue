@@ -8,6 +8,7 @@ const toast = useToast()
 
 const password = import.meta.env.VITE_PASSWORD
 const passwordCheck = ref('')
+const hasSubmitted = ref(false)
 
 const form = ref({
   run_at: new Date().toISOString().slice(0, 16),
@@ -52,9 +53,11 @@ const resetForm = () => {
     distance_km: '',
     comment: '',
   }
+  hasSubmitted.value = false
 }
 
 const saveRun = async () => {
+  hasSubmitted.value = true
   if (!isFormValid.value) {
     toast.error('Remplis au minimum la date + durée et le mot de passe.')
     return
@@ -103,21 +106,23 @@ const saveRun = async () => {
         <div class="flex flex-col items-center gap-2">
           <label class="w-full max-w-xs text-sm font-medium text-left">
             Mot de passe
-            <input type="password" v-model="passwordCheck" placeholder="••••••••" class="w-full mt-1" />
+            <input type="password" v-model="passwordCheck" placeholder="••••••••" class="w-full mt-1" :class="{'border-red-500': hasSubmitted && passwordCheck !== password}" />
           </label>
-          <p v-if="isPasswordInvalid" class="text-xs text-red-500">Mot de passe incorrect</p>
+          <p v-if="isPasswordInvalid || (hasSubmitted && passwordCheck === '')" class="text-xs text-red-500">Mot de passe manquant ou incorrect</p>
         </div>
 
         <form @submit.prevent="saveRun" class="space-y-4">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <label class="flex flex-col text-sm font-medium">
               Date / heure
-              <input type="datetime-local" v-model="form.run_at" />
+              <input type="datetime-local" v-model="form.run_at" :class="{'border-red-500': hasSubmitted && form.run_at === ''}" />
+              <span v-if="hasSubmitted && form.run_at === ''" class="text-xs text-red-500 mt-1">Requis</span>
             </label>
 
             <label class="flex flex-col text-sm font-medium">
               Durée (mm:ss ou hh:mm:ss)
-              <input type="text" v-model="form.duration" placeholder="45:30 ou 01:02:15" />
+              <input type="text" v-model="form.duration" placeholder="45:30 ou 01:02:15" :class="{'border-red-500': hasSubmitted && (!form.duration || !parseDurationToSeconds(form.duration))}" />
+              <span v-if="hasSubmitted && (!form.duration || !parseDurationToSeconds(form.duration))" class="text-xs text-red-500 mt-1">Durée invalide ou requise</span>
             </label>
 
             <label class="flex flex-col text-sm font-medium">
@@ -132,7 +137,7 @@ const saveRun = async () => {
           </div>
 
           <div class="flex justify-center pt-2">
-            <button type="submit" :disabled="!isFormValid">Enregistrer</button>
+            <button type="submit">Enregistrer</button>
           </div>
         </form>
       </div>
