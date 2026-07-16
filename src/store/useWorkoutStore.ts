@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { supabase } from '../../supabaseClient'
 import type { WorkoutEntry, ExerciseKey } from '@/types'
+import { track } from "@decode-analytics/sdk"
 
 const WORKOUT_STORAGE_KEY = 'workout_entries_v1'
 
@@ -74,6 +75,11 @@ export const useWorkoutStore = defineStore('workout', {
       }
 
       await this.fetchWeights()
+      track('workout_weight_added', {
+        metadata: {
+          exercise: exerciseKey,
+        },
+      })
     },
 
     getBestWeight(exerciseKey: ExerciseKey): number | null {

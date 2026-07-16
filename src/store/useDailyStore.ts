@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { supabase } from '../../supabaseClient'
 import type { DailyEntry } from '@/types'
+import { track } from "@decode-analytics/sdk"
 
 const DAILY_STORAGE_KEY = 'daily_entries_v1'
 
@@ -63,6 +64,11 @@ export const useDailyStore = defineStore('daily', {
       if (data && data.length > 0) {
         this.entries.push(data[0] as DailyEntry)
         persistEntries(this.entries)
+        track('daily_created', {
+          metadata: {
+            source: 'daily-monitoring',
+          },
+        })
       }
     },
 
@@ -83,6 +89,11 @@ export const useDailyStore = defineStore('daily', {
         if (index !== -1) {
           this.entries[index] = data[0] as DailyEntry
           persistEntries(this.entries)
+          track('daily_updated', {
+            metadata: {
+              source: 'history',
+            },
+          })
         }
       }
     },
@@ -100,6 +111,11 @@ export const useDailyStore = defineStore('daily', {
 
       this.entries = this.entries.filter((entry) => entry.id !== id)
       persistEntries(this.entries)
+      track('daily_deleted', {
+        metadata: {
+          source: 'history',
+        },
+      })
     },
 
     getLastWeight(): number | null {
