@@ -4,296 +4,199 @@ import { useDailyStore } from './store/useDailyStore'
 import { useToast } from 'vue-toastification'
 
 const store = useDailyStore()
-const editingId = ref<number | null>(null)
-const editedEntry = ref<any>({})
 const toast = useToast()
 const password = import.meta.env.VITE_PASSWORD
 const passwordCheck = ref('')
 
 // --- FILTRES ---
-const fromDate = ref<string>('')         // début de période
-const toDate = ref<string>('')           // fin de période
-const onlySport = ref(false)             // ne garder que les jours avec sport
-const onlyCardio = ref(false)            // ne garder que les jours avec cardio
-const onlyAbdos = ref(false)             // ne garder que les jours avec abdos
+const fromDate = ref<string>('')
+const toDate = ref<string>('')
+const onlySport = ref(false)
+const onlyCardio = ref(false)
+const onlyAbdos = ref(false)
 
 onMounted(() => {
   store.fetchDaily()
 })
 
-const startEdit = (entry: any) => {
-  editingId.value = entry.id
-  editedEntry.value = { ...entry }
-}
-
-const cancelEdit = () => {
-  editingId.value = null
-  editedEntry.value = {}
-}
-
-const saveEdit = async () => {
-  if (!editingId.value) return
-  await store.updateDaily(editingId.value, editedEntry.value)
-  editingId.value = null
-  toast.success('Entrée mise à jour ✅')
-}
+const canDelete = computed(() => passwordCheck.value !== '' && passwordCheck.value === password)
 
 const deleteDaily = async (id: number) => {
-  if (confirm('Es-tu sûr de vouloir supprimer cette entrée ?')) {
+  if (!confirm('Es-tu sûr de vouloir supprimer cette entrée ?')) return
+  try {
     await store.deleteDaily(id)
     toast.success('Entrée supprimée ✅')
+  } catch (err: any) {
+    console.error(err)
+    toast.error(err?.message || 'Une erreur est survenue lors de la suppression.')
   }
 }
 
-const formattedDate = new Date().toLocaleDateString('fr-FR', {
-  year: 'numeric',
-  month: '2-digit',
-  day: '2-digit',
-})
-
-// Entries filtrées
 const filteredEntries = computed(() => {
-  return store.entries.filter((entry) => {
-    const entryDate = new Date(entry.date_du_jour)
+  return [...store.entries]
+    .filter((entry) => {
+      const entryDate = new Date(entry.date_du_jour)
 
-    // Filtre date début
-    if (fromDate.value) {
-      const from = new Date(fromDate.value)
-      if (entryDate < from) return false
-    }
+      if (fromDate.value) {
+        const from = new Date(fromDate.value)
+        if (entryDate < from) return false
+      }
 
-    // Filtre date fin (on inclut la fin)
-    if (toDate.value) {
-      const to = new Date(toDate.value)
-      to.setHours(23, 59, 59, 999)
-      if (entryDate > to) return false
-    }
+      if (toDate.value) {
+        const to = new Date(toDate.value)
+        to.setHours(23, 59, 59, 999)
+        if (entryDate > to) return false
+      }
 
-    // Filtre sport
-    if (onlySport.value && !entry.sport) return false
+      if (onlySport.value && !entry.sport) return false
+      if (onlyCardio.value && !entry.cardio) return false
+      if (onlyAbdos.value && !entry.abdos) return false
 
-    // Filtre cardio
-    if (onlyCardio.value && !entry.cardio) return false
-
-    // Filtre abdos
-    if (onlyAbdos.value && !entry.abdos) return false
-
-    return true
-  })
+      return true
+    })
+    .sort((a, b) => new Date(b.date_du_jour).getTime() - new Date(a.date_du_jour).getTime())
 })
+
+const dayLabel = (dateStr: string) => {
+  const entryDate = new Date(dateStr)
+  const today = new Date()
+  const yesterday = new Date()
+  yesterday.setDate(today.getDate() - 1)
+
+  const sameDay = (a: Date, b: Date) =>
+    a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate()
+
+  if (sameDay(entryDate, today)) return "Aujourd'hui"
+  if (sameDay(entryDate, yesterday)) return 'Hier'
+  return entryDate.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
+}
 </script>
 
 <template>
-  <div
-    class="p-6 md:p-8 my-6 rounded-2xl bg-[var(--color-light)] border border-[var(--color-border)] max-w-7xl mx-auto"
-    style="box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08)"
-  >
-    <!-- TOP HEADER -->
-    <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-2">
-      <div>
-        <h2 class="text-2xl font-semibold">Historique quotidien</h2>
-        <p class="text-sm text-[var(--color-muted)]">
-          Modifie ou supprime tes données passées, et filtre ton historique.
-        </p>
-      </div>
-
-      <p class="text-sm bg-[var(--color-surface)] px-3 py-1 rounded-lg border border-[var(--color-border)]">
-        Date actuelle : <strong>{{ formattedDate }}</strong>
-      </p>
+  <main class="mx-auto max-w-2xl space-y-6 px-5 pt-4 pb-8">
+    <div class="flex items-center justify-between">
+      <h2 class="text-2xl font-bold text-on-surface">Historique</h2>
     </div>
 
-    <!-- PASSWORD -->
-    <div class="flex flex-col items-center mb-6">
-      <label class="w-full max-w-xs text-sm font-medium">
-        Mot de passe
+    <!-- Mot de passe (suppression) -->
+    <section class="rounded-xl bg-white p-5 ambient-shadow">
+      <label class="block text-xs font-bold uppercase tracking-wide text-on-surface-variant">
+        Mot de passe (pour supprimer)
         <input
           type="password"
           v-model="passwordCheck"
           placeholder="••••••••"
-          class="w-full mt-1"
+          class="mt-1 w-full rounded-lg border border-transparent bg-surface-container-low px-4 py-2 text-sm text-on-surface outline-none focus:border-primary"
         />
       </label>
-      <p
-        v-if="passwordCheck !== '' && passwordCheck !== password"
-        class="text-xs text-red-500 mt-1"
-      >
-        Mot de passe incorrect
-      </p>
-    </div>
+      <p v-if="passwordCheck !== '' && !canDelete" class="mt-1 text-xs text-error">Mot de passe incorrect</p>
+    </section>
 
-    <!-- FILTRES -->
-    <section
-      class="mb-6 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl p-4 md:p-5"
-    >
-      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <!-- Dates -->
-        <div class="flex flex-wrap gap-3 items-end">
-          <div>
-            <label class="text-xs font-medium block mb-1">Du</label>
-            <input type="date" v-model="fromDate" />
-          </div>
-          <div>
-            <label class="text-xs font-medium block mb-1">Au</label>
-            <input type="date" v-model="toDate" />
-          </div>
-        </div>
-
-        <!-- Booléens -->
-        <div class="flex flex-wrap gap-3 justify-start md:justify-end text-sm">
-          <label class="flex items-center gap-1 cursor-pointer">
-            <input type="checkbox" v-model="onlySport" />
-            <span>Sport uniquement</span>
-          </label>
-
-          <label class="flex items-center gap-1 cursor-pointer">
-            <input type="checkbox" v-model="onlyCardio" />
-            <span>Cardio uniquement</span>
-          </label>
-
-          <label class="flex items-center gap-1 cursor-pointer">
-            <input type="checkbox" v-model="onlyAbdos" />
-            <span>Abdos uniquement</span>
-          </label>
-        </div>
+    <!-- Filtres -->
+    <section class="space-y-3 rounded-xl bg-white p-5 ambient-shadow">
+      <div class="grid grid-cols-2 gap-3">
+        <label class="flex flex-col text-xs font-semibold text-on-surface-variant">
+          Du
+          <input
+            type="date"
+            v-model="fromDate"
+            class="mt-1 rounded-lg border-none bg-surface-container-low px-3 py-2 text-sm text-on-surface outline-none"
+          />
+        </label>
+        <label class="flex flex-col text-xs font-semibold text-on-surface-variant">
+          Au
+          <input
+            type="date"
+            v-model="toDate"
+            class="mt-1 rounded-lg border-none bg-surface-container-low px-3 py-2 text-sm text-on-surface outline-none"
+          />
+        </label>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <button
+          type="button"
+          @click="onlySport = !onlySport"
+          class="rounded-full px-4 py-2 text-xs font-bold transition-colors active-scale"
+          :class="onlySport ? 'bg-primary text-on-primary' : 'bg-surface-container-low text-on-surface-variant'"
+        >
+          Sport
+        </button>
+        <button
+          type="button"
+          @click="onlyCardio = !onlyCardio"
+          class="rounded-full px-4 py-2 text-xs font-bold transition-colors active-scale"
+          :class="onlyCardio ? 'bg-primary text-on-primary' : 'bg-surface-container-low text-on-surface-variant'"
+        >
+          Cardio
+        </button>
+        <button
+          type="button"
+          @click="onlyAbdos = !onlyAbdos"
+          class="rounded-full px-4 py-2 text-xs font-bold transition-colors active-scale"
+          :class="onlyAbdos ? 'bg-primary text-on-primary' : 'bg-surface-container-low text-on-surface-variant'"
+        >
+          Abdos
+        </button>
       </div>
     </section>
 
-    <!-- TABLE -->
-    <div class="overflow-x-auto">
-      <table class="daily-table w-full border-collapse min-w-[950px] bg-[var(--color-surface)] rounded-lg">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Kcal</th>
-            <th>Glucides</th>
-            <th>Lipides</th>
-            <th>Protéines</th>
-            <th>Pas</th>
-            <th>Eau</th>
-            <th>Poids</th>
-            <th>Sport</th>
-            <th style="width: 140px">Séance</th>
-            <th>Cardio</th>
-            <th>Km</th>
-            <th>Type cardio</th>
-            <th>Abdos</th>
-            <th class="text-center">Actions</th>
-          </tr>
-        </thead>
+    <!-- Feed -->
+    <section class="space-y-4">
+      <div
+        v-for="entry in filteredEntries"
+        :key="entry.id"
+        class="space-y-4 rounded-xl border-l-4 bg-white p-5 ambient-shadow"
+        :class="entry.sport || entry.cardio ? 'border-primary' : 'border-outline-variant'"
+      >
+        <div class="flex items-start justify-between">
+          <div>
+            <h3 class="text-lg font-bold text-on-surface">
+              {{ new Date(entry.date_du_jour).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' }) }}
+            </h3>
+            <p class="text-xs font-semibold capitalize text-on-surface-variant">{{ dayLabel(entry.date_du_jour) }}</p>
+          </div>
+          <div class="flex gap-2">
+            <span class="flex h-8 w-8 items-center justify-center rounded-full" :class="entry.sport ? 'bg-secondary-container/30 text-on-secondary-container' : 'bg-surface-container text-outline'">
+              <span class="material-symbols-outlined text-[18px]" :class="{ filled: entry.sport }">fitness_center</span>
+            </span>
+            <span class="flex h-8 w-8 items-center justify-center rounded-full" :class="entry.cardio ? 'bg-primary/10 text-primary' : 'bg-surface-container text-outline'">
+              <span class="material-symbols-outlined text-[18px]" :class="{ filled: entry.cardio }">directions_run</span>
+            </span>
+            <span class="flex h-8 w-8 items-center justify-center rounded-full" :class="entry.abdos ? 'bg-tertiary-container/20 text-tertiary' : 'bg-surface-container text-outline'">
+              <span class="material-symbols-outlined text-[18px]" :class="{ filled: entry.abdos }">self_improvement</span>
+            </span>
+          </div>
+        </div>
 
-        <tbody>
-          <tr v-for="entry in filteredEntries" :key="entry.id">
-            <!-- DATE -->
-            <td>
-              <input
-                v-if="editingId === entry.id"
-                v-model="editedEntry.date_du_jour"
-                type="date"
-              />
-              <span v-else>{{ new Date(entry.date_du_jour).toLocaleDateString() }}</span>
-            </td>
+        <div class="grid grid-cols-2 gap-3">
+          <div class="rounded-lg bg-surface-container-low p-3">
+            <span class="block text-[11px] font-bold uppercase text-on-surface-variant">Poids</span>
+            <span class="text-lg font-bold text-primary">{{ entry.poids }} <small class="text-xs font-normal">kg</small></span>
+          </div>
+          <div class="rounded-lg bg-surface-container-low p-3">
+            <span class="block text-[11px] font-bold uppercase text-on-surface-variant">Calories</span>
+            <span class="text-lg font-bold text-primary">{{ entry.kcal }} <small class="text-xs font-normal">kcal</small></span>
+          </div>
+        </div>
 
-            <!-- NUMERIC FIELDS -->
-            <td>
-              <input v-if="editingId === entry.id" v-model="editedEntry.kcal" type="number" />
-              <span v-else>{{ entry.kcal }}</span>
-            </td>
+        <div class="flex flex-wrap items-center justify-between gap-2 text-xs font-semibold text-on-surface-variant">
+          <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">directions_walk</span>{{ entry.pas }} pas</span>
+          <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">water_drop</span>{{ entry.eau }} L</span>
+          <span v-if="entry.sport" class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">fitness_center</span>{{ entry.seance || 'Séance' }}</span>
+          <span v-if="entry.cardio" class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">directions_run</span>{{ entry.km || '-' }} km</span>
+        </div>
 
-            <td>
-              <input v-if="editingId === entry.id" v-model="editedEntry.glucides" type="number" />
-              <span v-else>{{ entry.glucides }}</span>
-            </td>
+        <div v-if="canDelete" class="flex justify-end pt-1">
+          <button type="button" @click="deleteDaily(entry.id)" class="flex h-9 w-9 items-center justify-center rounded-full bg-surface-container-low text-on-surface-variant active-scale hover:text-error">
+            <span class="material-symbols-outlined text-[18px]">delete</span>
+          </button>
+        </div>
+        <p v-else class="pt-1 text-right text-[11px] text-on-surface-variant">Mot de passe requis pour supprimer</p>
+      </div>
 
-            <td>
-              <input v-if="editingId === entry.id" v-model="editedEntry.lipides" type="number" />
-              <span v-else>{{ entry.lipides }}</span>
-            </td>
-
-            <td>
-              <input v-if="editingId === entry.id" v-model="editedEntry.proteines" type="number" />
-              <span v-else>{{ entry.proteines }}</span>
-            </td>
-
-            <td>
-              <input v-if="editingId === entry.id" v-model="editedEntry.pas" type="number" />
-              <span v-else>{{ entry.pas }}</span>
-            </td>
-
-            <td>
-              <input
-                v-if="editingId === entry.id"
-                v-model="editedEntry.eau"
-                type="number"
-                step="0.1"
-              />
-              <span v-else>{{ entry.eau }}</span>
-            </td>
-
-            <td>
-              <input
-                v-if="editingId === entry.id"
-                v-model="editedEntry.poids"
-                type="number"
-                step="0.01"
-              />
-              <span v-else>{{ entry.poids }}</span>
-            </td>
-
-            <!-- BOOLEAN BADGES -->
-            <td>
-              <input v-if="editingId === entry.id" type="checkbox" v-model="editedEntry.sport" />
-              <span v-else :class="entry.sport ? 'badge badge-green' : 'badge badge-red'">
-                {{ entry.sport ? 'Oui' : 'Non' }}
-              </span>
-            </td>
-
-            <td>
-              <input v-if="editingId === entry.id" v-model="editedEntry.seance" />
-              <span v-else>{{ entry.seance || '-' }}</span>
-            </td>
-
-            <td>
-              <input v-if="editingId === entry.id" type="checkbox" v-model="editedEntry.cardio" />
-              <span v-else :class="entry.cardio ? 'badge badge-green' : 'badge badge-red'">
-                {{ entry.cardio ? 'Oui' : 'Non' }}
-              </span>
-            </td>
-
-            <td>
-              <input v-if="editingId === entry.id" v-model="editedEntry.km" />
-              <span v-else>{{ entry.km || '-' }}</span>
-            </td>
-
-            <td>
-              <input v-if="editingId === entry.id" v-model="editedEntry.typeof_cardio" />
-              <span v-else>{{ entry.typeof_cardio || '-' }}</span>
-            </td>
-
-            <td>
-              <input v-if="editingId === entry.id" type="checkbox" v-model="editedEntry.abdos" />
-              <span v-else :class="entry.abdos ? 'badge badge-green' : 'badge badge-red'">
-                {{ entry.abdos ? 'Oui' : 'Non' }}
-              </span>
-            </td>
-
-            <!-- ACTIONS -->
-            <td class="text-center" v-if="password === passwordCheck">
-              <div v-if="editingId === entry.id" class="flex gap-2 justify-center">
-                <button class="btn btn-save" @click="saveEdit">💾</button>
-                <button class="btn btn-cancel" @click="cancelEdit">❌</button>
-              </div>
-              <div v-else class="flex gap-2 justify-center">
-                <button class="btn btn-edit" @click="startEdit(entry)">✏️</button>
-                <button class="btn btn-cancel" @click="deleteDaily(entry.id)">🗑️</button>
-              </div>
-            </td>
-
-            <td v-else class="text-center text-xs text-[var(--color-muted)]">
-              Mot de passe requis
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
+      <div v-if="filteredEntries.length === 0" class="rounded-xl bg-white p-8 text-center text-sm text-on-surface-variant ambient-shadow">
+        Aucune entrée pour cette période.
+      </div>
+    </section>
+  </main>
 </template>

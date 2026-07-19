@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia'
 import { supabase } from '../../supabaseClient'
 import type { WorkoutEntry, ExerciseKey } from '@/types'
-import { track } from "@decode-analytics/sdk"
 
 const WORKOUT_STORAGE_KEY = 'workout_entries_v1'
 
@@ -71,15 +70,10 @@ export const useWorkoutStore = defineStore('workout', {
 
       if (error) {
         console.error('Erreur addWeight:', error)
-        return
+        throw new Error(`Erreur lors de l'enregistrement de ${exerciseKey} : ${error.message}`)
       }
 
       await this.fetchWeights()
-      track('workout_weight_added', {
-        metadata: {
-          exercise: exerciseKey,
-        },
-      })
     },
 
     getBestWeight(exerciseKey: ExerciseKey): number | null {
@@ -111,7 +105,7 @@ export const useWorkoutStore = defineStore('workout', {
       this.runs = (data ?? []) as RunRow[]
     },
 
-    async addRun(payload: { duration_sec: number; distance_km: number; comment?: string }): Promise<void> {
+    async addRun(payload: { duration_sec: number; distance_km: number | null; comment?: string }): Promise<void> {
       const { error } = await supabase.from('runs').insert({
         duration_sec: payload.duration_sec,
         distance_km: payload.distance_km,
@@ -120,7 +114,7 @@ export const useWorkoutStore = defineStore('workout', {
 
       if (error) {
         console.error('Erreur addRun:', error)
-        return
+        throw new Error(`Erreur lors de l'enregistrement de la course : ${error.message}`)
       }
 
       // ✅ optionnel mais pratique : refresh direct

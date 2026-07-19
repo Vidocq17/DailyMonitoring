@@ -86,61 +86,81 @@ const saveRun = async () => {
     resetForm()
   } catch (e) {
     console.error(e)
-    toast.error("Erreur lors de l'enregistrement.")
+    toast.error(e instanceof Error ? e.message : "Erreur lors de l'enregistrement.")
   }
 }
 </script>
 
 <template>
-  <div class="flex flex-col items-center my-6 px-4">
-    <div class="w-full max-w-3xl space-y-6">
-      <div class="text-center space-y-1">
-        <h2 class="text-2xl font-semibold">Ajouter une course</h2>
-        <p class="text-sm text-[var(--color-muted)]">
-          Enregistre tes sorties (durée + optionnellement distance).
-        </p>
+  <main class="mx-auto max-w-2xl space-y-6 px-1">
+    <section class="rounded-xl bg-white p-5 ambient-shadow">
+      <label class="block text-xs font-bold uppercase tracking-wide text-on-surface-variant">
+        Mot de passe
+        <input
+          type="password"
+          v-model="passwordCheck"
+          placeholder="••••••••"
+          class="mt-1 w-full rounded-lg border bg-surface-container-low px-4 py-2 text-sm text-on-surface outline-none focus:border-primary"
+          :class="hasSubmitted && isPasswordInvalid ? 'border-error' : 'border-transparent'"
+        />
+      </label>
+      <p v-if="isPasswordInvalid || (hasSubmitted && passwordCheck === '')" class="mt-1 text-xs text-error">
+        Mot de passe manquant ou incorrect
+      </p>
+    </section>
+
+    <form @submit.prevent="saveRun" class="space-y-4 rounded-xl bg-white p-5 ambient-shadow">
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <label class="flex flex-col text-xs font-bold uppercase tracking-wide text-on-surface-variant">
+          Date / heure
+          <input
+            type="datetime-local"
+            v-model="form.run_at"
+            class="mt-1 rounded-lg border bg-surface-container-low px-3 py-2 text-sm font-medium text-on-surface outline-none"
+            :class="hasSubmitted && form.run_at === '' ? 'border-error' : 'border-transparent'"
+          />
+        </label>
+
+        <label class="flex flex-col text-xs font-bold uppercase tracking-wide text-on-surface-variant">
+          Durée (mm:ss ou hh:mm:ss)
+          <input
+            type="text"
+            v-model="form.duration"
+            placeholder="45:30 ou 01:02:15"
+            class="mt-1 rounded-lg border bg-surface-container-low px-3 py-2 text-sm font-medium text-on-surface outline-none"
+            :class="hasSubmitted && (!form.duration || !parseDurationToSeconds(form.duration)) ? 'border-error' : 'border-transparent'"
+          />
+        </label>
+
+        <label class="flex flex-col text-xs font-bold uppercase tracking-wide text-on-surface-variant">
+          Distance (km) (optionnel)
+          <input
+            type="number"
+            v-model="form.distance_km"
+            step="0.1"
+            min="0"
+            placeholder="10"
+            class="mt-1 rounded-lg border border-transparent bg-surface-container-low px-3 py-2 text-sm font-medium text-on-surface outline-none"
+          />
+        </label>
+
+        <label class="flex flex-col text-xs font-bold uppercase tracking-wide text-on-surface-variant md:col-span-2">
+          Commentaire (optionnel)
+          <input
+            type="text"
+            v-model="form.comment"
+            placeholder="EF, fractionné, sensations..."
+            class="mt-1 rounded-lg border border-transparent bg-surface-container-low px-3 py-2 text-sm font-medium text-on-surface outline-none"
+          />
+        </label>
       </div>
 
-      <div
-        class="bg-[var(--color-light)] p-6 md:p-8 rounded-2xl shadow-md border border-[var(--color-border)] space-y-6">
-        <div class="flex flex-col items-center gap-2">
-          <label class="w-full max-w-xs text-sm font-medium text-left">
-            Mot de passe
-            <input type="password" v-model="passwordCheck" placeholder="••••••••" class="w-full mt-1" :class="{'border-red-500': hasSubmitted && passwordCheck !== password}" />
-          </label>
-          <p v-if="isPasswordInvalid || (hasSubmitted && passwordCheck === '')" class="text-xs text-red-500">Mot de passe manquant ou incorrect</p>
-        </div>
-
-        <form @submit.prevent="saveRun" class="space-y-4">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <label class="flex flex-col text-sm font-medium">
-              Date / heure
-              <input type="datetime-local" v-model="form.run_at" :class="{'border-red-500': hasSubmitted && form.run_at === ''}" />
-              <span v-if="hasSubmitted && form.run_at === ''" class="text-xs text-red-500 mt-1">Requis</span>
-            </label>
-
-            <label class="flex flex-col text-sm font-medium">
-              Durée (mm:ss ou hh:mm:ss)
-              <input type="text" v-model="form.duration" placeholder="45:30 ou 01:02:15" :class="{'border-red-500': hasSubmitted && (!form.duration || !parseDurationToSeconds(form.duration))}" />
-              <span v-if="hasSubmitted && (!form.duration || !parseDurationToSeconds(form.duration))" class="text-xs text-red-500 mt-1">Durée invalide ou requise</span>
-            </label>
-
-            <label class="flex flex-col text-sm font-medium">
-              Distance (km) (optionnel)
-              <input type="number" v-model="form.distance_km" step="0.1" min="0" placeholder="10" />
-            </label>
-
-            <label class="flex flex-col text-sm font-medium md:col-span-2">
-              Commentaire (optionnel)
-              <input type="text" v-model="form.comment" placeholder="EF, fractionné, sensations..." />
-            </label>
-          </div>
-
-          <div class="flex justify-center pt-2">
-            <button type="submit">Enregistrer</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
+      <button
+        type="submit"
+        class="flex w-full items-center justify-center gap-2 rounded-full bg-primary py-4 font-bold text-on-primary shadow-lg shadow-primary/20 transition-all active-scale hover:opacity-90"
+      >
+        Enregistrer
+      </button>
+    </form>
+  </main>
 </template>

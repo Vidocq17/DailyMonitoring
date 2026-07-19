@@ -2,11 +2,13 @@ import { createRouter, createWebHistory } from 'vue-router'
 import History from '@/History.vue'
 import Charts from '@/Views/Charts.vue'
 import Add from '@/Views/Add.vue'
+import Workout from '@/Views/Workout.vue'
 import Homepage from '@/Views/Homepage.vue'
 
 const routes: RouteRecordRaw[] = [
   { path: '/', name: 'Home', component: Homepage },
   { path: '/add', component: Add },
+  { path: '/workout', component: Workout },
   { path: '/history', component: History },
   { path: '/stats', component: Charts },
 ]

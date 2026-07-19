@@ -12,11 +12,11 @@ const selectedTab = ref('daily')
 <template>
   <div>
     <div class="flex justify-center gap-4 mb-4">
-      <button @click="selectedTab = 'daily'">Régime</button>
+      <button class="legacy-btn" @click="selectedTab = 'daily'">Régime</button>
       <!-- <button @click="selectedTab = 'sport'">Sport PPL</button> -->
       <!-- <button @click="selectedTab = 'sportSplit'">Sport Split</button> -->
-      <button @click="selectedTab = 'sportSessions'">Sport Séances</button>
-      <button @click="selectedTab = 'run'">Course</button>
+      <button class="legacy-btn" @click="selectedTab = 'sportSessions'">Sport Séances</button>
+      <button class="legacy-btn" @click="selectedTab = 'run'">Course</button>
     </div>
 
     <DietCharts v-if="selectedTab === 'daily'" />

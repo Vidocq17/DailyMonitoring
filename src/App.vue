@@ -1,6 +1,6 @@
 <template>
-  <div id="app">
-    <Header v-if="$route.name !== 'Home'" />
+  <div id="app" class="min-h-screen bg-background pb-28 font-sans text-on-background">
+    <AppHeader />
     <SpeedInsights />
     <RouterView v-slot="slotProps">
       <div
@@ -16,11 +16,13 @@
         />
       </div>
     </RouterView>
+    <BottomNav />
   </div>
 </template>
 
 <script setup>
-import Header from './components/Header.vue'
+import AppHeader from './components/AppHeader.vue'
+import BottomNav from './components/BottomNav.vue'
 import { SpeedInsights } from "@vercel/speed-insights/vue"
 
 // TODO : REfacto tout le style en tailwindcss - FAIT

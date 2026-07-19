@@ -4,12 +4,12 @@ import { useDailyStore } from '@/store/useDailyStore'
 import { useToast } from 'vue-toastification'
 
 const store = useDailyStore()
-// const sportOptions = ['Push', 'Pull', 'Legs', 'Full Body', 'Cardio']
 const sportOptions = ['UPPER', 'LOWER', 'FULL BODY', 'CARDIO']
 const cardioOptions = ['Course', 'Marche inclinée', 'Marche']
 const toast = useToast()
 const password = import.meta.env.VITE_PASSWORD
 const passwordCheck = ref('')
+const isSubmitting = ref(false)
 
 const getDefaultForm = () => ({
   date_du_jour: new Date().toISOString().split('T')[0],
@@ -52,14 +52,7 @@ const isFormValid = computed(() => {
     form.value.poids !== ''
 
   const cardioValid =
-    !form.value.cardio ||
-    (form.value.cardio &&
-      form.value.km !== '' &&
-      form.value.typeof_cardio !== '')
-
-  // Si tu veux que la séance devienne obligatoire quand sport = true :
-  // const sportValid =
-  //   !form.value.sport || (form.value.sport && form.value.seance !== '')
+    !form.value.cardio || (form.value.cardio && form.value.km !== '' && form.value.typeof_cardio !== '')
 
   return requiredFieldsFilled && cardioValid
 })
@@ -71,160 +64,211 @@ const saveEntry = async () => {
     return
   }
 
+  isSubmitting.value = true
   try {
-    await store.addDaily({ ...form.value })
+    const payload = {
+      date_du_jour: form.value.date_du_jour,
+      kcal: Number(form.value.kcal),
+      glucides: Number(form.value.glucides),
+      lipides: Number(form.value.lipides),
+      proteines: Number(form.value.proteines),
+      pas: Number(form.value.pas),
+      eau: Number(form.value.eau),
+      poids: Number(form.value.poids),
+      sport: form.value.sport,
+      seance: form.value.sport && form.value.seance !== '' ? form.value.seance : null,
+      cardio: form.value.cardio,
+      km: form.value.cardio && form.value.km !== '' ? Number(form.value.km) : null,
+      typeof_cardio: form.value.cardio && form.value.typeof_cardio !== '' ? form.value.typeof_cardio : null,
+      abdos: form.value.abdos,
+    }
+
+    await store.addDaily(payload)
     toast.success('Entrée enregistrée ✅')
     resetForm()
     window.scrollTo({ top: 0, behavior: 'smooth' })
   } catch (err) {
     console.error(err)
-    toast.error('Une erreur est survenue lors de l’enregistrement.')
+    toast.error(err?.message || 'Une erreur est survenue lors de l’enregistrement.')
+  } finally {
+    isSubmitting.value = false
   }
 }
 </script>
 
 <template>
-  <div class="flex flex-col items-center my-6 px-4">
-    <div class="w-full max-w-3xl space-y-6">
-      <div class="text-center space-y-1">
-        <h2 class="text-2xl font-semibold">Nouvelle entrée quotidienne</h2>
-        <p class="text-sm text-[var(--color-muted)]">
-          Renseigne tes données du jour pour suivre ta progression.
-        </p>
+  <main class="mx-auto max-w-2xl space-y-8 px-5 pt-4">
+    <section class="space-y-1">
+      <h2 class="text-2xl font-bold text-on-surface">Mon suivi du jour</h2>
+      <p class="text-sm text-on-surface-variant opacity-70">
+        Enregistre tes métriques du jour pour rester sur la bonne voie.
+      </p>
+    </section>
+
+    <!-- Mot de passe -->
+    <section class="rounded-xl bg-white p-5 ambient-shadow">
+      <label class="block text-xs font-bold uppercase tracking-wide text-on-surface-variant">
+        Mot de passe
+        <input
+          type="password"
+          v-model="passwordCheck"
+          placeholder="••••••••"
+          class="mt-1 w-full rounded-lg border bg-surface-container-low px-4 py-2 text-sm text-on-surface outline-none transition-colors focus:border-primary"
+          :class="hasSubmitted && isPasswordInvalid ? 'border-error' : 'border-transparent'"
+        />
+      </label>
+      <p v-if="isPasswordInvalid || (hasSubmitted && passwordCheck === '')" class="mt-1 text-xs text-error">
+        Mot de passe manquant ou incorrect
+      </p>
+    </section>
+
+    <form class="space-y-6" @submit.prevent="saveEntry">
+      <!-- Métriques principales -->
+      <div class="grid grid-cols-2 gap-4">
+        <label class="rounded-xl border bg-white p-5 ambient-shadow transition-colors focus-within:border-primary/30" :class="hasSubmitted && form.poids === '' ? 'border-error' : 'border-transparent'">
+          <div class="mb-2 flex items-start justify-between">
+            <span class="material-symbols-outlined text-[20px] text-primary">scale</span>
+            <span class="text-[11px] font-bold uppercase tracking-wide text-on-surface-variant">Poids</span>
+          </div>
+          <div class="flex items-baseline gap-1">
+            <input v-model="form.poids" type="number" step="0.01" placeholder="00.0" class="w-full border-none bg-transparent p-0 text-xl font-bold text-on-surface outline-none placeholder:opacity-30" />
+            <span class="text-xs font-semibold text-on-surface-variant">kg</span>
+          </div>
+        </label>
+
+        <label class="rounded-xl border bg-white p-5 ambient-shadow transition-colors focus-within:border-primary/30" :class="hasSubmitted && form.kcal === '' ? 'border-error' : 'border-transparent'">
+          <div class="mb-2 flex items-start justify-between">
+            <span class="material-symbols-outlined text-[20px] text-primary">local_fire_department</span>
+            <span class="text-[11px] font-bold uppercase tracking-wide text-on-surface-variant">Calories</span>
+          </div>
+          <div class="flex items-baseline gap-1">
+            <input v-model="form.kcal" type="number" placeholder="0" class="w-full border-none bg-transparent p-0 text-xl font-bold text-on-surface outline-none placeholder:opacity-30" />
+            <span class="text-xs font-semibold text-on-surface-variant">kcal</span>
+          </div>
+        </label>
+
+        <label class="rounded-xl border bg-white p-5 ambient-shadow transition-colors focus-within:border-primary/30" :class="hasSubmitted && form.eau === '' ? 'border-error' : 'border-transparent'">
+          <div class="mb-2 flex items-start justify-between">
+            <span class="material-symbols-outlined text-[20px] text-primary">water_drop</span>
+            <span class="text-[11px] font-bold uppercase tracking-wide text-on-surface-variant">Eau</span>
+          </div>
+          <div class="flex items-baseline gap-1">
+            <input v-model="form.eau" type="number" step="0.1" placeholder="0.0" class="w-full border-none bg-transparent p-0 text-xl font-bold text-on-surface outline-none placeholder:opacity-30" />
+            <span class="text-xs font-semibold text-on-surface-variant">L</span>
+          </div>
+        </label>
+
+        <label class="rounded-xl border bg-white p-5 ambient-shadow transition-colors focus-within:border-primary/30" :class="hasSubmitted && form.pas === '' ? 'border-error' : 'border-transparent'">
+          <div class="mb-2 flex items-start justify-between">
+            <span class="material-symbols-outlined text-[20px] text-primary">directions_walk</span>
+            <span class="text-[11px] font-bold uppercase tracking-wide text-on-surface-variant">Pas</span>
+          </div>
+          <div class="flex items-baseline gap-1">
+            <input v-model="form.pas" type="number" placeholder="0" class="w-full border-none bg-transparent p-0 text-xl font-bold text-on-surface outline-none placeholder:opacity-30" />
+          </div>
+        </label>
       </div>
 
-      <div class="bg-[var(--color-light)] p-6 md:p-8 rounded-2xl w-full shadow-md border border-[var(--color-border)]">
-        <!-- Mot de passe -->
-        <div class="flex flex-col items-center gap-2 mb-6">
-          <label class="w-full max-w-xs text-sm font-medium text-left">
-            Mot de passe
-            <input type="password" v-model="passwordCheck" placeholder="••••••••" class="w-full mt-1" :class="{'border-red-500': hasSubmitted && passwordCheck !== password}" />
-          </label>
-          <p v-if="isPasswordInvalid || (hasSubmitted && passwordCheck === '')" class="text-xs text-red-500">
-            Mot de passe manquant ou incorrect
-          </p>
-        </div>
-
-        <div class="space-y-6">
-          <!-- Section nutrition -->
-          <section class="border border-blue-700/50 rounded-2xl p-4 md:p-5 bg-[var(--color-surface)] space-y-4">
-            <div class="flex items-center justify-between">
-              <h3 class="font-semibold text-base">Nutrition & poids</h3>
-              <span class="badge badge-blue text-xs">Obligatoire</span>
+      <!-- Macros -->
+      <div class="space-y-3">
+        <h3 class="px-1 text-xs font-bold uppercase tracking-widest text-on-surface-variant">Macronutriments</h3>
+        <div class="space-y-3">
+          <div class="flex items-center gap-4 rounded-xl border bg-surface-container-low px-4 py-3 transition-all focus-within:border-primary/30 focus-within:bg-white" :class="hasSubmitted && form.glucides === '' ? 'border-error' : 'border-transparent'">
+            <span class="h-8 w-2 rounded-full bg-tertiary-fixed-dim"></span>
+            <div class="flex-1">
+              <label class="mb-0.5 block text-[11px] font-semibold text-on-surface-variant">Glucides</label>
+              <input v-model="form.glucides" type="number" placeholder="0" class="h-6 w-full border-none bg-transparent p-0 font-bold text-on-surface outline-none" />
             </div>
+            <span class="text-xs font-semibold text-outline">g</span>
+          </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <label class="flex flex-col text-sm font-medium">
-                Kcal
-                <input type="number" v-model="form.kcal" :class="{'border-red-500': hasSubmitted && form.kcal === ''}" required />
-                <span v-if="hasSubmitted && form.kcal === ''" class="text-xs text-red-500 mt-1">Requis</span>
-              </label>
-
-              <label class="flex flex-col text-sm font-medium">
-                Poids (kg)
-                <input type="number" step="0.01" v-model="form.poids" :class="{'border-red-500': hasSubmitted && form.poids === ''}" required />
-                <span v-if="hasSubmitted && form.poids === ''" class="text-xs text-red-500 mt-1">Requis</span>
-              </label>
-
-              <label class="flex flex-col text-sm font-medium">
-                Pas
-                <input type="number" v-model="form.pas" :class="{'border-red-500': hasSubmitted && form.pas === ''}" required />
-                <span v-if="hasSubmitted && form.pas === ''" class="text-xs text-red-500 mt-1">Requis</span>
-              </label>
-
-              <label class="flex flex-col text-sm font-medium">
-                Glucides (g)
-                <input type="number" v-model="form.glucides" :class="{'border-red-500': hasSubmitted && form.glucides === ''}" required />
-                <span v-if="hasSubmitted && form.glucides === ''" class="text-xs text-red-500 mt-1">Requis</span>
-              </label>
-
-              <label class="flex flex-col text-sm font-medium">
-                Protéines (g)
-                <input type="number" v-model="form.proteines" :class="{'border-red-500': hasSubmitted && form.proteines === ''}" required />
-                <span v-if="hasSubmitted && form.proteines === ''" class="text-xs text-red-500 mt-1">Requis</span>
-              </label>
-
-              <label class="flex flex-col text-sm font-medium">
-                Lipides (g)
-                <input type="number" v-model="form.lipides" :class="{'border-red-500': hasSubmitted && form.lipides === ''}" required />
-                <span v-if="hasSubmitted && form.lipides === ''" class="text-xs text-red-500 mt-1">Requis</span>
-              </label>
-
-              <label class="flex flex-col text-sm font-medium md:col-span-3">
-                Eau (L)
-                <input type="number" step="0.1" v-model="form.eau" :class="{'border-red-500': hasSubmitted && form.eau === ''}" required />
-                <span v-if="hasSubmitted && form.eau === ''" class="text-xs text-red-500 mt-1">Requis</span>
-              </label>
+          <div class="flex items-center gap-4 rounded-xl border bg-surface-container-low px-4 py-3 transition-all focus-within:border-primary/30 focus-within:bg-white" :class="hasSubmitted && form.proteines === '' ? 'border-error' : 'border-transparent'">
+            <span class="h-8 w-2 rounded-full bg-secondary-fixed"></span>
+            <div class="flex-1">
+              <label class="mb-0.5 block text-[11px] font-semibold text-on-surface-variant">Protéines</label>
+              <input v-model="form.proteines" type="number" placeholder="0" class="h-6 w-full border-none bg-transparent p-0 font-bold text-on-surface outline-none" />
             </div>
-          </section>
+            <span class="text-xs font-semibold text-outline">g</span>
+          </div>
 
-          <!-- Section activité -->
-          <section class="border border-blue-700/50 rounded-2xl p-4 md:p-5 bg-[var(--color-surface)] space-y-4">
-            <div class="flex items-center justify-between">
-              <h3 class="font-semibold text-base">Activité physique</h3>
-              <span class="badge badge-green text-xs">Optionnel</span>
+          <div class="flex items-center gap-4 rounded-xl border bg-surface-container-low px-4 py-3 transition-all focus-within:border-primary/30 focus-within:bg-white" :class="hasSubmitted && form.lipides === '' ? 'border-error' : 'border-transparent'">
+            <span class="h-8 w-2 rounded-full bg-error-container"></span>
+            <div class="flex-1">
+              <label class="mb-0.5 block text-[11px] font-semibold text-on-surface-variant">Lipides</label>
+              <input v-model="form.lipides" type="number" placeholder="0" class="h-6 w-full border-none bg-transparent p-0 font-bold text-on-surface outline-none" />
             </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <!-- Sport -->
-              <div class="flex flex-col justify-center">
-                <label class="flex items-center gap-2 text-sm font-medium">
-                  <input type="checkbox" v-model="form.sport" />
-                  Sport fait ?
-                </label>
-              </div>
-
-              <label class="flex flex-col text-sm font-medium">
-                Séance
-                <select v-model="form.seance" :disabled="!form.sport">
-                  <option value="">Sélectionner (optionnel)</option>
-                  <option v-for="option in sportOptions" :key="option" :value="option">
-                    {{ option }}
-                  </option>
-                </select>
-              </label>
-
-              <div class="flex flex-col justify-center">
-                <label class="flex items-center gap-2 text-sm font-medium">
-                  <input type="checkbox" v-model="form.abdos" />
-                  Abdos faits ?
-                </label>
-              </div>
-
-              <!-- Cardio -->
-              <div class="flex flex-col justify-center">
-                <label class="flex items-center gap-2 text-sm font-medium">
-                  <input type="checkbox" v-model="form.cardio" />
-                  Cardio fait ?
-                </label>
-              </div>
-
-              <label class="flex flex-col text-sm font-medium">
-                Km
-                <input type="number" step="0.01" v-model="form.km" :disabled="!form.cardio" :required="form.cardio" :class="{'border-red-500': hasSubmitted && form.cardio && form.km === ''}" />
-                <span v-if="hasSubmitted && form.cardio && form.km === ''" class="text-xs text-red-500 mt-1">Requis</span>
-              </label>
-
-              <label class="flex flex-col text-sm font-medium">
-                Type de cardio
-                <select v-model="form.typeof_cardio" :disabled="!form.cardio" :required="form.cardio" :class="{'border-red-500': hasSubmitted && form.cardio && form.typeof_cardio === ''}">
-                  <option value="">Sélectionner</option>
-                  <option v-for="option in cardioOptions" :key="option" :value="option">
-                    {{ option }}
-                  </option>
-                </select>
-                <span v-if="hasSubmitted && form.cardio && form.typeof_cardio === ''" class="text-xs text-red-500 mt-1">Requis</span>
-              </label>
-            </div>
-          </section>
-        </div>
-
-        <div class="mt-6 flex justify-center">
-          <button type="button" @click="saveEntry">
-            Enregistrer
-          </button>
+            <span class="text-xs font-semibold text-outline">g</span>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
+
+      <!-- Activité physique -->
+      <div class="space-y-3">
+        <h3 class="px-1 text-xs font-bold uppercase tracking-widest text-on-surface-variant">Activité physique</h3>
+
+        <label class="flex flex-col gap-3 rounded-xl bg-white p-4 ambient-shadow">
+          <div class="flex cursor-pointer items-center justify-between">
+            <span class="flex items-center gap-3 font-semibold text-on-surface">
+              <span class="material-symbols-outlined text-secondary">fitness_center</span>
+              Séance de sport effectuée
+            </span>
+            <input type="checkbox" v-model="form.sport" class="h-6 w-6 rounded-md accent-secondary" />
+          </div>
+          <select
+            v-if="form.sport"
+            v-model="form.seance"
+            class="w-full rounded-lg border-none bg-surface-container-low px-3 py-2 text-sm text-on-surface outline-none"
+          >
+            <option value="">Type de séance (optionnel)</option>
+            <option v-for="option in sportOptions" :key="option" :value="option">{{ option }}</option>
+          </select>
+        </label>
+
+        <label class="flex flex-col gap-3 rounded-xl bg-white p-4 ambient-shadow">
+          <div class="flex cursor-pointer items-center justify-between">
+            <span class="flex items-center gap-3 font-semibold text-on-surface">
+              <span class="material-symbols-outlined text-primary">directions_run</span>
+              Cardio effectué
+            </span>
+            <input type="checkbox" v-model="form.cardio" class="h-6 w-6 rounded-md accent-primary" />
+          </div>
+          <div v-if="form.cardio" class="grid grid-cols-2 gap-3">
+            <input
+              v-model="form.km"
+              type="number"
+              step="0.01"
+              placeholder="Km"
+              class="rounded-lg border bg-surface-container-low px-3 py-2 text-sm text-on-surface outline-none"
+              :class="hasSubmitted && form.km === '' ? 'border-error' : 'border-transparent'"
+            />
+            <select
+              v-model="form.typeof_cardio"
+              class="rounded-lg border bg-surface-container-low px-3 py-2 text-sm text-on-surface outline-none"
+              :class="hasSubmitted && form.typeof_cardio === '' ? 'border-error' : 'border-transparent'"
+            >
+              <option value="">Type</option>
+              <option v-for="option in cardioOptions" :key="option" :value="option">{{ option }}</option>
+            </select>
+          </div>
+        </label>
+
+        <label class="flex cursor-pointer items-center justify-between rounded-xl bg-white p-4 ambient-shadow">
+          <span class="flex items-center gap-3 font-semibold text-on-surface">
+            <span class="material-symbols-outlined text-tertiary">self_improvement</span>
+            Abdos faits
+          </span>
+          <input type="checkbox" v-model="form.abdos" class="h-6 w-6 rounded-md accent-tertiary" />
+        </label>
+      </div>
+
+      <button
+        type="submit"
+        :disabled="isSubmitting"
+        class="mt-2 flex w-full items-center justify-center gap-2 rounded-full bg-primary py-4 font-bold text-on-primary shadow-lg shadow-primary/20 transition-all active-scale hover:opacity-90 disabled:opacity-60"
+      >
+        <span class="material-symbols-outlined filled">{{ isSubmitting ? 'sync' : 'save' }}</span>
+        {{ isSubmitting ? 'Enregistrement...' : 'Enregistrer' }}
+      </button>
+    </form>
+  </main>
 </template>

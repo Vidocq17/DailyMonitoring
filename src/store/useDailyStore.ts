@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia'
 import { supabase } from '../../supabaseClient'
 import type { DailyEntry } from '@/types'
-import { track } from "@decode-analytics/sdk"
 
 const DAILY_STORAGE_KEY = 'daily_entries_v1'
 
@@ -58,43 +57,12 @@ export const useDailyStore = defineStore('daily', {
 
       if (error) {
         console.error(error)
-        return
+        throw new Error(`Erreur lors de l'ajout de l'entrée : ${error.message}`)
       }
 
       if (data && data.length > 0) {
         this.entries.push(data[0] as DailyEntry)
         persistEntries(this.entries)
-        track('daily_created', {
-          metadata: {
-            source: 'daily-monitoring',
-          },
-        })
-      }
-    },
-
-    async updateDaily(id: number, updatedEntry: Partial<DailyEntry>): Promise<void> {
-      const { data, error } = await supabase
-        .from('daily_monitoring')
-        .update(updatedEntry)
-        .eq('id', id)
-        .select()
-
-      if (error) {
-        console.error('Erreur update :', error)
-        return
-      }
-
-      if (data && data.length > 0) {
-        const index = this.entries.findIndex((e) => e.id === id)
-        if (index !== -1) {
-          this.entries[index] = data[0] as DailyEntry
-          persistEntries(this.entries)
-          track('daily_updated', {
-            metadata: {
-              source: 'history',
-            },
-          })
-        }
       }
     },
 
@@ -106,16 +74,11 @@ export const useDailyStore = defineStore('daily', {
 
       if (error) {
         console.error('Erreur suppression :', error)
-        return
+        throw new Error("Erreur lors de la suppression de l'entrée")
       }
 
       this.entries = this.entries.filter((entry) => entry.id !== id)
       persistEntries(this.entries)
-      track('daily_deleted', {
-        metadata: {
-          source: 'history',
-        },
-      })
     },
 
     getLastWeight(): number | null {
