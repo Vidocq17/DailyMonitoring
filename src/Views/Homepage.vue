@@ -6,21 +6,26 @@
       <p class="text-sm font-semibold uppercase tracking-wide text-on-surface-variant">{{ formattedDate }}</p>
     </section>
 
-    <!-- Hero poids -->
-    <section
-      class="relative flex flex-col items-center justify-center overflow-hidden rounded-3xl bg-white p-6 text-center ambient-shadow"
-    >
-      <span class="material-symbols-outlined absolute right-3 top-3 text-[80px] text-primary opacity-10"
-        >monitor_weight</span
-      >
-      <span class="text-xs font-bold uppercase tracking-widest text-primary">Poids actuel</span>
-      <div class="mt-1 flex items-baseline gap-1">
-        <span class="text-4xl font-extrabold text-on-surface">{{ lastWeight ?? '--' }}</span>
-        <span class="text-lg font-semibold text-on-surface-variant">kg</span>
-      </div>
+    <!-- Hero poids : knob circulaire montrant l'avancée vers l'objectif -->
+    <section class="flex flex-col items-center gap-3 rounded-3xl bg-white p-6 text-center ambient-shadow">
+      <span class="text-xs font-bold uppercase tracking-widest text-primary">Avancée vers l'objectif</span>
+
+      <!-- Knob : % = objectif / poids actuel. Se rapproche de 100% quand le
+           poids actuel se rapproche de l'objectif. Si le poids passe SOUS
+           l'objectif (perte de poids déjà dépassée), value > max -> le
+           ProgressRing dessine un tour bonus doré au-delà de 100%. -->
+      <ProgressRing :value="objectif" :max="lastWeight ?? objectif" :size="176" :stroke-width="12">
+        <template #default="{ pct, isOverflow }">
+          <span class="text-3xl font-extrabold text-on-surface">{{ lastWeight ?? '--' }}</span>
+          <span class="text-xs font-semibold" :class="isOverflow ? 'text-tertiary' : 'text-on-surface-variant'"
+            >kg · {{ pct }}%</span
+          >
+        </template>
+      </ProgressRing>
+
       <div
         v-if="weightTrend !== null"
-        class="mt-2 flex items-center gap-1 text-sm font-semibold"
+        class="flex items-center gap-1 text-sm font-semibold"
         :class="weightTrend <= 0 ? 'text-secondary' : 'text-error'"
       >
         <span class="material-symbols-outlined text-[16px]">{{
@@ -28,15 +33,7 @@
         }}</span>
         <span>{{ weightTrend > 0 ? '+' : '' }}{{ weightTrend }} kg depuis la dernière entrée</span>
       </div>
-      <p class="mt-3 text-xs text-on-surface-variant">
-        Objectif {{ objectif }} kg · reste {{ reste ?? '--' }} kg
-      </p>
-      <div class="mt-3 h-2 w-full max-w-xs overflow-hidden rounded-full bg-surface-container">
-        <div
-          class="h-full rounded-full bg-gradient-to-r from-secondary-fixed-dim to-primary transition-all duration-500"
-          :style="{ width: progression + '%' }"
-        ></div>
-      </div>
+      <p class="text-xs text-on-surface-variant">Objectif {{ objectif }} kg · reste {{ reste ?? '--' }} kg</p>
     </section>
 
     <!-- Bento grid -->
@@ -46,9 +43,24 @@
           <span class="text-[11px] font-bold uppercase tracking-wide text-on-surface-variant">Calories</span>
           <span class="material-symbols-outlined text-[#F59E0B]">local_fire_department</span>
         </div>
-        <div class="flex flex-col">
-          <span class="text-xl font-bold text-on-surface">{{ lastEntry?.kcal ?? '--' }}</span>
-          <span class="text-[11px] text-on-surface-variant">kcal aujourd'hui</span>
+        <div class="flex items-center gap-3">
+          <ProgressRing
+            :value="lastEntry?.kcal ?? 0"
+            :max="CALORIES_TARGET"
+            :size="56"
+            :stroke-width="7"
+            progress-class="stroke-[#F59E0B]"
+          >
+            <template #default="{ pct, isOverflow }">
+              <span class="text-[10px] font-bold" :class="isOverflow ? 'text-tertiary' : 'text-on-surface'"
+                >{{ pct }}%</span
+              >
+            </template>
+          </ProgressRing>
+          <div class="flex flex-col">
+            <span class="text-xl font-bold text-on-surface">{{ lastEntry?.kcal ?? '--' }}</span>
+            <span class="text-[11px] text-on-surface-variant">/ {{ CALORIES_TARGET }} kcal</span>
+          </div>
         </div>
       </div>
 
@@ -57,9 +69,24 @@
           <span class="text-[11px] font-bold uppercase tracking-wide text-on-surface-variant">Hydratation</span>
           <span class="material-symbols-outlined text-blue-500">water_drop</span>
         </div>
-        <div class="flex flex-col">
-          <span class="text-xl font-bold text-on-surface">{{ lastEntry?.eau ?? '--' }}</span>
-          <span class="text-[11px] text-on-surface-variant">litres</span>
+        <div class="flex items-center gap-3">
+          <ProgressRing
+            :value="lastEntry?.eau ?? 0"
+            :max="WATER_TARGET"
+            :size="56"
+            :stroke-width="7"
+            progress-class="stroke-blue-500"
+          >
+            <template #default="{ pct, isOverflow }">
+              <span class="text-[10px] font-bold" :class="isOverflow ? 'text-tertiary' : 'text-on-surface'"
+                >{{ pct }}%</span
+              >
+            </template>
+          </ProgressRing>
+          <div class="flex flex-col">
+            <span class="text-xl font-bold text-on-surface">{{ lastEntry?.eau ?? '--' }}</span>
+            <span class="text-[11px] text-on-surface-variant">/ {{ WATER_TARGET }} L</span>
+          </div>
         </div>
       </div>
 
@@ -68,9 +95,24 @@
           <span class="text-[11px] font-bold uppercase tracking-wide text-on-surface-variant">Pas</span>
           <span class="material-symbols-outlined text-secondary">directions_walk</span>
         </div>
-        <div class="flex flex-col">
-          <span class="text-xl font-bold text-on-surface">{{ lastEntry?.pas ?? '--' }}</span>
-          <span class="text-[11px] text-on-surface-variant">pas aujourd'hui</span>
+        <div class="flex items-center gap-3">
+          <ProgressRing
+            :value="lastEntry?.pas ?? 0"
+            :max="STEPS_TARGET"
+            :size="56"
+            :stroke-width="7"
+            progress-class="stroke-secondary"
+          >
+            <template #default="{ pct, isOverflow }">
+              <span class="text-[10px] font-bold" :class="isOverflow ? 'text-tertiary' : 'text-on-surface'"
+                >{{ pct }}%</span
+              >
+            </template>
+          </ProgressRing>
+          <div class="flex flex-col">
+            <span class="text-xl font-bold text-on-surface">{{ lastEntry?.pas ?? '--' }}</span>
+            <span class="text-[11px] text-on-surface-variant">/ {{ STEPS_TARGET }}</span>
+          </div>
         </div>
       </div>
 
@@ -173,9 +215,15 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useDailyStore } from '@/store/useDailyStore'
+import ProgressRing from '@/components/ProgressRing.vue'
 
 const store = useDailyStore()
 const objectif = ref(75)
+
+// Objectifs fixes du dashboard (anneaux de progression)
+const CALORIES_TARGET = 2200
+const WATER_TARGET = 2.5
+const STEPS_TARGET = 13000
 
 onMounted(() => {
   store.fetchDaily()
@@ -196,12 +244,6 @@ const weightTrend = computed(() => {
 })
 
 const reste = computed(() => (lastWeight.value ? +(lastWeight.value - objectif.value).toFixed(1) : null))
-
-const progression = computed(() => {
-  if (!lastWeight.value) return 0
-  const pct = (objectif.value / lastWeight.value) * 100
-  return Math.min(100, Math.max(0, +pct.toFixed(1)))
-})
 
 // Données du mini-graphique "Progression du poids" : on prend les 14
 // dernières entrées qui ont un poids renseigné, et on transforme chaque
