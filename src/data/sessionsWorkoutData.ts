@@ -11,7 +11,7 @@ export const EXERCISES_BY_SESSION: Record<Session, ExerciseSession[]> = {
   PUSH: [
     { label: 'Presse pectorale', key: 'chest_press_machine' },
     { label: 'Crunch poulie', key: 'crunch_poulie' },
-    { label: 'Développé incliné smith', key: 'developpe_incline_halteres' },
+    { label: 'Développé incliné smith', key: 'developpe_incline_smith' },
     { label: 'Élévations latérales avec haltères', key: 'elevations_laterales_halteres' },
     { label: 'Écartés haut-bas poulie', key: 'ecarte_poulie' },
     { label: 'Dips', key: 'dips_assistes' },
@@ -41,7 +41,7 @@ export const EXERCISES_BY_SESSION: Record<Session, ExerciseSession[]> = {
     { label: 'Élévation mollets', key: 'mollets' },
   ],
   UPPER: [
-    { label: 'Développé incliné smith', key: 'developpe_incline_halteres' },
+    { label: 'Développé incliné smith', key: 'developpe_incline_smith' },
     { label: 'Tractions', key: 'tractions_assistees' },
     { label: 'Tirage assis poulie', key: 'tirage_poulie_basse' },
     { label: 'Curl barre EZ', key: 'curl_barre' },
