@@ -207,8 +207,6 @@
         <router-link to="/add" class="font-bold text-primary">Ajouter ta première entrée</router-link>
       </div>
     </section>
-
-    xd
   </main>
 </template>
 
