@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "daily-monitoring": {
+      "command": "node",
+      "args": ["--env-file=.env", "mcp/index.ts"]
+    }
+  }
+}

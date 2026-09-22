@@ -5,6 +5,7 @@ const items = [
   { to: '/workout', icon: 'fitness_center', label: 'Sport' },
   { to: '/history', icon: 'history', label: 'Historique' },
   { to: '/stats', icon: 'monitoring', label: 'Stats' },
+  { to: '/winter-arc', icon: 'ac_unit', label: 'Winter Arc' },
 ]
 </script>
 

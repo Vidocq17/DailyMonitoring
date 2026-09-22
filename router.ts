@@ -4,6 +4,7 @@ import Charts from '@/Views/Charts.vue'
 import Add from '@/Views/Add.vue'
 import Workout from '@/Views/Workout.vue'
 import Homepage from '@/Views/Homepage.vue'
+import WinterArc from '@/Views/WinterArc.vue'
 
 const routes: RouteRecordRaw[] = [
   { path: '/', name: 'Home', component: Homepage },
@@ -11,6 +12,7 @@ const routes: RouteRecordRaw[] = [
   { path: '/workout', component: Workout },
   { path: '/history', component: History },
   { path: '/stats', component: Charts },
+  { path: '/winter-arc', component: WinterArc },
 ]
 
 export const router = createRouter({
