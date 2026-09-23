@@ -5,9 +5,11 @@ import App from './App.vue'
 import { router } from '../router'
 import { MotionPlugin } from '@vueuse/motion'
 import { registerSW } from 'virtual:pwa-register'
+import Toast from 'vue-toastification'
 
 import '@/assets/styles/main.css'
 import '@/assets/styles/tailwind.css'
+import 'vue-toastification/dist/index.css'
 
 const app = createApp(App)
 
@@ -16,6 +18,7 @@ app
   .use(Primevue)
   .use(router)
   .use(MotionPlugin)
+  .use(Toast)
   .mount('#app')
 
 // 🔥 PWA : gestion des mises à jour

@@ -21,18 +21,15 @@ const filteredExercises = computed(() => {
 })
 
 watch(session, () => {
-  rows.value = [{ exercise_name: '', weight: '' }]
+  rows.value = filteredExercises.value.map((label) => ({ exercise_name: label, weight: '' }))
 })
 
 const isPasswordInvalid = computed(() => passwordCheck.value !== '' && passwordCheck.value !== password)
 
+const filledRows = computed(() => rows.value.filter((r) => r.exercise_name !== '' && r.weight !== ''))
+
 const isFormValid = computed(() => {
-  return (
-    session.value !== '' &&
-    passwordCheck.value === password &&
-    rows.value.length > 0 &&
-    rows.value.every((r) => r.exercise_name !== '' && r.weight !== '')
-  )
+  return session.value !== '' && passwordCheck.value === password && filledRows.value.length > 0
 })
 
 const addRow = () => {
@@ -59,7 +56,7 @@ const saveWeights = async () => {
 
   isSubmitting.value = true
   try {
-    for (const row of rows.value) {
+    for (const row of filledRows.value) {
       const key = SESSION_LABEL_TO_KEY[row.exercise_name]
       if (!key) {
         toast.error(`Exercice inconnu : ${row.exercise_name}`)
@@ -121,7 +118,6 @@ const saveWeights = async () => {
         v-for="(row, i) in rows"
         :key="i"
         class="space-y-4 rounded-xl border bg-white p-5 ambient-shadow"
-        :class="hasSubmitted && (row.exercise_name === '' || row.weight === '') ? 'border-error/40' : 'border-transparent'"
       >
         <div class="flex items-start justify-between gap-3">
           <div class="flex-1 space-y-1">

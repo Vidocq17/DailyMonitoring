@@ -41,18 +41,30 @@ export const useWorkoutStore = defineStore('workout', {
 
   actions: {
     async fetchWeights(): Promise<void> {
-      const { data, error } = await supabase
-        .from('workout_weights')
-        .select('*')
-        .order('created_at', { ascending: true })
+      const PAGE_SIZE = 1000
+      const allEntries: WorkoutEntry[] = []
+      let from = 0
 
-      if (error) {
-        console.error('Erreur fetchWeights:', error)
-        // OFFLINE : on garde les données locales existantes
-        return
+      while (true) {
+        const { data, error } = await supabase
+          .from('workout_weights')
+          .select('*')
+          .order('created_at', { ascending: true })
+          .range(from, from + PAGE_SIZE - 1)
+
+        if (error) {
+          console.error('Erreur fetchWeights:', error)
+          // OFFLINE : on garde les données locales existantes
+          return
+        }
+
+        const page = (data as WorkoutEntry[]) || []
+        allEntries.push(...page)
+        if (page.length === 0) break
+        from += page.length
       }
 
-      this.entries = (data as WorkoutEntry[]) || []
+      this.entries = allEntries
       persistWorkoutEntries(this.entries)
     },
 
