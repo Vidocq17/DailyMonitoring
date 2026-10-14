@@ -1,3 +1,4 @@
+<!-- Winter Arc désactivé
 <script setup lang="ts">
 import { computed, onMounted } from 'vue'
 import { useDailyStore } from '@/store/useDailyStore'
@@ -114,7 +115,7 @@ const months = computed(() => {
       </p>
     </section>
 
-    <!-- Compteur jours validés / non validés -->
+    [Compteur jours validés / non validés]
     <section class="grid grid-cols-2 gap-3">
       <div class="flex flex-col items-center gap-1 rounded-2xl bg-emerald-500 p-5 text-white shadow-[0_4px_14px_rgba(16,185,129,0.45)]">
         <span class="text-3xl font-extrabold">{{ validCount }}</span>
@@ -126,7 +127,7 @@ const months = computed(() => {
       </div>
     </section>
 
-    <!-- Poids perdu depuis le début -->
+    [Poids perdu depuis le début]
     <section class="flex flex-col items-center gap-1 rounded-2xl bg-white p-6 text-center ambient-shadow">
       <span class="text-xs font-bold uppercase tracking-widest text-primary">Poids perdu depuis le 22/09</span>
       <span
@@ -139,7 +140,7 @@ const months = computed(() => {
       <span class="text-xs text-on-surface-variant">{{ START_WEIGHT }} kg → {{ lastWeight ?? '--' }} kg</span>
     </section>
 
-    <!-- Phrase motivante -->
+    [Phrase motivante]
     <section class="rounded-2xl bg-primary/10 p-5 text-center">
       <p class="text-sm font-bold italic text-primary">{{ motivation }}</p>
     </section>
@@ -180,7 +181,7 @@ const months = computed(() => {
       </div>
     </section>
 
-    <!-- Légende -->
+    [Légende]
     <section class="flex items-center justify-center gap-6 pt-2 text-xs font-bold uppercase tracking-wide">
       <span class="flex items-center gap-2 text-emerald-600">
         <span class="h-4 w-4 rounded-md bg-emerald-500"></span>Validé
@@ -195,3 +196,4 @@ const months = computed(() => {
     </p>
   </main>
 </template>
+-->
